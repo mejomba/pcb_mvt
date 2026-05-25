@@ -1,0 +1,150 @@
+{% extends "_base.html" %}
+
+{% load static %}
+
+{% block content %}
+<div>
+
+<div id="card-container"></div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static "js/sign_in_menue.js" %}"></script>
+    <script src="{% static "js/create_cart.js" %}"></script>
+
+    <script>
+        $(document).ready(function() {
+      // تابع createPcbCard از تبدیل قبلی (فایل main.js)
+      // داده‌های نمونه (می‌تواند از API بیاید)
+      var cardsData = [
+        {
+          title: "1 - 4 Layers",
+          price: "$2",
+          buildTime: "24 hours",
+          items: [
+            "1-2L - $2 for 100×100mm PCBs",
+            "4L - $2 for 50×50mm PCBs",
+            "FR4, Aluminum, Copper, Rogers, PTFE"
+          ],
+          image: "images/s1.png",
+          isFeatured: false
+        },
+          {
+          title: "1 - 4 Layers",
+          price: "$2",
+          buildTime: "24 hours",
+          items: [
+            "1-2L - $2 for 100×100mm PCBs",
+            "4L - $2 for 50×50mm PCBs",
+            "FR4, Aluminum, Copper, Rogers, PTFE"
+          ],
+          image: "images/s1.png",
+          isFeatured: false
+        },
+          {
+          title: "1 - 4 Layers",
+          price: "$2",
+          buildTime: "24 hours",
+          items: [
+            "1-2L - $2 for 100×100mm PCBs",
+            "4L - $2 for 50×50mm PCBs",
+            "FR4, Aluminum, Copper, Rogers, PTFE"
+          ],
+          image: "images/s1.png",
+          isFeatured: false
+        },
+          {
+          title: "1 - 4 Layers",
+          price: "$2",
+          buildTime: "24 hours",
+          items: [
+            "1-2L - $2 for 100×100mm PCBs",
+            "4L - $2 for 50×50mm PCBs",
+            "FR4, Aluminum, Copper, Rogers, PTFE"
+          ],
+          image: "images/s1.png",
+          isFeatured: false
+        },
+          {
+          title: "1 - 4 Layers",
+          price: "$2",
+          buildTime: "24 hours",
+          items: [
+            "1-2L - $2 for 100×100mm PCBs",
+            "4L - $2 for 50×50mm PCBs",
+            "FR4, Aluminum, Copper, Rogers, PTFE"
+          ],
+          image: "images/s1.png",
+          isFeatured: false
+        },
+          {
+          title: "1 - 4 Layers",
+          price: "$2",
+          buildTime: "24 hours",
+          items: [
+            "1-2L - $2 for 100×100mm PCBs",
+            "4L - $2 for 50×50mm PCBs",
+            "FR4, Aluminum, Copper, Rogers, PTFE"
+          ],
+          image: "images/s1.png",
+          isFeatured: false
+        }
+        // ... بقیهٔ کارت‌ها
+      ];
+
+      // یا با $.ajax:
+      /*
+      $.ajax({
+        url: '/api/pcbs',
+        method: 'GET',
+        dataType: 'json'
+      }).done(function(cardsData) {
+        renderCards(cardsData);
+      });
+      */
+
+      function renderCards(data) {
+        var $row = $('#cards-row');
+        $row.empty();
+        $.each(data, function(i, card) {
+          var $col = $('<div class="col-12 col-md-6 col-lg-3 mb-4"></div>');
+          $col.append(createPcbCard(card)); // تابع از قبل تعریف شده
+          $row.append($col);
+        });
+      }
+
+      renderCards(cardsData); // برای داده‌های استاتیک
+    });
+    </script>
+
+    <script>
+    // داده‌های نمونه
+    const cardData = {
+      title: '4-Layer PCB',
+      price: '$25.00',
+      buildTime: '5 days',
+      items: ['FR-4', '1.6mm', 'Green Mask'],
+      image: 'assets/images/pcb1.jpg',
+      isFeatured: true
+    };
+
+    // اضافه کردن به صفحه
+    //$('#card-container').append(createPcbCard(cardData));
+
+    // اگر بخواهی از سرور بگیری:
+    //$.ajax({
+    // url: '/api/pcbs',
+    //  method: 'GET',
+    //  dataType: 'json'
+    //}).done(function (response) {
+      // فرض کن response یک آرایه از کارت‌هاست
+    //  $.each(response, function (i, pcb) {
+    //    $('#card-container').append(createPcbCard(pcb));
+    //  });
+    //}).fail(function (jqXHR, textStatus) {
+    //  console.error('خطا در دریافت داده‌ها', textStatus);
+    //});
+    </script>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}ثبت سفارش PCB{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static "css/new_order.css" %}">
+{% endblock %}
+
+{% block content %}
+<main class="bg-light min-vh-100 p-3 p-sm-4 p-lg-5">
+  <div class="container bg-white rounded shadow-sm py-4 px-3" style="max-width: 56rem;">
+
+    <!-- آپلود فایل -->
+    <div class="form-group">
+      <label for="gerberFile" class="font-weight-bold">آپلود فایل Gerber</label>
+      <input type="file" class="form-control-file" id="gerberFile" name="file">
+      <small class="form-text text-muted">فایل‌های فشرده با فرمت zip, rar</small>
+    </div>
+
+    <!-- محل نمایش گروه‌ها (توسط جاوااسکریپت پر می‌شود) -->
+    <div id="attributes-container"></div>
+
+    <!-- دکمه ثبت -->
+    <div class="mt-4 text-center">
+      <button id="submitOrderBtn" type="button" class="btn btn-primary px-5 py-2">
+        ثبت سفارش
+      </button>
+    </div>
+    <div id="submitMessage" class="text-center mt-3 font-weight-medium"></div>
+
+    <!-- نمایش debug formData (اختیاری) -->
+    <div class="mt-4 p-3 bg-gray-200 rounded">
+      <h5>Current Form State:</h5>
+      <pre id="formDataDebug" class="small"></pre>
+    </div>
+  </div>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // URLهای API را از template tag یا مستقیماً بنویسید
+  var apiGroupsUrl = "{% url 'pcb:group-list' %}";      // مطابق با router شما: /api/pcb/groups/
+  var apiOrderUrl = "{% url 'pcb:order-list' %}";       // /api/pcb/orders/
+</script>
+<script src="{% static 'js/new_order.js' %}"></script>
+{% endblock %}

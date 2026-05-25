@@ -1,0 +1,13 @@
+django
+djangorestframework
+drf_spectacular
+djangorestframework-simplejwt
+pillow
+django-nested-admin
+django-autocomplete-light
+django-cors-headers
+django-mptt
+django-ckeditor
+pandas
+django-filter
+gunicorn==21.2.0

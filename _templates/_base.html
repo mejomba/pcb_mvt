@@ -1,0 +1,73 @@
+<!-- === templates/base.html === -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}سایت{% endblock %}</title>
+
+  <!-- فونت‌های لوکال (GeistVF, GeistMono) -->
+  <style>
+    @font-face {
+      font-family: 'Geist';
+      src: url("{% static 'fonts/GeistVF.woff' %}") format('woff');
+      font-weight: 100 900;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'GeistMono';
+      src: url("{% static 'fonts/GeistMonoVF.woff' %}") format('woff');
+      font-weight: 100 900;
+      font-display: swap;
+    }
+  </style>
+
+  <!-- استایل‌های اصلی -->
+  <link rel="stylesheet" href="{% static 'css/globals.css' %}" />
+
+    <!-- در <head> بعد از globals.css اضافه کن -->
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}" />
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="{% static "vendor/css/bootstrap-icons.min.css" %}">
+
+  {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  {% include 'components/navbar.html' %}
+
+  <!-- FullScreenSlider — فقط در صفحه اصلی نمایش داده می‌شه -->
+  {% block slider %}{% endblock %}
+
+  <!-- محتوای اصلی هر صفحه -->
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Footer -->
+  {% include 'components/footer.html' %}
+
+  <!-- ─── JS Libraries ──────────────────────────── -->
+  <!-- jQuery (لوکال) -->
+  <script src="{% static 'js/vendor/js/jquery.min.js' %}"></script>
+
+  <!-- لایبری‌های اصلی پروژه -->
+  <script src="{% static 'js/lib/api.js' %}"></script>
+  <script src="{% static 'js/lib/token.js' %}"></script>
+  <script src="{% static 'js/lib/auth.js' %}"></script>
+  <script src="{% static 'js/lib/blog.js' %}"></script>
+  <script src="{% static 'js/lib/utils.js' %}"></script>
+
+  <!-- در انتهای <body> بعد از lib JS‌ها اضافه کن -->
+  <script src="{% static 'js/components/navbar.js' %}"></script>
+
+  <!-- JS اختصاصی هر صفحه -->
+  {% block extra_js %}{% endblock %}
+
+</body>
+</html>

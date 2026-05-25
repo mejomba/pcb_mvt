@@ -1,0 +1,46 @@
+{% extends "admin/change_list.html" %}
+
+{% block extrahead %}
+{{ block.super }}
+zzz
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.querySelector('#searchbar'); // فیلد سرچ پیش‌فرض ادمین
+    const resultsTable = document.querySelector('table#result_list tbody');
+
+    if (searchInput && resultsTable) {
+        let timeout = null;
+
+        searchInput.addEventListener('input', function() {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => {
+                const query = searchInput.value.trim();
+                fetch(`ajax-search/?q=${encodeURIComponent(query)}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        resultsTable.innerHTML = ''; // پاک‌کردن لیست فعلی
+                        data.results.forEach(order => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td class="action-checkbox">
+                                <input type="checkbox" name="_selected_action"
+                                value="${order.id}"
+                                class="action-select"
+                                ></td>
+                                <td>
+                                <a href="/admin/pcb/order/${order.id}/change/">${order.id}</a>
+                                </td>
+                                <td>${order.user__phone}</td>
+                                <td>${order.status_display}</td>
+                                <td>${order.created_at}</td>
+                                <td>${order.updated_at}</td>
+                            `;
+                            resultsTable.appendChild(row);
+                        });
+                    });
+            }, 300); // تأخیر ۰.۳ ثانیه برای بهینه‌سازی
+        });
+    }
+});
+</script>
+{% endblock %}

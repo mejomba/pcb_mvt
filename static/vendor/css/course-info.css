@@ -1,0 +1,212 @@
+@import url('https://cdn.fontcdn.ir/Font/Persian/Samim/Samim.css');
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+
+
+:root {
+    --c1:#f0f5f5;
+    --c2:#f0f5f5;
+    --c3:#1f004d;
+    --c4:#330026;
+    --c5:#ff1aff;
+    --c6:#001f4d;
+    --c7:#0000b3;
+}
+
+/*:root {*/
+/*    --c1: #001408;*/
+/*    --c2:#1a3300;*/
+/*    --c3:#ecf9f2;*/
+/*    --c4:#f0f5f5;*/
+/*    --c5:#e7e3d5;*/
+/*    --c6:#3b8beb;*/
+/*    --c7:#ff1aff;*/
+/*}*/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+    margin:0;
+    color: var(--c3);
+}
+html body {
+    direction: rtl;
+    text-align: right;
+    font-family: Samim;
+    font-size: 1.2em;
+    background-color: var(--c1);
+}
+
+
+a {
+    color: var(--c7);
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: none;
+    color: var(--c7);
+}
+
+footer {
+     margin-bottom: 30px;
+     background: var(--c7);
+     border: 1px solid;
+     -moz-border-radius-topleft: 50%;
+     border-top-left-radius: 10%;
+     border-top-right-radius: 10%;
+     padding: 10px;
+}
+footer a {
+     color: var(--c2);
+ }
+footer a:hover {
+    color: var(--c2);
+    font-size: 1.5rem;
+    transition: ease-in 0.1s;
+ }
+footer .sticky {
+     position: fixed;
+     width: 100%;
+     padding: 5px 0 0 0;
+     bottom: 0;
+     right: 0;
+     z-index: 1;
+     background: var(--c4);
+     color: var(--c2);
+}
+.navbar-ul {
+    margin-right: 100px;
+}
+
+header {
+    background: var(--c6);
+}
+
+header a {
+    color: var(--c5);
+}
+header a:hover{
+    padding: 0;
+    font-size: 25px;
+    transition: ease 0.5s;
+    color: var(--c5);
+}
+
+.navbar-toggler-icon{
+    font-size: 25px;
+}
+
+.navbar-brand img{
+    width: 100px;
+}
+
+.image-shadow {
+    /*box-shadow: 2px 2px 2px 2px var(--my-dark-green), 2px 2px 5px 2px var(--my-dark-green);*/
+}
+.image-shadow:hover {
+    /*box-shadow: 2px 2px 2px 2px var(--my-light-green), 2px 2px 10px 2px var(--my-light-green);*/
+}
+
+.bg-c1 {
+    background-color: var(--c1);!important;
+}
+.bg-c2 {
+    background-color: var(--c2);!important;
+}
+.bg-c3 {
+    background-color: var(--c3);!important;
+}
+.bg-c4 {
+    background-color: var(--c4);!important;
+}
+.bg-c5 {
+    background-color: var(--c5);!important;
+}
+.bg-c6 {
+    background-color: var(--c6);!important;
+}
+.bg-c7 {
+    background-color: var(--c7);!important;
+}
+.bg-my-light50 {
+    background-color: rgba(58,175,169,0.4);!important;
+}
+
+
+
+.full-width {
+    width: 100%;
+}
+
+.reverse-align {
+    direction: ltr;
+}
+.reverse-align p{
+    direction: rtl;
+}
+
+.fixed-footer{
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    color: #fff;
+    padding: 5px 0;
+}
+
+hr {
+    height: 2px;
+    background-color: var(--c6);
+}
+
+.course-title {
+    background: linear-gradient(200deg, var(--c2), var(--c6));
+}
+.course-title h3 {
+    margin: 3% 10% 2% 0;
+}
+.score {
+    margin: 3% 10% 2% 0;
+}
+.course-title img {
+    width: 96px;
+    border-radius: 50%;
+    margin: 3% 10% 2% 0;
+}
+.course-title .action-button {
+    margin: 3% 10% 2% 0;
+}
+.course-title .info {
+    margin: 3% 10% 2% 0;
+}
+.offer-by h3 {
+
+}
+.offer-by img {
+    width: 200px;
+    border-radius: 0;
+}
+.left-panel {
+    position: sticky;
+    position: -webkit-sticky;
+    left: 0;
+    top: 100px;
+}
+.weak-sticky {
+    position: sticky;
+    position: -webkit-sticky;
+    left: 0;
+    top: 100px;
+}
+
+.detail-video-link a {
+    /*display: block;*/
+}
+
+.about-course {}

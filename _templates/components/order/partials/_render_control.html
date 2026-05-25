@@ -1,0 +1,11 @@
+{#{% if attr.control_type == "radio_button" %}#}
+{#  {% include 'partials/_radio_group.html' with name=attr.name options=attr.options selected_value=form_data|get_item:attr.name %}#}
+{#{% elif attr.control_type == "text_input" %}#}
+{#  <div class="d-flex align-items-center gap-2">#}
+{#    {% include 'partials/_radio_group.html' with name=attr.name options=attr.options selected_value=form_data|get_item:attr.name %}#}
+{#    <input type="text" name="{{ attr.name }}_text" class="form-control form-control-sm w-auto text-center" #}
+{#           value="{{ form_data|get_item:attr.name }}" style="width: 6rem;">#}
+{#  </div>#}
+{#{% else %}#}
+{#  <span class="text-muted">نوع پشتیبانی نشده</span>#}
+{#{% endif %}#}

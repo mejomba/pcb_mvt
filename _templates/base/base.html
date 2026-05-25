@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static "vendor/css/bootstrap.css" %}">
+    <link rel="stylesheet" href="{% static "vendor/css/bootstrap-icons.min.css" %}">
+    <link rel="stylesheet" href="{% static "css/custom.css" %}">
+
+    {% block extra_css %}
+    {% endblock %}
+
+    <script src="{% static "vendor/js/jquery.min.js" %}"></script>
+</head>
+<body>
+
+{% include "components/navbar.html" %}
+
+<main class="container my-4">
+
+    <div id="cards-row" class="row"></div>
+
+    {% block content %}
+    {% endblock %}
+
+</main>
+
+
+<script src="{% static "vendor/js/bootstrap.bundle.min.js" %}"></script>
+<script src="{% static "js/auth.js" %}"></script>
+
+{% block extra_js %}
+{% endblock %}
+</body>
+</html>

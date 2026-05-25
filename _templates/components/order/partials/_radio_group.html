@@ -1,0 +1,23 @@
+{#{% load static %}#}
+{#<div class="d-flex flex-wrap align-items-end gap-2">#}
+{#  {% for option in options %}#}
+{#    <div class="custom-radio-card">#}
+{#      <input type="radio"#}
+{#             id="{{ name }}_{{ option.id }}"#}
+{#             name="{{ name }}"#}
+{#             value="{{ option.value }}"#}
+{#             {% if option.value == selected_value %}checked{% endif %}#}
+{#             class="sr-only"#}
+{#             data-radio-group>#}
+{#      <label for="{{ name }}_{{ option.id }}"#}
+{#             class="radio-label border rounded-sm px-3 py-1 text-sm font-medium position-relative d-flex flex-column align-items-center justify-content-center">#}
+{#        {% if option.file_url %}#}
+{#          <img src="{{ option.file_url }}" alt="{{ option.display_name }}" width="60" class="mb-1">#}
+{#        {% endif %}#}
+{#        {{ option.display_name }}#}
+{#        <span class="check-triangle"></span>#}
+{#        <i class="bi bi-check check-icon"></i>#}
+{#      </label>#}
+{#    </div>#}
+{#  {% endfor %}#}
+{#</div>#}

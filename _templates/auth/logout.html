@@ -1,0 +1,29 @@
+<!-- === templates/auth/logout.html === -->
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}خروج از حساب{% endblock %}
+
+{% block content %}
+<div class="logout-page">
+  <div class="logout-card">
+    <!-- آیکون -->
+    <div class="logout-icon-wrapper">
+      <i class="bi bi-box-arrow-right logout-icon"></i>
+    </div>
+
+    <!-- متن -->
+    <h5 class="logout-title">در حال خروج از حساب کاربری...</h5>
+    <p class="logout-subtitle">لطفاً چند لحظه صبر کنید.</p>
+
+    <!-- اسپینر -->
+    <div class="logout-spinner">
+      <div class="spinner-ring"></div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/pages/logout.js' %}"></script>
+{% endblock %}

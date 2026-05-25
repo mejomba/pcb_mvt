@@ -1,0 +1,194 @@
+/* === static/css/help.css === */
+
+/* ─── Layout ─────────────────────────────────────── */
+.help-layout {
+  display: flex;
+  min-height: calc(100vh - 60px); /* minus navbar height */
+}
+
+/* ─── Sidebar Wrapper ────────────────────────────── */
+.sidebar-wrapper {
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+}
+
+/* collapse strip */
+.sidebar-toggle-strip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0.75rem;
+  height: 100%;
+  background: #e5e7eb;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: background 0.2s;
+}
+.sidebar-toggle-strip:hover { background: #d1d5db; }
+.sidebar-toggle-strip i { font-size: 0.625rem; color: #6b7280; }
+
+/* ─── Sidebar ────────────────────────────────────── */
+.help-sidebar {
+  width: 16rem;            /* w-64 */
+  height: calc(100vh - 60px);
+  overflow-y: auto;
+  background: #ffffff;
+  border-left: 1px solid #e5e7eb;   /* RTL — border چپ */
+  transition: width 0.3s ease;
+}
+
+.help-sidebar.collapsed {
+  width: 0.75rem;
+  overflow: hidden;
+}
+
+.sidebar-content {
+  padding: 1rem;
+  transition: opacity 0.3s;
+}
+
+.sidebar-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 1rem;
+  white-space: nowrap;
+}
+
+/* ─── Sidebar Search ─────────────────────────────── */
+.sidebar-search {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.sidebar-search-icon {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+  font-size: 0.875rem;
+  pointer-events: none;
+}
+
+.sidebar-search-input {
+  width: 100%;
+  padding: 0.5rem 2rem 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  outline: none;
+  text-align: right;
+}
+.sidebar-search-input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 2px rgba(99,102,241,.2);
+}
+
+/* ─── Menu Tree ──────────────────────────────────── */
+.menu-list { list-style: none; }
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: background 0.15s;
+  margin-bottom: 0.125rem;
+}
+.menu-item:hover { background: #f3f4f6; }
+.menu-item-active { background: #dbeafe; }
+.menu-item-active .menu-item-link { color: #1d4ed8; font-weight: 600; }
+
+.menu-item-link {
+  flex: 1;
+  padding: 0.5rem 0;
+  font-size: 0.875rem;
+  color: #374151;
+  text-decoration: none;
+  display: block;
+}
+.menu-item-link:hover { color: #111827; }
+
+.menu-chevron {
+  padding: 0.5rem 0.5rem;
+  color: #6b7280;
+  font-size: 0.75rem;
+  transition: transform 0.2s;
+  display: inline-flex;
+  align-items: center;
+}
+.menu-chevron.open { transform: rotate(-90deg); }
+
+.menu-children {
+  overflow: hidden;
+}
+
+/* ─── Main Content ───────────────────────────────── */
+.help-main-content {
+  flex: 1;
+  padding: 2rem;
+  min-width: 0;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-bottom: 1rem;
+}
+.breadcrumb-item a { color: #6b7280; text-decoration: none; }
+.breadcrumb-item a:hover { text-decoration: underline; }
+.breadcrumb-sep { color: #9ca3af; margin: 0 0.25rem; }
+
+.help-page-title {
+  font-size: 1.875rem;   /* text-3xl */
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 1.5rem;
+}
+
+/* Article list */
+.help-articles-list { display: flex; flex-direction: column; gap: 0.375rem; }
+
+.help-article-item { padding: 0.25rem 0; }
+
+.help-article-link {
+  color: #111827;
+  text-decoration: none;
+  font-size: 0.9375rem;
+  transition: color 0.15s;
+}
+.help-article-link:hover { color: #2563eb; text-decoration: underline; }
+
+/* Article body */
+.help-article-body {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: #374151;
+}
+
+/* Empty state */
+.help-empty {
+  text-align: center;
+  padding: 3rem;
+  color: #9ca3af;
+}
+.help-empty-icon { font-size: 3rem; display: block; margin-bottom: 0.5rem; }
+
+/* ─── Responsive ─────────────────────────────────── */
+@media (max-width: 768px) {
+  .help-layout     { flex-direction: column; }
+  .help-sidebar    { width: 100%; height: auto; border-left: none; border-bottom: 1px solid #e5e7eb; }
+  .sidebar-toggle-strip { display: none; }
+  .help-main-content { padding: 1rem; }
+}

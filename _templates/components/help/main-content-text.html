@@ -1,0 +1,31 @@
+<!-- === templates/components/help/main-content-text.html === -->
+<!-- دریافت context: content (HelpPageContentList با فیلد content) -->
+
+<div class="help-main-content">
+  {% if content %}
+
+    <nav class="breadcrumb" aria-label="مسیر صفحه">
+      {% for crumb in content.breadcrumb %}
+        <span class="breadcrumb-item">
+          <a href="#">{{ crumb }}</a>
+          {% if not forloop.last %}
+            <span class="breadcrumb-sep">/</span>
+          {% endif %}
+        </span>
+      {% endfor %}
+    </nav>
+
+    <h1 class="help-page-title">{{ content.title }}</h1>
+
+    <div class="help-article-body">
+      <!--
+        اگه content.content شامل HTML هست از |safe استفاده کن
+        و مطمئن شو بک‌اند sanitize کرده
+      -->
+      {{ content.content }}
+    </div>
+
+  {% else %}
+    <div class="help-empty"></div>
+  {% endif %}
+</div>

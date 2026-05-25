@@ -1,0 +1,40 @@
+/* بهبود فاصله آیتم‌های لیست و رنگ لینک‌ها */
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+/* اگر می‌خواهید پس‌زمینه دقیقاً مثل نسخهٔ اصلی (gray-900) باشد: */
+footer.bg-dark {
+  background-color: #111827 !important; /* Tailwind gray-900 */
+}
+
+/* منو با هاور باز شود */
+.dropdown.user-menu:hover .dropdown-menu {
+  display: block;
+}
+
+/* حذف caret پیش‌فرض بوت‌استرپ اگر خواستی */
+.dropdown.user-menu .dropdown-toggle::after {
+  vertical-align: 0.15em;
+}
+
+/* برای بخش شیشه‌ای */
+#guest-menu .position-relative .position-absolute {
+  backdrop-filter: blur(2px);
+}
+
+/* فاصله بین آیتم‌های منوی راست */
+.navbar-nav.ml-auto .nav-link + .nav-link,
+.navbar-nav.ml-auto > * + * {
+  margin-left: 1rem;
+}
+
+/* منوی کاربری با هاور باز شود (اختیاری) */
+.dropdown.user-menu:hover .dropdown-menu {
+  display: block;
+}
+
+/* حذف حاشیه زیر دکمه dropdown-toggle وقتی فعال می‌شود */
+.user-menu .dropdown-toggle:focus {
+  box-shadow: none;
+}

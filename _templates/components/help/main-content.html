@@ -1,0 +1,38 @@
+<!-- === templates/components/help/main-content.html === -->
+<!-- دریافت context: content (list of HelpPageContentList) -->
+
+<div class="help-main-content">
+  {% if content %}
+    {% with breadcrumbs=content.0.breadcrumb %}
+    <nav class="breadcrumb" aria-label="مسیر صفحه">
+      {% for crumb in breadcrumbs %}
+        <span class="breadcrumb-item">
+          <a href="#">{{ crumb }}</a>
+          {% if not forloop.last %}
+            <span class="breadcrumb-sep">/</span>
+          {% endif %}
+        </span>
+      {% endfor %}
+    </nav>
+
+    <h1 class="help-page-title">{{ content.0.category_name }}</h1>
+    {% endwith %}
+
+    <div class="help-articles-list">
+      {% for article in content %}
+        <div class="help-article-item">
+          <a href="/help/post/{{ article.slug }}/"
+             class="help-article-link">
+            {{ article.title }}
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+
+  {% else %}
+    <div class="help-empty">
+      <i class="bi bi-inbox help-empty-icon"></i>
+      <p>محتوایی یافت نشد.</p>
+    </div>
+  {% endif %}
+</div>

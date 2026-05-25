@@ -1,0 +1,15 @@
+{% extends "admin/change_form.html" %}
+{% block object-tools-items %}
+    <li>
+        {% if obj.is_seen %}
+        <a style="background: #32a852" href="{% url 'admin:order_download_excel' object_id %}" class="button">📄 دانلود اکسل انتخاب‌ها
+        {{obj.download_count}}
+        </a>
+        {% else %}
+        <a href="{% url 'admin:order_download_excel' object_id %}" class="button">📄 دانلود اکسل انتخاب‌ها
+        {{obj.download_count}}
+        </a>
+        {% endif %}
+    </li>
+    {{ block.super }}
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends 'base/base.html' %}
+{% block content %}
+<div class="d-flex align-items-center justify-content-center min-vh-100 bg-light">
+  <div class="card p-4 shadow-lg" style="max-width: 24rem; width: 100%;">
+    <h2 class="h5 font-weight-bold text-center mb-4">تأیید کد ارسال‌شده</h2>
+    {% include 'components/auth/partial/_otp_verify_form.html' with phone=phone %}
+  </div>
+</div>
+{% endblock %}

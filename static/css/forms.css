@@ -1,0 +1,198 @@
+/* === static/css/forms.css === */
+
+/* ─── Login Page Layout ──────────────────────────── */
+.login-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #f9fafb;
+  font-family: var(--font-sans);
+  padding: 1rem;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 28rem;          /* max-w-md */
+  padding: 2rem;             /* p-8 */
+  background: #ffffff;
+  border-radius: 0.75rem;    /* rounded-xl */
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,.1), 0 2px 4px -2px rgba(0,0,0,.1);
+}
+
+.login-title {
+  font-size: 1.5rem;         /* text-2xl */
+  font-weight: 700;
+  text-align: center;
+  color: #1f2937;
+  margin-bottom: 1.5rem;
+}
+
+/* ─── Tab Switcher ───────────────────────────────── */
+.auth-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  padding: 0.25rem;
+  background-color: #e5e7eb;
+  border-radius: 0.5rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.auth-tab {
+  display: block;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 0.375rem;
+  text-decoration: none;
+  color: #4b5563;
+  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+}
+
+.auth-tab.active {
+  background-color: #ffffff;
+  color: #4f46e5;
+  box-shadow: 0 1px 3px rgba(0,0,0,.12);
+}
+
+/* ─── Form Groups ────────────────────────────────── */
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  text-align: right;
+  margin-bottom: 0.375rem;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  text-align: right;
+  color: #111827;
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  box-shadow: 0 1px 2px rgba(0,0,0,.05);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.form-input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99,102,241,.25);
+}
+
+.form-input.input-error {
+  border-color: #ef4444;
+}
+
+.form-input.input-error:focus {
+  box-shadow: 0 0 0 3px rgba(239,68,68,.2);
+}
+
+/* OTP input — بزرگتر و وسط‌چین */
+.otp-input {
+  text-align: center;
+  font-size: 1.25rem;
+  letter-spacing: 0.3em;
+}
+
+/* ─── Error Message ──────────────────────────────── */
+.form-error {
+  padding: 0.75rem;
+  font-size: 0.875rem;
+  color: #991b1b;
+  background-color: #fee2e2;
+  border: 1px solid #fecaca;
+  border-radius: 0.5rem;
+  text-align: right;
+  margin-bottom: 1rem;
+}
+
+/* ─── Buttons ────────────────────────────────────── */
+.btn {
+  display: block;
+  width: 100%;
+  padding: 0.625rem 1rem;
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center;
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: background-color 0.2s, opacity 0.2s;
+  margin-bottom: 1rem;
+}
+
+.btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  color: #ffffff;
+  background-color: #4f46e5;   /* indigo-600 */
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #4338ca;   /* indigo-700 */
+}
+
+.btn-success {
+  color: #ffffff;
+  background-color: #16a34a;   /* green-600 */
+}
+
+.btn-success:hover:not(:disabled) {
+  background-color: #15803d;   /* green-700 */
+}
+
+/* لینک دکمه‌ای — برای ارسال مجدد OTP */
+.btn-link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #4f46e5;
+  font-weight: 500;
+  font-size: 0.875rem;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.btn-link:hover {
+  color: #4338ca;
+}
+
+/* ─── OTP Timer ──────────────────────────────────── */
+.otp-timer-wrapper {
+  text-align: center;
+  font-size: 0.875rem;
+  color: #4b5563;
+  margin-top: 0.5rem;
+}
+
+/* ─── Notes & Links ──────────────────────────────── */
+.form-note {
+  font-size: 0.875rem;
+  color: #6b7280;
+  text-align: right;
+  line-height: 1.6;
+}
+
+.link-accent {
+  color: #16a34a;
+  text-decoration: none;
+  margin-right: 0.25rem;
+}
+
+.link-accent:hover {
+  text-decoration: underline;
+}

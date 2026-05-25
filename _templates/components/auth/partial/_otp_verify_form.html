@@ -1,0 +1,93 @@
+{% if error %}
+<div class="alert alert-danger text-right p-3 mb-3" id="otp-error-box">
+  {{ error }}
+</div>
+{% else %}
+<div class="alert alert-danger text-right p-3 mb-3" id="otp-error-box" style="display: none;"></div>
+{% endif %}
+
+<form id="verify-otp-form" method="post" action="#" class="mt-4"
+      data-ajax-verify-url="{% url 'auth:auth_otp_verify' %}">
+  {% csrf_token %}
+  <input type="hidden" name="phone" value="{{ phone }}">
+{#  <input type="hidden" name="next_step" value="{{ next_step }}">#}
+
+  <div class="form-group">
+    <label for="otp_code" class="text-right d-block">کد ۵ رقمی</label>
+    <input
+      type="text"
+      id="otp_code"
+      name="code"
+      dir="ltr"
+      class="form-control text-center {% if error %}is-invalid{% endif %}"
+      placeholder="12345"
+      value="{{ otp_code }}"
+      required
+    >
+  </div>
+
+  <button type="submit" class="btn btn-success btn-block font-weight-bold" id="verify-otp-btn">
+    تأیید
+  </button>
+</form>
+
+<!-- تایمر / ارسال مجدد -->
+<div id="resend-timer" class="text-center small text-muted mt-3"></div>
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+  // تایمر ارسال مجدد (همانند قبل)
+  initCountdownTimer({
+    container: '#resend-timer',
+    startSeconds: 120,
+    resendUrl: '{% url "auth:resend-otp" %}',
+    resendData: { phone: '{{ phone }}' }
+  });
+
+  // ارسال AJAX فرم تأیید
+  var $verifyForm = $('#verify-otp-form');
+  var $errorBox = $('#otp-error-box');
+  var $btn = $('#verify-otp-btn');
+
+  $verifyForm.on('submit', function(e) {
+    e.preventDefault();
+
+    var otpCode = $('#otp_code').val().trim();
+    if (!otpCode) {
+      $errorBox.text('کد تأیید الزامی است.').show();
+      return;
+    }
+
+    // غیرفعال کردن دکمه و نمایش اسپینر
+    $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm ml-1" role="status" aria-hidden="true"></span> در حال بررسی...');
+
+    $.ajax({
+      url: $verifyForm.data('ajax-verify-url'),
+      method: 'POST',
+      data: $verifyForm.serialize(),
+      headers: { 'X-CSRFToken': $verifyForm.find('input[name=csrfmiddlewaretoken]').val() },
+      success: function(response) {
+        // تأیید موفق: هدایت به صفحه مقصد
+        // بسته به next_step می‌توانی مقصد را تنظیم کنی
+          document.cookie = `access=${response.access}; path=/; max-age=604800`;
+          document.cookie = `refresh=${response.refresh}; path=/; max-age=604800`;
+        var redirectUrl = response.redirect || '/';
+        window.location.href = redirectUrl;
+      },
+      error: function(jqXHR) {
+        var errMsg = 'کد وارد شده صحیح نیست یا منقضی شده است.';
+        if (jqXHR.responseJSON && jqXHR.responseJSON.error) {
+          errMsg = jqXHR.responseJSON.error;
+        } else if (jqXHR.status === 429) {
+          errMsg = 'تعداد تلاش‌ها زیاد است. لطفاً کمی صبر کنید.';
+        }
+        $errorBox.text(errMsg).show();
+        // فعال‌سازی مجدد دکمه
+        $btn.prop('disabled', false).text('تأیید');
+      }
+    });
+  });
+});
+</script>
+{% endblock %}

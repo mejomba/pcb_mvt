@@ -1,0 +1,96 @@
+<!-- === templates/home.html === -->
+<!-- جایگزین: app/page.tsx -->
+<!-- ⚠️ SingleCart.tsx هنوز دریافت نشده — وقتی دریافت شد کارت‌ها کامل می‌شن -->
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}خانه{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}" />
+{% endblock %}
+
+{% block content %}
+<div class="home-page">
+  <main class="home-container">
+    <div class="pcb-cards-grid" id="pcb-cards-grid">
+
+      <!-- کارت‌ها با JS رندر می‌شن — data از همین صفحه میاد -->
+
+    </div>
+  </main>
+</div>
+
+<!-- داده کارت‌ها -->
+<script type="application/json" id="pcb-cards-data">
+[
+  {
+    "title": "1 - 4 Layers",
+    "price": "$2",
+    "buildTime": "24 hours",
+    "items": [
+      "1-2L - $2 for 100×100mm PCBs",
+      "4L - $2 for 50×50mm PCBs",
+      "FR4, Aluminum, Copper, Rogers, PTFE"
+    ],
+    "image": "/static/images/s1.png",
+    "isFeatured": false
+  },
+  {
+    "title": "6 - 32 Layers",
+    "price": "$2",
+    "buildTime": "4 days",
+    "items": [
+      "6-8L - $2 for 50×50mm PCBs",
+      "6-32L - Free via-in-pad with POFV",
+      "Controlled impedance PCB"
+    ],
+    "image": "/static/images/s1.png",
+    "isFeatured": true
+  },
+  {
+    "title": "1 - 4 Layers",
+    "price": "$2",
+    "buildTime": "24 hours",
+    "items": [
+      "1-2L - $2 for 100×100mm PCBs",
+      "4L - $2 for 50×50mm PCBs",
+      "FR4, Aluminum, Copper, Rogers, PTFE"
+    ],
+    "image": "/static/images/s1.png",
+    "isFeatured": false
+  },
+  {
+    "title": "1 - 4 Layers",
+    "price": "$2",
+    "buildTime": "24 hours",
+    "items": [
+      "1-2L - $2 for 100×100mm PCBs",
+      "4L - $2 for 50×50mm PCBs",
+      "FR4, Aluminum, Copper, Rogers, PTFE"
+    ],
+    "image": "/static/images/s1.png",
+    "isFeatured": false
+  },
+  {
+    "title": "1 - 4 Layers",
+    "price": "$2",
+    "buildTime": "24 hours",
+    "items": [
+      "1-2L - $2 for 100×100mm PCBs",
+      "4L - $2 for 50×50mm PCBs",
+      "FR4, Aluminum, Copper, Rogers, PTFE"
+    ],
+    "image": "/static/images/s1.png",
+    "isFeatured": false
+  }
+]
+</script>
+
+{% endblock %}
+
+{% block extra_js %}
+<!-- ⚠️ وقتی SingleCart.tsx دریافت شد، این فایل کامل می‌شه -->
+<script src="{% static 'js/components/pcb-card.js' %}"></script>
+<script src="{% static 'js/pages/home.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}ورود به حساب کاربری{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/forms.css' %}" />
+{% endblock %}
+
+{% block content %}
+<div class="login-page">
+  <div class="login-card">
+    <h1 class="login-title">ورود به حساب کاربری</h1>
+
+    <!-- Tab Switcher -->
+    <div class="auth-tabs">
+      <a id="tab-password" href="/auth/login?mode=password" class="auth-tab">ورود با رمز عبور</a>
+      <a id="tab-otp"      href="/auth/login?mode=otp"      class="auth-tab">ورود با کد یکبار مصرف</a>
+    </div>
+
+    <!-- ① Phone Form Section -->
+    <div id="phone-section" style="display:none;">
+      <form id="phone-form" novalidate>
+        <div id="phone-form-error" class="form-error" style="display:none;"></div>
+
+        <div class="form-group">
+          <label for="phone-input" class="form-label">شماره موبایل</label>
+          <input
+            id="phone-input"
+            name="phone"
+            type="tel"
+            dir="rtl"
+            class="form-input"
+            placeholder="۰۹۱۲۳۴۵۶۷۸۹"
+            autocomplete="tel"
+            required
+          />
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="phone-submit-btn">
+          دریافت کد
+        </button>
+
+        <p class="form-note" dir="rtl">
+          در صورتی که تاکنون حساب کاربری نداشته‌اید، پس از تأیید شماره موبایل،
+          حساب شما به‌صورت خودکار ساخته می‌شود.
+        </p>
+      </form>
+    </div>
+
+    <!-- ② OTP Verify Section -->
+    <div id="otp-section" style="display:none;">
+      <form id="otp-form" novalidate>
+        <!-- مقادیر hidden که از URL پر می‌شن -->
+        <input type="hidden" id="otp-phone-hidden" name="phone" />
+        <input type="hidden" id="otp-step-hidden"  name="next_step" />
+
+        <div id="otp-form-error" class="form-error" style="display:none;"></div>
+
+        <div class="form-group">
+          <label for="otp-code-input" class="form-label">کد تأیید</label>
+          <input
+            id="otp-code-input"
+            name="otp_code"
+            type="text"
+            inputmode="numeric"
+            class="form-input otp-input"
+            placeholder="کد ۵ رقمی"
+            maxlength="6"
+            autocomplete="one-time-code"
+            required
+          />
+        </div>
+
+        <button type="submit" class="btn btn-success" id="otp-submit-btn">
+          تأیید
+        </button>
+
+        <!-- تایمر / ارسال مجدد -->
+        <div class="otp-timer-wrapper">
+          <span id="otp-timer-text" dir="rtl">
+            ارسال مجدد کد تا <span id="otp-seconds">120</span> ثانیه دیگر
+          </span>
+          <button type="button" id="otp-resend-btn" class="btn-link" style="display:none;">
+            ارسال مجدد کد
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- ③ Password Login Section -->
+    <div id="password-section" style="display:none;">
+      <form id="password-form" novalidate>
+        <div id="password-form-error" class="form-error" style="display:none;"></div>
+
+        <div class="form-group">
+          <label for="pwd-phone" class="form-label">شماره موبایل</label>
+          <input
+            id="pwd-phone"
+            name="phone"
+            type="tel"
+            class="form-input"
+            placeholder="۰۹۱۲۳۴۵۶۷۸۹"
+            autocomplete="tel"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="pwd-password" class="form-label">رمز عبور</label>
+          <input
+            id="pwd-password"
+            name="password"
+            type="password"
+            class="form-input"
+            placeholder="••••••••"
+            autocomplete="current-password"
+            required
+          />
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="password-submit-btn">
+          ورود
+        </button>
+
+        <p class="form-note" dir="rtl">
+          حساب کاربری ندارید؟
+          <a href="/auth/login?mode=otp" class="link-accent">ایجاد حساب کاربری</a>
+        </p>
+      </form>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/pages/login.js' %}"></script>
+{% endblock %}

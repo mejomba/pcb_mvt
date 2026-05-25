@@ -1,0 +1,138 @@
+<!-- === templates/profile/profile.html === -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}پروفایل کاربری{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}" />
+<link rel="stylesheet" href="{% static 'css/orders.css' %}" />
+{% endblock %}
+
+{% block content %}
+<main class="profile-page" dir="rtl">
+
+  <!-- ─── Header ─── -->
+  <header class="profile-header" id="profile-header">
+    <div class="profile-loading" id="profile-loading">
+      <div class="spinner-ring"></div>
+      <span>در حال بارگذاری اطلاعات...</span>
+    </div>
+
+    <!-- پر می‌شه توسط JS -->
+    <div class="profile-header-inner" id="profile-header-inner" style="display:none;">
+      <div class="profile-avatar-wrapper">
+        <img src="" alt="avatar" class="profile-avatar" id="profile-avatar" />
+      </div>
+      <div class="profile-header-info">
+        <div class="profile-header-left">
+          <h1 class="profile-name" id="profile-name">—</h1>
+          <p class="profile-subtitle">کاربر حرفه‌ای — سفارش‌دهنده PCB</p>
+          <div class="profile-header-actions">
+            <a href="/new-order/" class="btn btn-sky">افزودن سفارش جدید</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ─── Stats ─── -->
+  <section class="profile-stats" id="profile-stats" style="display:none;">
+    <div class="stat-card">
+      <div class="stat-label">سفارش‌ها</div>
+      <div class="stat-value" id="stat-orders-count">—</div>
+    </div>
+  </section>
+
+  <!-- ─── Tabs Nav ─── -->
+  <nav class="profile-tabs-nav" id="profile-tabs-nav" style="display:none;">
+    <ul class="profile-tabs-list">
+      <li><button class="profile-tab-btn active" data-tab="overview">نمای کلی</button></li>
+      <li><button class="profile-tab-btn"         data-tab="orders">سفارش‌ها</button></li>
+      <li><button class="profile-tab-btn"         data-tab="actions">اقدامات</button></li>
+      <li><button class="profile-tab-btn"         data-tab="settings">تنظیمات</button></li>
+    </ul>
+  </nav>
+
+  <!-- ─── Tab Panels ─── -->
+  <section class="profile-tab-content">
+
+    <!-- Overview Tab -->
+    <div id="tab-overview" class="tab-panel">
+      <div class="profile-grid-2col">
+
+        <div class="profile-card">
+          <h3 class="card-title">آخرین سفارش‌ها</h3>
+          <div id="recent-orders-list">
+            <p class="text-muted">در حال بارگذاری...</p>
+          </div>
+        </div>
+
+        <div class="profile-card">
+          <h3 class="card-title">تماس پشتیبانی</h3>
+          <div class="support-info">
+            <p>پشتیبانی سفارش‌ها: <strong>support@pcbshop.example</strong></p>
+            <p class="mt-sm">ساعات پاسخگویی: ۹:۰۰ — ۱۸:۰۰</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Orders Tab -->
+    <div id="tab-orders" class="tab-panel" style="display:none;">
+      <div class="orders-toolbar">
+        <input
+          type="text"
+          id="orders-search-input"
+          class="orders-search-input"
+          placeholder="جستجو در سفارش‌ها..."
+        />
+      </div>
+      <div id="orders-table-container"></div>
+    </div>
+
+    <!-- Actions Tab -->
+    <div id="tab-actions" class="tab-panel" style="display:none;">
+      <div class="profile-card">
+        <h3 class="card-title">پروژه‌های ذخیره‌شده</h3>
+        <div class="designs-grid" id="designs-grid"></div>
+      </div>
+    </div>
+
+    <!-- Settings Tab -->
+    <div id="tab-settings" class="tab-panel" style="display:none;">
+      <div class="profile-card">
+        <h3 class="card-title">اطلاعات حساب</h3>
+        <form id="settings-form" class="settings-form" novalidate>
+          <div id="settings-form-error" class="form-error" style="display:none;"></div>
+          <div class="settings-grid">
+            <label class="settings-field">
+              <span class="settings-label">نام کامل</span>
+              <input type="text"  name="full_name" id="settings-full-name" class="form-input" />
+            </label>
+            <label class="settings-field">
+              <span class="settings-label">ایمیل</span>
+              <input type="email" name="email"     id="settings-email"     class="form-input" />
+            </label>
+            <label class="settings-field settings-full-col">
+              <span class="settings-label">آدرس</span>
+              <input type="text"  name="address"   id="settings-address"   class="form-input" />
+            </label>
+          </div>
+          <div class="settings-actions">
+            <button type="submit" class="btn btn-sky settings-btn">ذخیره</button>
+            <button type="button" class="btn-outline settings-btn" id="settings-cancel">لغو</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </section>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/components/orders/orders-table.js' %}"></script>
+<script src="{% static 'js/pages/profile.js' %}"></script>
+{% endblock %}

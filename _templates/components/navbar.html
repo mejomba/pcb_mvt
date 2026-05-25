@@ -1,0 +1,70 @@
+<!-- === templates/components/navbar.html === -->
+{% load static %}
+
+<header class="navbar">
+  <!-- ── Left: Hamburger + Logo ── -->
+  <div class="navbar-left">
+    <!-- موبایل: همبرگر -->
+    <button class="navbar-hamburger" id="navbar-hamburger" aria-label="منو">
+      <i class="bi bi-list"></i>
+    </button>
+
+    <!-- لوگو -->
+    <a href="/" class="navbar-logo-link">
+      <img
+        src="{% static 'images/logo.png' %}"
+        alt="Logo"
+        class="navbar-logo"
+        width="120"
+        height="40"
+      />
+    </a>
+  </div>
+
+  <!-- ── Middle: Nav Links (در صورت نیاز پر می‌شه) ── -->
+  <nav class="navbar-middle" id="navbar-menu">
+    <!-- لینک‌های ناوبری اینجا اضافه می‌شن -->
+  </nav>
+
+  <!-- ── Right: Actions ── -->
+  <div class="navbar-right">
+    <!-- جستجو -->
+    <button class="navbar-icon-btn" aria-label="جستجو">
+      <i class="bi bi-search"></i>
+    </button>
+
+    <!-- لینک ثبت سفارش -->
+    <a href="/new-order/" class="navbar-link">Order now</a>
+
+    <!-- لینک فایل‌های من -->
+    <a href="/my-file/" class="navbar-link">My file</a>
+
+    <!-- SignIn Menu — با JS کنترل می‌شه -->
+    <div class="signin-menu-wrapper" id="signin-menu-wrapper">
+      <!-- حالت لود اولیه: خالی — navbar.js محتوا رو inject می‌کنه -->
+    </div>
+
+    <!-- سبد خرید -->
+    <div class="navbar-cart-wrapper">
+      <button class="navbar-icon-btn" aria-label="سبد خرید">
+        <i class="bi bi-cart"></i>
+      </button>
+      <!-- badge — اگه تعداد > 0 بود نمایش داده می‌شه -->
+      <span class="cart-badge" id="cart-badge" style="display:none;">0</span>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile Drawer Menu -->
+<div class="mobile-drawer" id="mobile-drawer">
+  <div class="mobile-drawer-inner">
+    <button class="mobile-drawer-close" id="mobile-drawer-close" aria-label="بستن">
+      <i class="bi bi-x-lg"></i>
+    </button>
+    <nav class="mobile-nav">
+      <a href="/new-order/" class="mobile-nav-link">Order now</a>
+      <a href="/my-file/"   class="mobile-nav-link">My file</a>
+    </nav>
+  </div>
+</div>
+<div class="mobile-overlay" id="mobile-overlay"></div>

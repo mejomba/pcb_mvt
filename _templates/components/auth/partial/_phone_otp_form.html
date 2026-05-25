@@ -1,0 +1,109 @@
+{% if error %}
+<div class="alert alert-danger text-right p-3 mb-3" id="otp-error-box">
+  {{ error }}
+</div>
+{% else %}
+<div class="alert alert-danger text-right p-3 mb-3" id="otp-error-box" style="display: none;"></div>
+{% endif %}
+
+<form id="send-otp-form" method="post" action="#" class="mt-4"
+      data-ajax-check-url="{% url 'auth:phone_check' %}"
+      data-ajax-send-url="{% url 'auth:auth_otp_send' %}">
+  {% csrf_token %}
+  <div class="form-group">
+    <label for="phone" class="text-right d-block">شماره موبایل</label>
+    <input
+      type="tel"
+      id="phone"
+      name="phone"
+      dir="rtl"
+      class="form-control text-right {% if error %}is-invalid{% endif %}"
+      placeholder="۰۹۱۲۳۴۵۶۷۸۹"
+      value="{{ phone }}"
+      required
+    >
+      <input type="hidden" name="method" value="otp" id="method">
+  </div>
+  <button type="submit" class="btn btn-primary btn-block font-weight-bold" id="send-otp-btn">
+    دریافت کد
+  </button>
+</form>
+
+<p class="text-right text-muted mt-3 small">
+  در صورتی که تاکنون حساب کاربری نداشته‌اید، پس از تأیید شماره موبایل، حساب شما به‌صورت خودکار ساخته می‌شود.
+</p>
+
+<script>
+$(document).ready(function() {
+  var $form = $('#send-otp-form');
+  var $errorBox = $('#otp-error-box');
+  var $btn = $('#send-otp-btn');
+  var csrfToken = $form.find('input[name=csrfmiddlewaretoken]').val();
+    debugger
+  $form.on('submit', function(e) {
+      debugger
+    e.preventDefault();
+
+    var phoneNumber = $('#phone').val().trim();
+    var method = $('#method').val().trim();
+    if (!phoneNumber) {
+      $errorBox.text('شماره موبایل الزامی است.').show();
+      return;
+    }
+
+    // غیرفعال کردن دکمه و نمایش اسپینر
+    $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm ml-1" role="status" aria-hidden="true"></span> در حال بررسی...');
+
+    // مرحله اول: بررسی وجود شماره
+    $.ajax({
+      url: $form.data('ajax-check-url'),
+      method: 'POST',
+      data: { phone: phoneNumber , method: method},
+      headers: { 'X-CSRFToken': csrfToken },
+      success: function(response) {
+          debugger
+        // حالا باید کد واقعی ارسال شود
+        sendOtpCode(phoneNumber, method);
+      },
+      error: function(jqXHR) {
+        handleError(jqXHR);
+        $btn.prop('disabled', false).text('دریافت کد');
+      }
+    });
+  });
+
+  function sendOtpCode(phone, method) {
+      debugger
+    // به‌روزرسانی دکمه به حالت ارسال کد
+    $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm ml-1" role="status" aria-hidden="true"></span> در حال ارسال کد...');
+
+    $.ajax({
+      url: $form.data('ajax-send-url'),
+      method: 'POST',
+      data: { phone: phone },
+      headers: { 'X-CSRFToken': csrfToken },
+      success: function(response) {
+          debugger
+        // کد با موفقیت ارسال شد - هدایت به صفحه تأیید
+        var verifyUrl = "{% url 'auth:template_auth_otp_verify' %}?phone=" + encodeURIComponent(phone)+"&method=" + encodeURIComponent(method);
+        // اگر response شامل next_step هم هست می‌توانی اضافه کنی
+        window.location.href = verifyUrl;
+      },
+      error: function(jqXHR) {
+        handleError(jqXHR);
+        $btn.prop('disabled', false).text('دریافت کد');
+      }
+    });
+  }
+
+  function handleError(jqXHR) {
+    var errMsg = 'خطایی رخ داد. دوباره تلاش کنید.';
+    if (jqXHR.responseJSON && jqXHR.responseJSON.error) {
+      errMsg = jqXHR.responseJSON.error;
+    } else if (jqXHR.status === 429) {
+      errMsg = 'تعداد درخواست‌ها زیاد است. لطفاً کمی صبر کنید.';
+    }
+    $errorBox.text(errMsg).show();
+  }
+});
+</script>
