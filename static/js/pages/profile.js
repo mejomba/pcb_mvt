@@ -1,236 +1,368 @@
 // === static/js/pages/profile.js ===
-// وابستگی: api.js, token.js, utils.js, orders-table.js
 
 (function () {
+  'use strict';
 
-  // ─── داده‌های ثابت (sampleDesigns) ────────────────
-  var sampleDesigns = [
-    { id: 1, name: 'Motor controller',    updated: '1404/06/19', layers: 2 },
-    { id: 2, name: 'Power board (mini)',  updated: '1404/06/08', layers: 4 },
-    { id: 3, name: 'Breakout module',     updated: '1404/04/30', layers: 1 },
-  ];
-
-  var allOrders = [];
+  var allOrders   = [];
   var currentUser = {};
+  var advTable    = null;
 
-  // ─── وضعیت‌های سفارش ───────────────────────────────
-  var STATUS_CONFIG = {
-    pending:          { text: 'در انتظار بررسی',   cls: 'badge-yellow'  },
-    quotation:        { text: 'پیش فاکتور شده',    cls: 'badge-blue'    },
-    process:          { text: 'در حال ساخت',       cls: 'badge-purple'  },
-    pending_delivery: { text: 'در انتظار تحویل',   cls: 'badge-green'   },
-    deliver:          { text: 'تحویل شده',         cls: 'badge-green'   },
-    canceled:         { text: 'لغو شده',           cls: 'badge-red'     },
+  var STATUS_CFG = {
+    pending:          { text: 'در انتظار بررسی',           cls: 'st-yellow'  },
+    quotation:        { text: 'پیش فاکتور — انتظار پرداخت', cls: 'st-blue'  },
+    process:          { text: 'در حال ساخت',               cls: 'st-purple'  },
+    pending_delivery: { text: 'در انتظار تحویل',           cls: 'st-teal'    },
+    deliver:          { text: 'تحویل شده',                 cls: 'st-green'   },
+    canceled:         { text: 'لغو شده',                  cls: 'st-red'     },
   };
 
-  // ─── بارگذاری داده‌ها ──────────────────────────────
+  // ─── Tab switching ──────────────────────────────────
+  function switchTab(name) {
+    document.querySelectorAll('.pf-tab').forEach(function (b) { b.classList.remove('active'); });
+    document.querySelectorAll('.pf-panel').forEach(function (p) { p.style.display = 'none'; });
+
+    var btn   = document.querySelector('.pf-tab[data-tab="' + name + '"]');
+    var panel = document.getElementById('tab-' + name);
+    if (btn)   btn.classList.add('active');
+    if (panel) panel.style.display = 'block';
+
+    // Init advanced table lazily on first visit
+    if (name === 'orders' && !advTable) {
+      advTable = new AdvancedOrderTable({
+        containerId: 'orders-advanced-table',
+        apiBase:     '/pcb/orders/',
+        onUpload:    function (orderId, file) { console.log('Upload from table:', orderId); },
+      });
+    }
+  }
+
+  window.switchTab = switchTab; // used by inline onclick in template
+
+  document.querySelectorAll('.pf-tab').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      switchTab(this.dataset.tab);
+    });
+  });
+
+  // ─── Load page data ─────────────────────────────────
   async function loadPageData() {
     try {
       var results = await Promise.all([
         api.get('/auth/profile/'),
         api.get('/pcb/orders/'),
       ]);
-
       currentUser = results[0] || {};
-      allOrders   = (results[1] && results[1].results) || [];
-
-    } catch (err) {
-      console.error('خطا در بارگذاری داده‌ها:', err);
+      allOrders   = (results[1] && results[1].results) ? results[1].results : [];
+    } catch (e) {
+      console.error('Profile load error:', e);
       allOrders   = [];
       currentUser = {};
     }
-
-    renderAll();
-  }
-
-  // ─── رندر همه بخش‌ها ────────────────────────────────
-  function renderAll() {
-    renderHeader();
-    renderStats();
-    renderRecentOrders();
-    renderDesigns();
+    renderHero();
+    renderOrderCards();
     populateSettings();
+    populateUploadSelect();
 
-    // نمایش بخش‌های پنهان
-    var statsEl   = document.getElementById('profile-stats');
-    var tabNavEl  = document.getElementById('profile-tabs-nav');
-    if (statsEl)  statsEl.style.display   = '';
-    if (tabNavEl) tabNavEl.style.display  = '';
-
-    // رندر جدول سفارش‌ها در تب orders
-    initOrdersSearch('orders-search-input', allOrders, 'orders-table-container');
+    var tabsWrap = document.getElementById('pf-tabs-wrap');
+    if (tabsWrap) tabsWrap.style.visibility = 'visible';
   }
 
-  // ─── Header ────────────────────────────────────────
-  function renderHeader() {
-    var loading = document.getElementById('profile-loading');
-    var inner   = document.getElementById('profile-header-inner');
-    var nameEl  = document.getElementById('profile-name');
-    var avatarEl= document.getElementById('profile-avatar');
-
+  // ─── Hero ────────────────────────────────────────────
+  function renderHero() {
+    var loading = document.getElementById('pf-hero-loading');
+    var inner   = document.getElementById('pf-hero-inner');
     if (loading) loading.style.display = 'none';
     if (inner)   inner.style.display   = 'flex';
 
-    if (nameEl)   nameEl.textContent = currentUser.phone || currentUser.username || '—';
-    if (avatarEl) {
-      if (currentUser.avatar) {
-        avatarEl.src = currentUser.avatar;
-      } else {
-        // placeholder avatar با اول نام
-        avatarEl.style.display = 'none';
-        var wrapper = avatarEl.closest('.profile-avatar-wrapper');
-        if (wrapper) {
-          wrapper.innerHTML = `
-            <div class="profile-avatar-placeholder">
-              <i class="bi bi-person-fill"></i>
-            </div>
-          `;
-        }
-      }
+    var nameEl = document.getElementById('pf-hero-name');
+    if (nameEl) nameEl.textContent = currentUser.phone || currentUser.username || 'کاربر';
+
+    var avatarWrap = document.getElementById('pf-avatar-wrap');
+    if (avatarWrap && currentUser.avatar) {
+      avatarWrap.innerHTML = '<img src="' + currentUser.avatar + '" alt="avatar" class="pf-avatar-img">';
     }
+
+    // Stats
+    var total     = allOrders.length;
+    var pending   = allOrders.filter(function(o){return o.status==='pending';}).length;
+    var quotation = allOrders.filter(function(o){return o.status==='quotation';}).length;
+    var delivered = allOrders.filter(function(o){return o.status==='deliver';}).length;
+
+    setText('stat-total',     total);
+    setText('stat-pending',   pending);
+    setText('stat-quotation', quotation);
+    setText('stat-delivered', delivered);
   }
 
-  // ─── Stats ─────────────────────────────────────────
-  function renderStats() {
-    var el = document.getElementById('stat-orders-count');
-    if (el) el.textContent = formatNumber(allOrders.length);
+  function setText(id, val) {
+    var el = document.getElementById(id);
+    if (el) el.textContent = typeof formatNumber === 'function' ? formatNumber(val) : val;
   }
 
-  // ─── Recent Orders (overview tab) ──────────────────
-  function renderRecentOrders() {
-    var container = document.getElementById('recent-orders-list');
+  // ─── Overview Order Cards ────────────────────────────
+  function renderOrderCards() {
+    var container = document.getElementById('pf-order-cards');
     if (!container) return;
 
     if (!allOrders.length) {
-      container.innerHTML = '<p class="text-muted">هیچ سفارشی ثبت نشده است.</p>';
+      container.innerHTML =
+        '<div class="pf-empty-state">' +
+          '<i class="bi bi-inbox pf-empty-icon"></i>' +
+          '<p>هنوز سفارشی ثبت نشده است.</p>' +
+          '<a href="/new-order/" class="pf-btn pf-btn-primary pf-btn-sm mt-2">ثبت اولین سفارش</a>' +
+        '</div>';
       return;
     }
 
-    var items = allOrders.map(function (order) {
-      var cfg  = STATUS_CONFIG[order.status] || { text: order.status, cls: 'badge-gray' };
-      var date = '';
-      try {
-        date = new Intl.DateTimeFormat('fa-IR').format(new Date(order.created_at));
-      } catch (_) { date = order.created_at; }
-
-      var selectionsHTML = '';
-      if (order.selections && order.selections.length > 0) {
-        var selItems = order.selections.map(function (sel) {
-          return `<li><span class="sel-label">${sel.attribute_name}:</span> ${sel.value}</li>`;
-        }).join('');
-        selectionsHTML = `
-          <div class="order-card-selections">
-            <div class="sel-heading">ویژگی‌ها:</div>
-            <ul class="sel-list">${selItems}</ul>
-          </div>
-        `;
-      }
-
-      return `
-        <li class="order-card-item">
-          <div class="order-card-header">
-            <span class="order-card-id">
-              سفارش #${order.id} —
-              <span class="badge ${cfg.cls}">${cfg.text}</span>
-            </span>
-            <span class="order-card-date">${date}</span>
-          </div>
-          ${selectionsHTML}
-        </li>
-      `;
-    }).join('');
-
-    container.innerHTML = `<ul class="orders-card-list">${items}</ul>`;
+    // Show last 5 orders in overview
+    var recent = allOrders.slice(0, 5);
+    container.innerHTML = recent.map(orderCardHTML).join('');
+    attachCardEvents(container);
   }
 
-  // ─── Designs (actions tab) ─────────────────────────
-  function renderDesigns() {
-    var grid = document.getElementById('designs-grid');
-    if (!grid) return;
+  function orderCardHTML(order) {
+    var cfg  = STATUS_CFG[order.status] || { text: order.status, cls: 'st-gray' };
+    var date = '';
+    try { date = new Intl.DateTimeFormat('fa-IR').format(new Date(order.created_at)); } catch(_){}
 
-    if (!sampleDesigns.length) {
-      grid.innerHTML = '<p class="text-muted">پروژه‌ای ذخیره نشده است.</p>';
-      return;
+    // File buttons
+    var files = '';
+    if (order.file) {
+      files += '<a href="' + order.file + '" target="_blank" class="pf-file-btn" title="فایل Gerber">' +
+               '<i class="bi bi-cpu"></i><span>Gerber</span></a>';
+    }
+    if (order.quotation) {
+      files += '<a href="' + order.quotation + '" target="_blank" class="pf-file-btn pf-file-btn--doc" title="پیش فاکتور">' +
+               '<i class="bi bi-file-text"></i><span>پیش فاکتور</span></a>';
+    }
+    if (Array.isArray(order.payments_urls)) {
+      order.payments_urls.forEach(function (url, i) {
+        files += '<a href="' + url + '" target="_blank" class="pf-file-btn pf-file-btn--receipt" title="رسید ' + (i+1) + '">' +
+                 '<i class="bi bi-receipt"></i><span>رسید ' + (i+1) + '</span></a>';
+      });
     }
 
-    grid.innerHTML = sampleDesigns.map(function (d) {
-      return `
-        <div class="design-card">
-          <div class="design-card-info">
-            <div class="design-name">${d.name}</div>
-            <div class="design-date">${d.updated}</div>
-          </div>
-          <div class="design-layers">${d.layers}L</div>
-        </div>
-      `;
-    }).join('');
+    // Upload for quotation orders
+    var uploadSection = '';
+    if (order.status === 'quotation') {
+      uploadSection =
+        '<div class="pf-card-upload" data-order-id="' + order.id + '">' +
+          '<label class="pf-inline-upload" title="آپلود رسید پرداخت">' +
+            '<i class="bi bi-cloud-upload"></i>' +
+            '<span class="pf-inline-upload-text">آپلود رسید پرداخت</span>' +
+            '<input type="file" class="pf-card-file-input" data-order-id="' + order.id + '" accept="image/*,.pdf">' +
+          '</label>' +
+          '<button class="pf-btn pf-btn-primary pf-btn-sm pf-card-submit-btn" ' +
+                  'data-order-id="' + order.id + '" style="display:none;" disabled>' +
+            'ارسال' +
+          '</button>' +
+          '<span class="pf-card-upload-msg" data-order-id="' + order.id + '" style="display:none;"></span>' +
+        '</div>';
+    }
+
+    // Specs (collapsed)
+    var specs = '';
+    if (order.selections && order.selections.length) {
+      specs = order.selections.map(function (s) {
+        return '<span class="pf-spec-tag"><b>' + s.attribute_name + ':</b> ' + s.value + '</span>';
+      }).join('');
+    }
+
+    return '<div class="pf-order-card" data-order-id="' + order.id + '">' +
+
+      '<div class="pf-order-card-header">' +
+        '<div class="pf-order-card-id">' +
+          '<span class="pf-order-num">#' + order.id + '</span>' +
+          '<span class="pf-status-badge ' + cfg.cls + '">' + cfg.text + '</span>' +
+        '</div>' +
+        '<div class="pf-order-card-meta">' +
+          '<span><i class="bi bi-calendar3 me-1"></i>' + date + '</span>' +
+          '<span><i class="bi bi-layers me-1"></i>تعداد: ' + order.quantity + '</span>' +
+        '</div>' +
+      '</div>' +
+
+      (files ? '<div class="pf-order-files">' + files + '</div>' : '') +
+
+      uploadSection +
+
+      (specs ?
+        '<details class="pf-order-specs">' +
+          '<summary>مشخصات فنی</summary>' +
+          '<div class="pf-spec-tags">' + specs + '</div>' +
+        '</details>'
+      : '') +
+
+    '</div>';
   }
 
-  // ─── Settings (تنظیمات) ────────────────────────────
-  function populateSettings() {
-    var fnEl   = document.getElementById('settings-full-name');
-    var emailEl= document.getElementById('settings-email');
-    var addrEl = document.getElementById('settings-address');
+  function attachCardEvents(container) {
+    // File input change
+    container.querySelectorAll('.pf-card-file-input').forEach(function (inp) {
+      inp.addEventListener('change', function () {
+        var id = this.dataset.orderId;
+        var submitBtn = container.querySelector('.pf-card-submit-btn[data-order-id="' + id + '"]');
+        var label     = this.closest('.pf-inline-upload');
+        if (this.files && this.files[0]) {
+          if (submitBtn) { submitBtn.style.display = 'inline-flex'; submitBtn.disabled = false; }
+          if (label) {
+            label.querySelector('.pf-inline-upload-text').textContent = this.files[0].name;
+          }
+        }
+      });
+    });
 
-    if (fnEl    && currentUser.full_name) fnEl.value    = currentUser.full_name;
-    if (emailEl && currentUser.email)     emailEl.value = currentUser.email;
-    if (addrEl  && currentUser.address)   addrEl.value  = currentUser.address;
-  }
+    // Submit upload
+    container.querySelectorAll('.pf-card-submit-btn').forEach(function (btn) {
+      btn.addEventListener('click', async function () {
+        var id      = this.dataset.orderId;
+        var inp     = container.querySelector('.pf-card-file-input[data-order-id="' + id + '"]');
+        var msgEl   = container.querySelector('.pf-card-upload-msg[data-order-id="' + id + '"]');
+        if (!inp || !inp.files[0]) return;
 
-  // ─── Tabs ──────────────────────────────────────────
-  function initTabs() {
-    var tabBtns   = document.querySelectorAll('.profile-tab-btn');
-    var tabPanels = document.querySelectorAll('.tab-panel');
+        btn.disabled    = true;
+        btn.textContent = 'ارسال...';
 
-    tabBtns.forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var target = this.dataset.tab;
+        var fd = new FormData();
+        fd.append('file',  inp.files[0]);
+        fd.append('order', id);
 
-        tabBtns.forEach(function (b)   { b.classList.remove('active'); });
-        tabPanels.forEach(function (p) { p.style.display = 'none'; });
-
-        this.classList.add('active');
-        var panel = document.getElementById('tab-' + target);
-        if (panel) panel.style.display = 'block';
-
-        // جدول orders رو فقط وقتی تب فعاله render کن (lazy)
-        if (target === 'orders') {
-          initOrdersSearch('orders-search-input', allOrders, 'orders-table-container');
+        try {
+          await api.upload('/pcb/order_payment_receipt/upload/', fd);
+          btn.style.display = 'none';
+          if (msgEl) { msgEl.textContent = '✓ ذخیره شد'; msgEl.className = 'pf-card-upload-msg pf-msg-ok'; msgEl.style.display = 'inline'; }
+        } catch (e) {
+          btn.disabled    = false;
+          btn.textContent = 'ارسال';
+          if (msgEl) { msgEl.textContent = '✗ خطا'; msgEl.className = 'pf-card-upload-msg pf-msg-err'; msgEl.style.display = 'inline'; }
         }
       });
     });
   }
 
-  // ─── Settings Form Submit ──────────────────────────
-  function initSettingsForm() {
+  // ─── Dropzone (overview sidebar upload) ─────────────
+  (function initDropzone() {
+    var zone  = document.getElementById('pf-dropzone');
+    var inp   = document.getElementById('overview-receipt-input');
+    var inner = document.getElementById('pf-dropzone-inner');
+    var btn   = document.getElementById('overview-upload-btn');
+    var msg   = document.getElementById('overview-upload-msg');
+
+    if (!zone || !inp) return;
+
+    zone.addEventListener('click', function () { inp.click(); });
+
+    zone.addEventListener('dragover', function (e) {
+      e.preventDefault();
+      zone.classList.add('pf-dropzone--hover');
+    });
+    zone.addEventListener('dragleave', function () {
+      zone.classList.remove('pf-dropzone--hover');
+    });
+    zone.addEventListener('drop', function (e) {
+      e.preventDefault();
+      zone.classList.remove('pf-dropzone--hover');
+      var file = e.dataTransfer.files[0];
+      if (file) setDropzoneFile(file);
+    });
+
+    inp.addEventListener('change', function () {
+      if (this.files[0]) setDropzoneFile(this.files[0]);
+    });
+
+    function setDropzoneFile(file) {
+      if (inner) {
+        inner.innerHTML =
+          '<i class="bi bi-file-earmark-check pf-dropzone-icon pf-dropzone-icon--ok"></i>' +
+          '<span class="pf-dropzone-text">' + file.name + '</span>' +
+          '<span class="pf-dropzone-sub">' + (file.size / 1024).toFixed(1) + ' KB</span>';
+      }
+      if (btn) btn.disabled = false;
+      inp._selectedFile = file;
+    }
+
+    if (btn) {
+      btn.addEventListener('click', async function () {
+        var orderId = document.getElementById('overview-order-select').value;
+        var file    = inp._selectedFile;
+        if (!orderId) { alert('لطفاً ابتدا سفارش را انتخاب کنید.'); return; }
+        if (!file)    { alert('لطفاً فایل رسید را انتخاب کنید.'); return; }
+
+        btn.disabled    = true;
+        btn.innerHTML   = '<i class="bi bi-arrow-repeat pf-spin me-1"></i>در حال ارسال...';
+        if (msg) msg.style.display = 'none';
+
+        var fd = new FormData();
+        fd.append('file',  file);
+        fd.append('order', orderId);
+
+        try {
+          await api.upload('/pcb/order_payment_receipt/upload/', fd);
+          btn.disabled  = false;
+          btn.innerHTML = '<i class="bi bi-send me-1"></i>ارسال رسید';
+          if (msg) { msg.textContent = '✓ رسید با موفقیت ذخیره شد'; msg.className = 'pf-upload-msg pf-msg-ok'; msg.style.display = 'block'; }
+          if (inner) {
+            inner.innerHTML =
+              '<i class="bi bi-cloud-arrow-up pf-dropzone-icon"></i>' +
+              '<span class="pf-dropzone-text">کلیک یا کشیدن فایل</span>' +
+              '<span class="pf-dropzone-sub">PNG, JPG, PDF — حداکثر ۱۰MB</span>';
+          }
+          inp._selectedFile = null;
+        } catch (e) {
+          btn.disabled  = false;
+          btn.innerHTML = '<i class="bi bi-send me-1"></i>ارسال رسید';
+          if (msg) { msg.textContent = '✗ خطا در ارسال. دوباره تلاش کنید.'; msg.className = 'pf-upload-msg pf-msg-err'; msg.style.display = 'block'; }
+        }
+      });
+    }
+  })();
+
+  // ─── Populate upload select ──────────────────────────
+  function populateUploadSelect() {
+    var sel = document.getElementById('overview-order-select');
+    if (!sel) return;
+
+    var quotationOrders = allOrders.filter(function(o) { return o.status === 'quotation'; });
+    if (!quotationOrders.length) {
+      sel.innerHTML = '<option value="">— سفارشی در انتظار پرداخت نیست —</option>';
+      return;
+    }
+
+    sel.innerHTML = '<option value="">— انتخاب سفارش —</option>' +
+      quotationOrders.map(function (o) {
+        return '<option value="' + o.id + '">#' + o.id + '</option>';
+      }).join('');
+  }
+
+  // ─── Settings ────────────────────────────────────────
+  function populateSettings() {
+    var u = currentUser;
+    var set = function (id, val) { var el = document.getElementById(id); if (el && val) el.value = val; };
+    set('settings-full-name', u.full_name);
+    set('settings-email',     u.email);
+    set('settings-address',   u.address);
+  }
+
+  (function initSettingsForm() {
     var form = document.getElementById('settings-form');
     if (!form) return;
 
     form.addEventListener('submit', async function (e) {
       e.preventDefault();
-      var errEl  = document.getElementById('settings-form-error');
-      var submitBtn = form.querySelector('[type="submit"]');
-
+      var errEl  = document.getElementById('settings-error');
+      var btn    = form.querySelector('[type="submit"]');
       if (errEl) errEl.style.display = 'none';
-      submitBtn.disabled    = true;
-      submitBtn.textContent = 'در حال ذخیره...';
-
-      var payload = {
-        full_name: form.querySelector('[name="full_name"]').value,
-        email:     form.querySelector('[name="email"]').value,
-        address:   form.querySelector('[name="address"]').value,
-      };
+      btn.disabled = true; btn.textContent = 'در حال ذخیره...';
 
       try {
-        await api.patch('/auth/profile/', payload);
-        submitBtn.textContent = '✓ ذخیره شد';
-        setTimeout(function () {
-          submitBtn.disabled    = false;
-          submitBtn.textContent = 'ذخیره';
-        }, 2000);
+        await api.patch('/auth/profile/', {
+          full_name: form.querySelector('[name="full_name"]').value,
+          email:     form.querySelector('[name="email"]').value,
+          address:   form.querySelector('[name="address"]').value,
+        });
+        btn.textContent = '✓ ذخیره شد';
+        setTimeout(function () { btn.disabled = false; btn.textContent = 'ذخیره'; }, 2000);
       } catch (err) {
-        submitBtn.disabled    = false;
-        submitBtn.textContent = 'ذخیره';
+        btn.disabled = false; btn.textContent = 'ذخیره';
         if (errEl) {
           errEl.textContent    = (err.data && err.data.detail) || 'خطا در ذخیره اطلاعات.';
           errEl.style.display  = 'block';
@@ -239,14 +371,10 @@
     });
 
     var cancelBtn = document.getElementById('settings-cancel');
-    cancelBtn && cancelBtn.addEventListener('click', function () {
-      populateSettings(); // برگشت به مقادیر اولیه
-    });
-  }
+    if (cancelBtn) cancelBtn.addEventListener('click', populateSettings);
+  })();
 
-  // ─── Init ──────────────────────────────────────────
-  initTabs();
-  initSettingsForm();
+  // ─── Boot ────────────────────────────────────────────
   loadPageData();
 
 })();

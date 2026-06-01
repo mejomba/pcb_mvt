@@ -240,7 +240,7 @@
 
         try {
           // مستقیم به Django — بدون proxy
-          await api.upload('/pcb/order_payment_receipt/upload/', formData);
+          await api.upload('/api/v1/pcb/order_payment_receipt/upload/', formData);
 
           this.style.display = 'none';
           if (msgEl) {

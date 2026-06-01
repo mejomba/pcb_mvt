@@ -19,7 +19,7 @@ app_name = 'auth'
 
 # 'api/v1/auth/'
 urlpatterns = [
-    path('profile/', ProfileView.as_view(),  name='profile'),
+    path('template/profile/', ProfileView.as_view(),  name='profile'),
     path('login/', LoginView.as_view(), name='login'),  # use
     path('loout/', LogoutView.as_view(), name='logout'),  # use
     path('template/otp/', AuthOtpView.as_view(), name='template_auth_otp'),  # use

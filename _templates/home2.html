@@ -1,12 +1,24 @@
-<!-- === templates/home2.html === -->
+<!-- === templates/home2.html (آپدیت) === -->
 {% extends 'base/base.html' %}
+{% load static %}
+
 {% block title %}خانه{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/slider.css' %}" />
+{% endblock %}
+
 {% block slider %}
-  <!-- FullScreenSlider اینجا قرار می‌گیره — منتظر دریافت FullScreenSlider.tsx -->
-  <div id="fullscreen-slider-placeholder" style="height:400px; background:#f1f5f9; display:flex; align-items:center; justify-content:center; color:#94a3b8;">
-    FullScreenSlider — در انتظار تبدیل کامپوننت
-  </div>
+<div class="slider-container" id="fullscreen-slider"></div>
 {% endblock %}
 
 {% block content %}{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/components/fullscreen-slider.js' %}"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    initFullScreenSlider('fullscreen-slider');
+  });
+</script>
+{% endblock %}

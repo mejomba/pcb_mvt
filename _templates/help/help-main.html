@@ -1,0 +1,76 @@
+<!-- === templates/help/help-main.html === -->
+<!-- جایگزین: app/help/page.tsx -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}مرکز راهنما{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/help.css' %}" />
+{% endblock %}
+
+{% block content %}
+<div class="help-layout"
+     id="help-layout"
+     data-slug=""
+     data-page-type="main">
+
+  <!-- Sidebar — توسط JS رندر می‌شه -->
+  <div id="help-sidebar-container"></div>
+
+  <!-- Main Content — استاتیک (از help/page.tsx hardcode شده) -->
+  <div class="help-main-content" id="help-main-content">
+
+    <nav class="breadcrumb">
+      <span class="breadcrumb-item">
+        <a href="/help/">Help Center</a>
+        <span class="breadcrumb-sep">/</span>
+      </span>
+      <span class="breadcrumb-item">
+        <a href="#">PCB Files Preparation</a>
+      </span>
+    </nav>
+
+    <h1 class="help-page-title">PCB Files Preparation</h1>
+
+    <div class="help-articles-list">
+      <div class="help-article-item">
+        <a href="/help/post/naming-patterns/" class="help-article-link">
+          Suggested Naming Patterns
+        </a>
+      </div>
+      <div class="help-article-item">
+        <a href="/help/post/drill-file/" class="help-article-link">
+          Manually Adding Tool List for a Drill File
+        </a>
+      </div>
+      <div class="help-article-item">
+        <a href="/help/post/prepare-gerber/" class="help-article-link">
+          How to Prepare Gerber Files Before Placing Orders?
+        </a>
+      </div>
+      <div class="help-article-item">
+        <a href="/help/post/kicad-8/" class="help-article-link">
+          How to generate Gerber and Drill files in KiCAD 8?
+        </a>
+      </div>
+      <div class="help-article-item">
+        <a href="/help/post/altium/" class="help-article-link">
+          How to export Altium PCB to gerber files
+        </a>
+      </div>
+      <div class="help-article-item">
+        <a href="/help/post/altium-24/" class="help-article-link">
+          How to export PCB to gerber files in ALTIUM24
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/components/help/sidebar.js' %}"></script>
+<script src="{% static 'js/pages/help.js' %}"></script>
+{% endblock %}

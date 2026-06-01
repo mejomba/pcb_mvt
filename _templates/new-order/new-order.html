@@ -1,0 +1,74 @@
+<!-- === templates/new-order/new-order.html === -->
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}ثبت سفارش جدید{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/new-order.css' %}" />
+{% endblock %}
+
+{% block content %}
+<main class="new-order-page" dir="rtl">
+  <div class="new-order-card" id="new-order-card">
+
+    <!-- Loading State -->
+    <div id="new-order-loading" class="new-order-loading">
+      <div class="spinner-ring"></div>
+      <span>در حال بارگذاری مشخصات...</span>
+    </div>
+
+    <!-- Error State -->
+    <div id="new-order-error" class="new-order-error" style="display:none;">
+      <i class="bi bi-exclamation-triangle"></i>
+      <span id="new-order-error-msg">خطا در دریافت اطلاعات.</span>
+    </div>
+
+    <!-- Form Container (پر می‌شه توسط JS) -->
+    <div id="new-order-form-container" style="display:none;">
+
+      <!-- File Input -->
+      <div class="file-upload-section">
+        <label class="file-upload-label">
+          <i class="bi bi-file-earmark-arrow-up file-upload-icon"></i>
+          <span id="file-upload-text">آپلود فایل Gerber</span>
+          <input type="file" id="gerber-file-input" class="file-upload-input" accept=".zip,.gerber,.gbr" />
+        </label>
+        <span id="file-name-display" class="file-name-display"></span>
+      </div>
+
+      <!-- Main Group Fields -->
+      <div id="main-group-fields" class="form-fields-group"></div>
+
+      <!-- Accordion Groups -->
+      <div id="accordion-groups"></div>
+
+      <!-- Submit -->
+      <div class="new-order-submit-wrapper">
+        <button type="button" id="submit-order-btn" class="btn btn-primary new-order-submit-btn">
+          ثبت سفارش
+        </button>
+      </div>
+
+      <!-- Submit Message -->
+      <div id="submit-message" class="submit-message" style="display:none;"></div>
+
+      <!-- Debug: form state (در production حذف کن) -->
+      <div class="form-debug" id="form-debug" style="display:none;">
+        <h3>وضعیت فرم:</h3>
+        <pre id="form-debug-pre"></pre>
+      </div>
+
+    </div>
+  </div>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+      // URLهای API را از template tag یا مستقیماً بنویسید
+      var apiGroupsUrl = "{% url 'pcb:group-list' %}";      // مطابق با router شما: /api/pcb/groups/
+      var apiOrderUrl = "{% url 'pcb:order-list' %}";       // /api/pcb/orders/
+    </script>
+<script src="{% static 'js/pages/new-order.js' %}"></script>
+{% endblock %}

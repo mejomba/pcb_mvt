@@ -56,6 +56,7 @@ $(document).ready(function() {
   var $debug = $('#formDataDebug');
   var $submitBtn = $('#submitOrderBtn');
   var $msg = $('#submitMessage');
+  debugger
 
   // ========== 4. دریافت داده‌ها از API ==========
   $.ajax({
@@ -272,7 +273,7 @@ $(document).ready(function() {
         }
         $msg.text('❌ ' + err).removeClass('text-success').addClass('text-danger');
         if (jqXHR.status === 401) {
-          window.location.href = '/auth/login/';
+          window.location.href = '/api/v1/auth/login/';
         }
       },
       complete: function() {

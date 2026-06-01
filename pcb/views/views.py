@@ -9,9 +9,9 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from .models import (AttributeGroup, Attribute, AttributeOption,
+from ..models.models import (AttributeGroup, Attribute, AttributeOption,
                      ConditionalRule, Order, OrderSelection, OrderPayment)
-from .serializers import (AttributeGroupSerializer, AttributeSerializer, AttributeOptionSerializer,
+from ..serializers.serializers import (AttributeGroupSerializer, AttributeSerializer, AttributeOptionSerializer,
                           ConditionalRuleSerializer, OrderSerializer, OrderSelectionSerializer)
 
 

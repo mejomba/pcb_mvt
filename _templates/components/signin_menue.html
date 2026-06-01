@@ -47,7 +47,7 @@
     <div id="user-menu" class="p-3" style="display: none;">
       <button id="logout-btn" class="btn btn-danger btn-block rounded-pill">Logout</button>
       <ul class="list-unstyled mt-3 mb-0 small">
-        <li><a href="/profile" class="dropdown-item d-flex align-items-center"><i class="bi bi-clipboard-check mr-2"></i> Order history</a></li>
+        <li><a href="{% url 'auth:profile' %}" class="dropdown-item d-flex align-items-center"><i class="bi bi-clipboard-check mr-2"></i> Order history</a></li>
         <li><a href="/projects" class="dropdown-item d-flex align-items-center"><i class="bi bi-folder mr-2"></i> My Projects</a></li>
         <li><a href="/parts" class="dropdown-item d-flex align-items-center"><i class="bi bi-gear mr-2"></i> Parts Manager</a></li>
         <li><a href="/messages" class="dropdown-item d-flex align-items-center"><i class="bi bi-envelope mr-2"></i> My Messages</a></li>

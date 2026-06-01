@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base/base.html' %}
 {% load static %}
 
 {% block title %}ورود به حساب کاربری{% endblock %}
@@ -8,14 +8,17 @@
 {% endblock %}
 
 {% block content %}
+    {% csrf_token %}
 <div class="login-page">
   <div class="login-card">
     <h1 class="login-title">ورود به حساب کاربری</h1>
 
     <!-- Tab Switcher -->
     <div class="auth-tabs">
-      <a id="tab-password" href="/auth/login?mode=password" class="auth-tab">ورود با رمز عبور</a>
-      <a id="tab-otp"      href="/auth/login?mode=otp"      class="auth-tab">ورود با کد یکبار مصرف</a>
+{#      <a id="tab-password" href="" class="auth-tab">ورود با رمز عبور</a>#}
+      <a id="tab-password" href="{% url 'auth:template_auth_password' %}?mode=password" class="auth-tab">ورود با رمز عبور</a>
+{#      <a id="tab-otp"      href=""      class="auth-tab">ورود با کد یکبار مصرف</a>#}
+      <a id="tab-otp"      href="{% url 'auth:template_auth_otp' %}?mode=otp"      class="auth-tab">ورود با کد یکبار مصرف</a>
     </div>
 
     <!-- ① Phone Form Section -->
@@ -125,7 +128,7 @@
 
         <p class="form-note" dir="rtl">
           حساب کاربری ندارید؟
-          <a href="/auth/login?mode=otp" class="link-accent">ایجاد حساب کاربری</a>
+          <a href="{% url 'auth:template_auth_otp' %}?mode=otp" class="link-accent">ایجاد حساب کاربری</a>
         </p>
       </form>
     </div>

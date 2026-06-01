@@ -4,7 +4,7 @@ from django.utils import safestring
 from rest_framework import serializers
 
 from blog.serializers import GuidPostContentSerializer
-from .models import (AttributeGroup, Attribute, AttributeOption,
+from ..models.models import (AttributeGroup, Attribute, AttributeOption,
                      ConditionalRule, Order, OrderSelection)
 
 

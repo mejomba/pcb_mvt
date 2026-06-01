@@ -1,0 +1,32 @@
+<!-- === templates/help/help-category.html === -->
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}راهنما{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/help.css' %}" />
+{% endblock %}
+
+{% block content %}
+<!-- slug از Django view پاس می‌شه -->
+<div class="help-layout" id="help-layout" data-slug="{{ slug }}" data-page-type="category">
+
+  <!-- Sidebar — توسط sidebar.js رندر می‌شه -->
+  <div id="help-sidebar-container"></div>
+
+  <!-- Main Content — توسط help.js رندر می‌شه -->
+  <div class="help-main-content" id="help-main-content">
+    <div class="help-loading">
+      <div class="spinner-ring"></div>
+      <span>در حال بارگذاری...</span>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/components/help/sidebar.js' %}"></script>
+<script src="{% static 'js/pages/help.js' %}"></script>
+{% endblock %}

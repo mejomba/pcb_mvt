@@ -1,36 +1,58 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa" dir="ltr">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="{% static "vendor/css/bootstrap.css" %}">
-    <link rel="stylesheet" href="{% static "vendor/css/bootstrap-icons.min.css" %}">
-    <link rel="stylesheet" href="{% static "css/custom.css" %}">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}سایت{% endblock %}</title>
 
-    {% block extra_css %}
-    {% endblock %}
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="{% static 'vendor/css/bootstrap.css' %}" />
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="{% static 'vendor/css/bootstrap-icons.min.css' %}" />
+  <!-- استایل‌های پروژه -->
+  <link rel="stylesheet" href="{% static 'css/globals.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/navbar.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/forms.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/footer.css' %}" />
 
-    <script src="{% static "vendor/js/jquery.min.js" %}"></script>
+  {% block extra_css %}{% endblock %}
+
+  <!-- jQuery — باید قبل از همه JS دیگه باشه -->
+  <script src="{% static 'vendor/js/jquery.min.js' %}"></script>
 </head>
+
 <body>
 
-{% include "components/navbar.html" %}
+  <!-- Navbar -->
+  {% include "components/navbar.html" %}
 
-<main class="container my-4">
+  <!-- Slider (فقط صفحاتی که block رو override می‌کنن نمایش داده می‌شه) -->
+  {% block slider %}{% endblock %}
 
-    <div id="cards-row" class="row"></div>
+  <!-- محتوای اصلی -->
+  <main>
+    {% block content %}{% endblock %}
+  </main>
 
-    {% block content %}
-    {% endblock %}
+  <!-- Footer -->
+  {% include "components/footer.html" %}
 
-</main>
+  <!-- Bootstrap JS Bundle (شامل Popper) -->
+  <script src="{% static 'vendor/js/bootstrap.bundle.min.js' %}"></script>
+{#  <script src="{% static 'vendor/js/poper_1.16.1.js' %}"></script>#}
 
+  <!-- ─── JS Library های پروژه ─────────────────── -->
+  <script src="{% static 'js/lib/api.js' %}"></script>
+  <script src="{% static 'js/lib/token.js' %}"></script>
+  <script src="{% static 'js/lib/auth.js' %}"></script>
+  <script src="{% static 'js/lib/utils.js' %}"></script>
 
-<script src="{% static "vendor/js/bootstrap.bundle.min.js" %}"></script>
-<script src="{% static "js/auth.js" %}"></script>
+  <!-- Navbar JS (بعد از lib ها) -->
+  <script src="{% static 'js/components/navbar.js' %}"></script>
 
-{% block extra_js %}
-{% endblock %}
+  <!-- JS اختصاصی هر صفحه -->
+  {% block extra_js %}{% endblock %}
+
 </body>
 </html>

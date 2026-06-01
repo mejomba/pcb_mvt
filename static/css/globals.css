@@ -278,3 +278,45 @@ body {
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
+
+/* در globals.css */
+.dropdown-menu-end {
+  right: 0 !important;
+  left: auto !important;
+}
+
+/*!* === static/css/globals.css (نسخه تمیز) === *!*/
+/*!* ❌ بخش CSS Reset کامل حذف شد — Bootstrap نورمالایز خودش رو داره *!*/
+
+/*!* ─── فونت‌ها ────────────────────────────────────── *!*/
+/*@font-face {*/
+/*  font-family: 'Geist';*/
+/*  src: url('../fonts/GeistVF.woff') format('woff');*/
+/*  font-weight: 100 900;*/
+/*  font-display: swap;*/
+/*}*/
+/*@font-face {*/
+/*  font-family: 'GeistMono';*/
+/*  src: url('../fonts/GeistMonoVF.woff') format('woff');*/
+/*  font-weight: 100 900;*/
+/*  font-display: swap;*/
+/*}*/
+
+/*!* ─── CSS Variables ─────────────────────────────── *!*/
+/*:root {*/
+/*  --pcb-font-sans: 'Geist', system-ui, Arial, sans-serif;*/
+/*  --pcb-font-mono: 'GeistMono', monospace;*/
+/*  --pcb-bg:        #ffffff;*/
+/*  --pcb-fg:        #171717;*/
+/*}*/
+
+/*!* ─── Base ───────────────────────────────────────── *!*/
+/*body {*/
+/*  font-family: var(--pcb-font-sans);*/
+/*}*/
+
+/*!* ─── Utilities (prefix pcb- تا با Bootstrap تداخل نداشته باشه) *!*/
+/*.pcb-text-balance { text-wrap: balance; }*/
+
+/*.sidebar-scroll           { direction: rtl; }*/
+/*.sidebar-scroll > *       { direction: ltr; }*/

@@ -1,70 +1,114 @@
 <!-- === templates/components/navbar.html === -->
 {% load static %}
 
-<header class="navbar">
-  <!-- ── Left: Hamburger + Logo ── -->
-  <div class="navbar-left">
-    <!-- موبایل: همبرگر -->
-    <button class="navbar-hamburger" id="navbar-hamburger" aria-label="منو">
+<!-- Search Overlay (کل صفحه) -->
+<div id="search-overlay" style="display:none;">
+  <div class="pcb-search-box">
+    <div class="pcb-search-input-wrapper">
+      <i class="bi bi-search pcb-search-icon"></i>
+      <input type="text"
+             id="search-input"
+             class="pcb-search-input"
+             placeholder="جستجو در محصولات، مقالات..."
+             autocomplete="off" />
+      <button type="button" id="search-close-btn" class="pcb-search-close">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+    <!-- نتایج جستجو -->
+    <div id="search-results" class="pcb-search-results" style="display:none;"></div>
+  </div>
+</div>
+
+<!-- ─── Navbar ─────────────────────────────────── -->
+<nav class="pcb-navbar" id="main-navbar">
+
+  <!-- بخش چپ: لوگو + لینک‌ها (پس‌زمینه روشن) -->
+  <div class="pcb-navbar-left">
+
+    <!-- Mobile toggle -->
+    <button class="pcb-nav-toggle d-lg-none"
+            type="button"
+            id="mobile-toggle"
+            aria-label="منو">
       <i class="bi bi-list"></i>
     </button>
 
-    <!-- لوگو -->
-    <a href="/" class="navbar-logo-link">
-      <img
-        src="{% static 'images/logo.png' %}"
-        alt="Logo"
-        class="navbar-logo"
-        width="120"
-        height="40"
-      />
+    <!-- Logo -->
+    <a href="/" class="pcb-navbar-brand">
+      <img src="{% static 'images/logo.png' %}" alt="Logo" height="36" />
     </a>
+
+    <!-- Desktop nav links -->
+    <ul class="pcb-nav-links d-none d-lg-flex" id="desktop-nav">
+      <li>
+        <a href="/products/" class="pcb-nav-link">
+          <i class="bi bi-grid-3x3-gap me-1 d-none d-xl-inline"></i>Products
+        </a>
+      </li>
+      <li><a href="/capabilities/" class="pcb-nav-link">Capabilities</a></li>
+      <li class="pcb-nav-has-dropdown">
+        <a href="#" class="pcb-nav-link">
+          Support <i class="bi bi-chevron-down pcb-nav-chevron"></i>
+        </a>
+        <div class="pcb-nav-dropdown">
+          <a href="/help/" class="pcb-nav-dropdown-item">Help Center</a>
+          <a href="/contact/" class="pcb-nav-dropdown-item">Contact Us</a>
+        </div>
+      </li>
+      <li class="pcb-nav-has-dropdown">
+        <a href="#" class="pcb-nav-link">
+          About Us <i class="bi bi-chevron-down pcb-nav-chevron"></i>
+        </a>
+        <div class="pcb-nav-dropdown">
+          <a href="/about/" class="pcb-nav-dropdown-item">About JLCPCB</a>
+          <a href="/careers/" class="pcb-nav-dropdown-item">Careers</a>
+        </div>
+      </li>
+    </ul>
   </div>
 
-  <!-- ── Middle: Nav Links (در صورت نیاز پر می‌شه) ── -->
-  <nav class="navbar-middle" id="navbar-menu">
-    <!-- لینک‌های ناوبری اینجا اضافه می‌شن -->
-  </nav>
+  <!-- بخش راست: آیکون‌ها + دکمه‌ها (روی slider) -->
+  <div class="pcb-navbar-right">
 
-  <!-- ── Right: Actions ── -->
-  <div class="navbar-right">
-    <!-- جستجو -->
-    <button class="navbar-icon-btn" aria-label="جستجو">
+    <!-- Search Icon -->
+    <button type="button"
+            class="pcb-nav-icon-btn"
+            id="search-open-btn"
+            aria-label="جستجو">
       <i class="bi bi-search"></i>
     </button>
 
-    <!-- لینک ثبت سفارش -->
-    <a href="/new-order/" class="navbar-link">Order now</a>
+    <!-- Cart -->
+    <button type="button" class="pcb-nav-icon-btn" aria-label="سبد خرید">
+      <i class="bi bi-cart2"></i>
+      <span class="pcb-cart-badge" id="cart-badge" style="display:none;">0</span>
+    </button>
 
-    <!-- لینک فایل‌های من -->
-    <a href="/my-file/" class="navbar-link">My file</a>
+    <!-- Order Now -->
+    <a href="{% url 'pcb:new_order' %}" class="pcb-btn-order">Order Now</a>
 
-    <!-- SignIn Menu — با JS کنترل می‌شه -->
-    <div class="signin-menu-wrapper" id="signin-menu-wrapper">
-      <!-- حالت لود اولیه: خالی — navbar.js محتوا رو inject می‌کنه -->
-    </div>
+    <!-- Sign In Menu -->
+    <div id="signin-menu-wrapper"></div>
 
-    <!-- سبد خرید -->
-    <div class="navbar-cart-wrapper">
-      <button class="navbar-icon-btn" aria-label="سبد خرید">
-        <i class="bi bi-cart"></i>
-      </button>
-      <!-- badge — اگه تعداد > 0 بود نمایش داده می‌شه -->
-      <span class="cart-badge" id="cart-badge" style="display:none;">0</span>
-    </div>
   </div>
-</header>
+</nav>
 
-<!-- Mobile Drawer Menu -->
-<div class="mobile-drawer" id="mobile-drawer">
-  <div class="mobile-drawer-inner">
-    <button class="mobile-drawer-close" id="mobile-drawer-close" aria-label="بستن">
+<!-- Mobile Drawer -->
+<div class="pcb-mobile-drawer" id="mobile-drawer">
+  <div class="pcb-mobile-drawer-header">
+    <img src="{% static 'images/logo.png' %}" alt="Logo" height="32" />
+    <button type="button" id="mobile-close-btn" aria-label="بستن">
       <i class="bi bi-x-lg"></i>
     </button>
-    <nav class="mobile-nav">
-      <a href="/new-order/" class="mobile-nav-link">Order now</a>
-      <a href="/my-file/"   class="mobile-nav-link">My file</a>
-    </nav>
   </div>
+  <nav class="pcb-mobile-nav">
+    <a href="/products/"    class="pcb-mobile-nav-link">Products</a>
+    <a href="/capabilities/"class="pcb-mobile-nav-link">Capabilities</a>
+    <a href="/help/"        class="pcb-mobile-nav-link">Support</a>
+    <a href="/about/"       class="pcb-mobile-nav-link">About Us</a>
+    <hr />
+    <a href="{% url 'pcb:new_order' %}"   class="pcb-mobile-nav-link pcb-mobile-nav-link--accent">Order Now</a>
+  </nav>
 </div>
-<div class="mobile-overlay" id="mobile-overlay"></div>
+<div class="pcb-overlay" id="mobile-overlay"></div>

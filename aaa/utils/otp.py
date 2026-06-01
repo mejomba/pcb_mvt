@@ -1,6 +1,7 @@
 import random
 from typing import List
 
+import requests
 from django.utils import timezone
 from datetime import timedelta
 from django.conf import settings
@@ -22,7 +23,21 @@ class OTPAction:
 
     @staticmethod
     def _send_sms(message: str, phones: List):
-        print(phones, message)
+        for phone in phones:
+            import json
+            json_data = json.dumps({
+                                    "mobile": phone,
+                                    "templateId": 123456,
+                                    "parameters": [
+                                      {
+                                        "name": "Code",
+                                        "value": message
+                                      }
+                                    ]
+                                })
+            headers = {"X-API-KEY": "YfBVq1GRodeKKzWnMH7S7odrZ8ENxSjsop7dgfxgJXa7G9ay"}
+            res = requests.post('https://api.sms.ir/v1/send/verify', json=json_data, headers=headers)
+            print(phones, message)
 
     @staticmethod
     def cache_in_redis(otp_code, user):

@@ -1,0 +1,118 @@
+/* === static/css/slider.css === */
+
+.slider-container {
+  position: relative;
+  width: 100%;
+  height: 50vh;          /* h-[50vh] */
+  overflow: hidden;
+  background: #0f172a;   /* placeholder تا تصویر لود بشه */
+}
+
+.slider-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── Track & Slides ─────────────────────────────── */
+.slider-track {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.slider-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.8s ease;   /* fade effect */
+  pointer-events: none;
+}
+
+.slider-slide.slider-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ─── Image ──────────────────────────────────────── */
+.slider-image-wrapper {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 56rem;      /* max-w-4xl */
+  aspect-ratio: 32 / 9;
+}
+
+.slider-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  display: block;
+}
+
+/* ─── Navigation Buttons ─────────────────────────── */
+.slider-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  background: rgba(255,255,255,.75);
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  font-size: 1.25rem;
+  color: #1e293b;
+  backdrop-filter: blur(4px);
+  transition: background 0.2s, transform 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,.2);
+}
+
+.slider-nav-btn:hover {
+  background: rgba(255,255,255,.95);
+  transform: translateY(-50%) scale(1.05);
+}
+
+.slider-prev { right: 1rem; }
+.slider-next { left: 1rem;  }
+
+/* ─── Pagination Dots ────────────────────────────── */
+.slider-pagination {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.5rem;
+  z-index: 10;
+}
+
+.slider-dot {
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 9999px;
+  background: rgba(255,255,255,.5);
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  padding: 0;
+}
+
+.slider-dot:hover      { background: rgba(255,255,255,.8); }
+.slider-dot.dot-active {
+  background: #ffffff;
+  transform: scale(1.3);
+}
+
+/* ─── Responsive ─────────────────────────────────── */
+@media (max-width: 768px) {
+  .slider-container    { height: 35vh; }
+  .slider-nav-btn      { width: 2rem; height: 2rem; font-size: 1rem; }
+}

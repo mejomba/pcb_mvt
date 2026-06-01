@@ -1,138 +1,355 @@
+{#<!-- === templates/profile/profile.html === -->#}
+{#{% extends 'base/base.html' %}#}
+{#{% load static %}#}
+{##}
+{#{% block title %}پروفایل کاربری{% endblock %}#}
+{##}
+{#{% block extra_css %}#}
+{#<link rel="stylesheet" href="{% static 'css/profile.css' %}" />#}
+{#<link rel="stylesheet" href="{% static 'css/orders.css' %}" />#}
+{#{% endblock %}#}
+{##}
+{#{% block content %}#}
+{#<main class="profile-page" dir="rtl">#}
+{##}
+{#  <!-- ─── Header ─── -->#}
+{#  <header class="profile-header" id="profile-header">#}
+{#    <div class="profile-loading" id="profile-loading">#}
+{#      <div class="spinner-ring"></div>#}
+{#      <span>در حال بارگذاری اطلاعات...</span>#}
+{#    </div>#}
+{##}
+{#    <!-- پر می‌شه توسط JS -->#}
+{#    <div class="profile-header-inner" id="profile-header-inner" style="display:none;">#}
+{#      <div class="profile-avatar-wrapper">#}
+{#        <img src="" alt="avatar" class="profile-avatar" id="profile-avatar" />#}
+{#      </div>#}
+{#      <div class="profile-header-info">#}
+{#        <div class="profile-header-left">#}
+{#          <h1 class="profile-name" id="profile-name">—</h1>#}
+{#          <p class="profile-subtitle">کاربر حرفه‌ای — سفارش‌دهنده PCB</p>#}
+{#          <div class="profile-header-actions">#}
+{#            <a href="/new-order/" class="btn btn-sky">افزودن سفارش جدید</a>#}
+{#          </div>#}
+{#        </div>#}
+{#      </div>#}
+{#    </div>#}
+{#  </header>#}
+{##}
+{#  <!-- ─── Stats ─── -->#}
+{#  <section class="profile-stats" id="profile-stats" style="display:none;">#}
+{#    <div class="stat-card">#}
+{#      <div class="stat-label">سفارش‌ها</div>#}
+{#      <div class="stat-value" id="stat-orders-count">—</div>#}
+{#    </div>#}
+{#  </section>#}
+{##}
+{#  <!-- ─── Tabs Nav ─── -->#}
+{#  <nav class="profile-tabs-nav" id="profile-tabs-nav" style="display:none;">#}
+{#    <ul class="profile-tabs-list">#}
+{#      <li><button class="profile-tab-btn active" data-tab="overview">نمای کلی</button></li>#}
+{#      <li><button class="profile-tab-btn"         data-tab="orders">سفارش‌ها</button></li>#}
+{#      <li><button class="profile-tab-btn"         data-tab="actions">اقدامات</button></li>#}
+{#      <li><button class="profile-tab-btn"         data-tab="settings">تنظیمات</button></li>#}
+{#    </ul>#}
+{#  </nav>#}
+{##}
+{#  <!-- ─── Tab Panels ─── -->#}
+{#  <section class="profile-tab-content">#}
+{##}
+{#    <!-- Overview Tab -->#}
+{#    <div id="tab-overview" class="tab-panel">#}
+{#      <div class="profile-grid-2col">#}
+{##}
+{#        <div class="profile-card">#}
+{#          <h3 class="card-title">آخرین سفارش‌ها</h3>#}
+{#          <div id="recent-orders-list">#}
+{#            <p class="text-muted">در حال بارگذاری...</p>#}
+{#          </div>#}
+{#        </div>#}
+{##}
+{#        <div class="profile-card">#}
+{#          <h3 class="card-title">تماس پشتیبانی</h3>#}
+{#          <div class="support-info">#}
+{#            <p>پشتیبانی سفارش‌ها: <strong>support@pcbshop.example</strong></p>#}
+{#            <p class="mt-sm">ساعات پاسخگویی: ۹:۰۰ — ۱۸:۰۰</p>#}
+{#          </div>#}
+{#        </div>#}
+{##}
+{#      </div>#}
+{#    </div>#}
+{##}
+{#    <!-- Orders Tab -->#}
+{#    <div id="tab-orders" class="tab-panel" style="display:none;">#}
+{#      <div class="orders-toolbar">#}
+{#        <input#}
+{#          type="text"#}
+{#          id="orders-search-input"#}
+{#          class="orders-search-input"#}
+{#          placeholder="جستجو در سفارش‌ها..."#}
+{#        />#}
+{#      </div>#}
+{#      <div id="orders-table-container"></div>#}
+{#    </div>#}
+{##}
+{#    <!-- Actions Tab -->#}
+{#    <div id="tab-actions" class="tab-panel" style="display:none;">#}
+{#      <div class="profile-card">#}
+{#        <h3 class="card-title">پروژه‌های ذخیره‌شده</h3>#}
+{#        <div class="designs-grid" id="designs-grid"></div>#}
+{#      </div>#}
+{#    </div>#}
+{##}
+{#    <!-- Settings Tab -->#}
+{#    <div id="tab-settings" class="tab-panel" style="display:none;">#}
+{#      <div class="profile-card">#}
+{#        <h3 class="card-title">اطلاعات حساب</h3>#}
+{#        <form id="settings-form" class="settings-form" novalidate>#}
+{#          <div id="settings-form-error" class="form-error" style="display:none;"></div>#}
+{#          <div class="settings-grid">#}
+{#            <label class="settings-field">#}
+{#              <span class="settings-label">نام کامل</span>#}
+{#              <input type="text"  name="full_name" id="settings-full-name" class="form-input" />#}
+{#            </label>#}
+{#            <label class="settings-field">#}
+{#              <span class="settings-label">ایمیل</span>#}
+{#              <input type="email" name="email"     id="settings-email"     class="form-input" />#}
+{#            </label>#}
+{#            <label class="settings-field settings-full-col">#}
+{#              <span class="settings-label">آدرس</span>#}
+{#              <input type="text"  name="address"   id="settings-address"   class="form-input" />#}
+{#            </label>#}
+{#          </div>#}
+{#          <div class="settings-actions">#}
+{#            <button type="submit" class="btn btn-sky settings-btn">ذخیره</button>#}
+{#            <button type="button" class="btn-outline settings-btn" id="settings-cancel">لغو</button>#}
+{#          </div>#}
+{#        </form>#}
+{#      </div>#}
+{#    </div>#}
+{##}
+{#  </section>#}
+{#</main>#}
+{#{% endblock %}#}
+{##}
+{#{% block extra_js %}#}
+{#<script src="{% static 'js/components/orders/orders-table.js' %}"></script>#}
+{#<script src="{% static 'js/pages/profile.js' %}"></script>#}
+{#{% endblock %}#}
+
+
+
 <!-- === templates/profile/profile.html === -->
-{% extends 'base.html' %}
+{% extends 'base/base.html' %}
 {% load static %}
 
 {% block title %}پروفایل کاربری{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/profile.css' %}" />
-<link rel="stylesheet" href="{% static 'css/orders.css' %}" />
+<link rel="stylesheet" href="{% static 'css/advanced-table.css' %}" />
+<link rel="stylesheet" href="{% static 'css/jalali-datepicker.css' %}" />
 {% endblock %}
 
 {% block content %}
-<main class="profile-page" dir="rtl">
+<div class="pf-page" dir="rtl">
 
-  <!-- ─── Header ─── -->
-  <header class="profile-header" id="profile-header">
-    <div class="profile-loading" id="profile-loading">
-      <div class="spinner-ring"></div>
-      <span>در حال بارگذاری اطلاعات...</span>
+  <!-- ══════════════════════════════════════════════
+       HEADER
+  ══════════════════════════════════════════════ -->
+  <div class="pf-hero" id="pf-hero">
+    <div class="pf-hero-loading" id="pf-hero-loading">
+      <div class="pf-spinner"></div>
     </div>
-
-    <!-- پر می‌شه توسط JS -->
-    <div class="profile-header-inner" id="profile-header-inner" style="display:none;">
-      <div class="profile-avatar-wrapper">
-        <img src="" alt="avatar" class="profile-avatar" id="profile-avatar" />
+    <div class="pf-hero-inner" id="pf-hero-inner" style="display:none;">
+      <!-- Avatar -->
+      <div class="pf-avatar-wrap" id="pf-avatar-wrap">
+        <div class="pf-avatar-placeholder"><i class="bi bi-person-fill"></i></div>
       </div>
-      <div class="profile-header-info">
-        <div class="profile-header-left">
-          <h1 class="profile-name" id="profile-name">—</h1>
-          <p class="profile-subtitle">کاربر حرفه‌ای — سفارش‌دهنده PCB</p>
-          <div class="profile-header-actions">
-            <a href="/new-order/" class="btn btn-sky">افزودن سفارش جدید</a>
-          </div>
+      <!-- Info -->
+      <div class="pf-hero-info">
+        <h1 class="pf-hero-name" id="pf-hero-name">—</h1>
+        <p class="pf-hero-role">کاربر حرفه‌ای — سفارش‌دهنده PCB</p>
+        <div class="pf-hero-actions">
+          <a href="/new-order/" class="pf-btn pf-btn-primary">
+            <i class="bi bi-plus-circle me-1"></i>سفارش جدید
+          </a>
+        </div>
+      </div>
+      <!-- Stats chips -->
+      <div class="pf-hero-stats" id="pf-hero-stats">
+        <div class="pf-stat-chip">
+          <span class="pf-stat-num" id="stat-total">—</span>
+          <span class="pf-stat-lbl">کل سفارش</span>
+        </div>
+        <div class="pf-stat-chip pf-stat-chip--yellow">
+          <span class="pf-stat-num" id="stat-pending">—</span>
+          <span class="pf-stat-lbl">در انتظار</span>
+        </div>
+        <div class="pf-stat-chip pf-stat-chip--blue">
+          <span class="pf-stat-num" id="stat-quotation">—</span>
+          <span class="pf-stat-lbl">پیش فاکتور</span>
+        </div>
+        <div class="pf-stat-chip pf-stat-chip--green">
+          <span class="pf-stat-num" id="stat-delivered">—</span>
+          <span class="pf-stat-lbl">تحویل‌شده</span>
         </div>
       </div>
     </div>
-  </header>
+  </div>
 
-  <!-- ─── Stats ─── -->
-  <section class="profile-stats" id="profile-stats" style="display:none;">
-    <div class="stat-card">
-      <div class="stat-label">سفارش‌ها</div>
-      <div class="stat-value" id="stat-orders-count">—</div>
-    </div>
-  </section>
+  <!-- ══════════════════════════════════════════════
+       TABS
+  ══════════════════════════════════════════════ -->
+  <div class="pf-tabs-wrap" id="pf-tabs-wrap" style="visibility:hidden;">
+    <nav class="pf-tabs">
+      <button class="pf-tab active" data-tab="overview">
+        <i class="bi bi-grid-1x2"></i><span>نمای کلی</span>
+      </button>
+      <button class="pf-tab" data-tab="orders">
+        <i class="bi bi-table"></i><span>سفارش‌ها</span>
+      </button>
+      <button class="pf-tab" data-tab="settings">
+        <i class="bi bi-gear"></i><span>تنظیمات</span>
+      </button>
+    </nav>
+  </div>
 
-  <!-- ─── Tabs Nav ─── -->
-  <nav class="profile-tabs-nav" id="profile-tabs-nav" style="display:none;">
-    <ul class="profile-tabs-list">
-      <li><button class="profile-tab-btn active" data-tab="overview">نمای کلی</button></li>
-      <li><button class="profile-tab-btn"         data-tab="orders">سفارش‌ها</button></li>
-      <li><button class="profile-tab-btn"         data-tab="actions">اقدامات</button></li>
-      <li><button class="profile-tab-btn"         data-tab="settings">تنظیمات</button></li>
-    </ul>
-  </nav>
+  <!-- ══════════════════════════════════════════════
+       TAB CONTENT
+  ══════════════════════════════════════════════ -->
+  <div class="pf-content">
 
-  <!-- ─── Tab Panels ─── -->
-  <section class="profile-tab-content">
+    <!-- ── Overview ── -->
+    <div id="tab-overview" class="pf-panel active">
 
-    <!-- Overview Tab -->
-    <div id="tab-overview" class="tab-panel">
-      <div class="profile-grid-2col">
+      <!-- Order Cards Grid -->
+      <div class="pf-overview-grid">
 
-        <div class="profile-card">
-          <h3 class="card-title">آخرین سفارش‌ها</h3>
-          <div id="recent-orders-list">
-            <p class="text-muted">در حال بارگذاری...</p>
+        <!-- Left: Orders -->
+        <div class="pf-section">
+          <div class="pf-section-header">
+            <h2 class="pf-section-title">
+              <i class="bi bi-clock-history"></i> سفارش‌های اخیر
+            </h2>
+            <button class="pf-btn pf-btn-ghost pf-btn-sm" onclick="switchTab('orders')">
+              مشاهده همه <i class="bi bi-arrow-left ms-1"></i>
+            </button>
+          </div>
+          <div class="pf-order-cards" id="pf-order-cards">
+            <div class="pf-loading-placeholder">
+              <div class="pf-skeleton" style="height:110px;margin-bottom:12px;"></div>
+              <div class="pf-skeleton" style="height:110px;margin-bottom:12px;"></div>
+              <div class="pf-skeleton" style="height:110px;"></div>
+            </div>
           </div>
         </div>
 
-        <div class="profile-card">
-          <h3 class="card-title">تماس پشتیبانی</h3>
-          <div class="support-info">
-            <p>پشتیبانی سفارش‌ها: <strong>support@pcbshop.example</strong></p>
-            <p class="mt-sm">ساعات پاسخگویی: ۹:۰۰ — ۱۸:۰۰</p>
+        <!-- Right: Support + Upload -->
+        <div class="pf-sidebar-col">
+
+          <!-- Quick Upload Card -->
+          <div class="pf-card pf-upload-card">
+            <div class="pf-card-head">
+              <i class="bi bi-cloud-arrow-up"></i>
+              <h3>آپلود رسید پرداخت</h3>
+            </div>
+            <p class="pf-upload-hint">
+              برای سفارش‌هایی که در وضعیت «پیش فاکتور» هستند رسید را آپلود کنید.
+            </p>
+            <div class="pf-upload-select-wrap">
+              <label class="pf-form-label">انتخاب سفارش</label>
+              <select class="pf-select" id="overview-order-select">
+                <option value="">— انتخاب سفارش —</option>
+              </select>
+            </div>
+            <label class="pf-dropzone" id="pf-dropzone">
+              <input type="file" id="overview-receipt-input" accept="image/*,.pdf" style="display:none;">
+              <div class="pf-dropzone-inner" id="pf-dropzone-inner">
+                <i class="bi bi-cloud-arrow-up pf-dropzone-icon"></i>
+                <span class="pf-dropzone-text">کلیک یا کشیدن فایل</span>
+                <span class="pf-dropzone-sub">PNG, JPG, PDF — حداکثر ۱۰MB</span>
+              </div>
+            </label>
+            <button type="button" class="pf-btn pf-btn-primary w-100 mt-2" id="overview-upload-btn" disabled>
+              <i class="bi bi-send me-1"></i>ارسال رسید
+            </button>
+            <div id="overview-upload-msg" class="pf-upload-msg" style="display:none;"></div>
           </div>
+
+          <!-- Support Card -->
+          <div class="pf-card pf-support-card">
+            <div class="pf-card-head">
+              <i class="bi bi-headset"></i>
+              <h3>پشتیبانی</h3>
+            </div>
+            <ul class="pf-support-list">
+              <li>
+                <i class="bi bi-envelope"></i>
+                <a href="mailto:support@pcbshop.example">support@pcbshop.example</a>
+              </li>
+              <li>
+                <i class="bi bi-clock"></i>
+                <span>شنبه تا پنجشنبه، ۹:۰۰ — ۱۸:۰۰</span>
+              </li>
+            </ul>
+          </div>
+
         </div>
-
       </div>
     </div>
 
-    <!-- Orders Tab -->
-    <div id="tab-orders" class="tab-panel" style="display:none;">
-      <div class="orders-toolbar">
-        <input
-          type="text"
-          id="orders-search-input"
-          class="orders-search-input"
-          placeholder="جستجو در سفارش‌ها..."
-        />
+    <!-- ── Orders (Advanced Table) ── -->
+    <div id="tab-orders" class="pf-panel" style="display:none;">
+      <div class="pf-section-header mb-3">
+        <h2 class="pf-section-title">
+          <i class="bi bi-table"></i> لیست سفارش‌ها
+        </h2>
+        <span class="pf-table-hint">
+          <i class="bi bi-info-circle"></i>
+          ستون‌ها را بکشید تا ترتیب را تغییر دهید. لبه راست ستون را بکشید تا اندازه را تغییر دهید.
+        </span>
       </div>
-      <div id="orders-table-container"></div>
+      <div id="orders-advanced-table"></div>
     </div>
 
-    <!-- Actions Tab -->
-    <div id="tab-actions" class="tab-panel" style="display:none;">
-      <div class="profile-card">
-        <h3 class="card-title">پروژه‌های ذخیره‌شده</h3>
-        <div class="designs-grid" id="designs-grid"></div>
-      </div>
-    </div>
-
-    <!-- Settings Tab -->
-    <div id="tab-settings" class="tab-panel" style="display:none;">
-      <div class="profile-card">
-        <h3 class="card-title">اطلاعات حساب</h3>
-        <form id="settings-form" class="settings-form" novalidate>
-          <div id="settings-form-error" class="form-error" style="display:none;"></div>
-          <div class="settings-grid">
-            <label class="settings-field">
-              <span class="settings-label">نام کامل</span>
-              <input type="text"  name="full_name" id="settings-full-name" class="form-input" />
-            </label>
-            <label class="settings-field">
-              <span class="settings-label">ایمیل</span>
-              <input type="email" name="email"     id="settings-email"     class="form-input" />
-            </label>
-            <label class="settings-field settings-full-col">
-              <span class="settings-label">آدرس</span>
-              <input type="text"  name="address"   id="settings-address"   class="form-input" />
-            </label>
+    <!-- ── Settings ── -->
+    <div id="tab-settings" class="pf-panel" style="display:none;">
+      <div class="pf-settings-grid">
+        <div class="pf-card">
+          <div class="pf-card-head">
+            <i class="bi bi-person-gear"></i>
+            <h3>اطلاعات حساب</h3>
           </div>
-          <div class="settings-actions">
-            <button type="submit" class="btn btn-sky settings-btn">ذخیره</button>
-            <button type="button" class="btn-outline settings-btn" id="settings-cancel">لغو</button>
-          </div>
-        </form>
+          <form id="settings-form" novalidate>
+            <div id="settings-error" class="pf-alert pf-alert-danger" style="display:none;"></div>
+            <div class="pf-field">
+              <label class="pf-form-label">نام کامل</label>
+              <input type="text" name="full_name" id="settings-full-name" class="pf-input" />
+            </div>
+            <div class="pf-field">
+              <label class="pf-form-label">ایمیل</label>
+              <input type="email" name="email" id="settings-email" class="pf-input" />
+            </div>
+            <div class="pf-field">
+              <label class="pf-form-label">آدرس</label>
+              <input type="text" name="address" id="settings-address" class="pf-input" />
+            </div>
+            <div class="pf-field-row mt-3">
+              <button type="submit" class="pf-btn pf-btn-primary">ذخیره</button>
+              <button type="button" id="settings-cancel" class="pf-btn pf-btn-ghost">لغو</button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
 
-  </section>
-</main>
+  </div><!-- /pf-content -->
+</div>
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'js/components/orders/orders-table.js' %}"></script>
+<script src="{% static 'js/components/jalali-datepicker.js' %}"></script>
+<script src="{% static 'js/components/advanced-table.js' %}"></script>
 <script src="{% static 'js/pages/profile.js' %}"></script>
 {% endblock %}

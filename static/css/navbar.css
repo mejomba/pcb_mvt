@@ -1,105 +1,316 @@
 /* === static/css/navbar.css === */
+/* همه کلاس‌ها با pcb- prefix هستن تا با Bootstrap تداخل نداشته باشن */
 
-/* ─── Header ─────────────────────────────────────── */
-.navbar {
+/* ─── Navbar Shell ───────────────────────────────── */
+.pcb-navbar {
   position: sticky;
   top: 0;
-  z-index: 100;
-  width: 100%;
+  z-index: 1030;          /* بالاتر از Bootstrap modals */
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.5rem 1rem;
-  background: #ffffff;
-  border-bottom: 1px solid #e5e7eb;
-  box-shadow: 0 1px 3px rgba(0,0,0,.06);
+  align-items: stretch;   /* هر دو بخش هم‌ارتفاع */
+  height: 56px;
 }
 
-/* ─── Left ───────────────────────────────────────── */
-.navbar-left {
+/* ─── Left Section (روشن) ───────────────────────── */
+.pcb-navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0 1.5rem;
+  background: #ffffff;
+  flex-shrink: 0;
+  min-width: 0;
+}
+
+/* ─── Right Section (تاریک — روی slider) ────────── */
+.pcb-navbar-right {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  padding: 0 1.5rem;
+  margin-left: auto;
+  /* پس‌زمینه شفاف — slider رو از پشت نشون می‌ده */
+  background: transparent;
 }
 
-.navbar-logo-link { display: flex; align-items: center; }
-.navbar-logo      { height: 40px; width: auto; display: block; }
-
-/* ─── Middle ─────────────────────────────────────── */
-.navbar-middle {
+/* ─── Logo ───────────────────────────────────────── */
+.pcb-navbar-brand {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-  font-size: 0.875rem;
-  font-weight: 500;
+  text-decoration: none;
+  margin-left: 1.5rem;
+  flex-shrink: 0;
 }
 
-/* ─── Right ──────────────────────────────────────── */
-.navbar-right {
+.pcb-navbar-brand img { display: block; }
+
+/* ─── Desktop Nav Links ──────────────────────────── */
+.pcb-nav-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  height: 100%;
+}
+
+.pcb-nav-links li {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  position: relative;
 }
 
-.navbar-link {
+.pcb-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0 0.875rem;
+  height: 100%;
   font-size: 0.875rem;
   font-weight: 500;
+  color: #1e293b;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.15s, background 0.15s;
+}
+
+.pcb-nav-link:hover { color: #2563eb; background: #f8fafc; }
+
+.pcb-nav-chevron {
+  font-size: 0.7rem;
+  transition: transform 0.2s;
+}
+
+/* Dropdown در Nav */
+.pcb-nav-has-dropdown:hover .pcb-nav-chevron {
+  transform: rotate(180deg);
+}
+
+.pcb-nav-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 160px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,.1);
+  z-index: 100;
+  overflow: hidden;
+}
+
+.pcb-nav-has-dropdown:hover .pcb-nav-dropdown { display: block; }
+
+.pcb-nav-dropdown-item {
+  display: block;
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
   color: #374151;
   text-decoration: none;
-  transition: color 0.2s;
+  transition: background 0.15s;
 }
-.navbar-link:hover { color: #2563eb; }
+.pcb-nav-dropdown-item:hover { background: #f8fafc; color: #1d4ed8; }
 
-/* ─── Icon Buttons ───────────────────────────────── */
-.navbar-icon-btn {
+/* ─── Icon Buttons (راست) ────────────────────────── */
+.pcb-nav-icon-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  background: rgba(255,255,255,.15);
+  border: none;
+  border-radius: 50%;
+  color: #656565;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.pcb-nav-icon-btn:hover { background: rgba(255,255,255,.28); }
+
+/* Cart Badge */
+.pcb-cart-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 1.1rem;
+  height: 1.1rem;
+  background: #ef4444;
+  color: #fff;
+  border-radius: 9999px;
+  font-size: 0.6rem;
+  font-weight: 700;
   display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.2rem;
+}
+
+/* ─── Order Now Button ───────────────────────────── */
+.pcb-btn-order {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.375rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #838383;
+  background: transparent;
+  border: 1.5px solid rgba(75, 75, 75, 0.8);
+  border-radius: 9999px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.2s, color 0.2s;
+}
+.pcb-btn-order:hover {
+  background: rgba(255,255,255,.15);
+  color: #4b4b4b;
+}
+
+/* ─── Sign In Dropdown ───────────────────────────── */
+.pcb-signin-group { position: relative; }
+
+.pcb-signin-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.375rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: #2563eb;
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+.pcb-signin-trigger:hover { background: #1d4ed8; }
+
+.pcb-signin-dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  width: 220px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  box-shadow: 0 12px 32px rgba(0,0,0,.14);
+  z-index: 200;
+  overflow: hidden;
+}
+
+.pcb-signin-dropdown.open { display: block; }
+
+.pcb-signin-dropdown-inner { padding: 1rem; }
+
+/* Login button inside dropdown */
+.pcb-signin-login-btn {
+  display: block;
+  width: 100%;
+  padding: 0.5rem;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #ffffff;
+  background: #2563eb;
+  border: none;
+  border-radius: 9999px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s;
+  margin-bottom: 0.625rem;
+}
+.pcb-signin-login-btn:hover { background: #1d4ed8; color: #fff; }
+
+/* Logout button */
+.pcb-signin-logout-btn {
+  display: block;
+  width: 100%;
+  padding: 0.5rem;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #ffffff;
+  background: #ef4444;
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background 0.15s;
+  margin-bottom: 0.625rem;
+}
+.pcb-signin-logout-btn:hover { background: #dc2626; }
+
+/* Dropdown items */
+.pcb-signin-item {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.5rem 0.5rem;
+  font-size: 0.875rem;
+  color: #374151;
+  text-decoration: none;
+  border-radius: 0.375rem;
+  transition: background 0.12s;
+}
+.pcb-signin-item:hover { background: #f8fafc; color: #374151; }
+.pcb-signin-item i    { font-size: 1rem; color: #6b7280; width: 1.25rem; }
+
+.pcb-signin-item-disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.pcb-signin-blur-wrapper {
+  position: relative;
+  margin-top: 0.5rem;
+}
+
+.pcb-signin-blur-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,.55);
+  backdrop-filter: blur(1.5px);
+  border-radius: 0.375rem;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* New Customer text */
+.pcb-new-customer {
+  font-size: 0.8125rem;
+  color: #374151;
+  margin-bottom: 0.75rem;
+}
+.pcb-new-customer a { color: #2563eb; text-decoration: none; font-weight: 500; }
+.pcb-new-customer a:hover { text-decoration: underline; }
+
+/* Divider */
+.pcb-signin-divider {
+  border: none;
+  border-top: 1px solid #e2e8f0;
+  margin: 0.5rem 0;
+}
+
+/* ─── Mobile Toggle Button ───────────────────────── */
+.pcb-nav-toggle {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   background: none;
   border: none;
-  cursor: pointer;
-  padding: 0.25rem;
-  color: #374151;
-  font-size: 1.25rem;     /* bi icon size */
-  transition: color 0.2s;
-}
-.navbar-icon-btn:hover { color: #2563eb; }
-
-/* Hamburger — فقط موبایل */
-.navbar-hamburger {
-  display: none;
   font-size: 1.5rem;
+  color: #374151;
+  cursor: pointer;
+  margin-left: 0.5rem;
 }
-
-/* ─── Cart Badge ─────────────────────────────────── */
-.navbar-cart-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.cart-badge {
-  position: absolute;
-  top: -0.5rem;
-  right: -0.5rem;
-  min-width: 1.25rem;
-  height: 1.25rem;
-  padding: 0 0.2rem;
-  font-size: 0.7rem;
-  font-weight: 700;
-  color: #ffffff;
-  background: #db2777;    /* pink-600 */
-  border-radius: 9999px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* ─── SignIn Menu Wrapper ────────────────────────── */
-.signin-menu-wrapper { position: relative; }
 
 /* ─── Mobile Drawer ──────────────────────────────── */
-.mobile-drawer {
+.pcb-mobile-drawer {
   position: fixed;
   top: 0;
   right: -280px;
@@ -107,121 +318,174 @@
   height: 100vh;
   background: #ffffff;
   box-shadow: -4px 0 20px rgba(0,0,0,.15);
-  z-index: 200;
+  z-index: 1050;
   transition: right 0.3s ease;
-}
-
-.mobile-drawer.open { right: 0; }
-
-.mobile-drawer-inner {
-  padding: 1.5rem 1rem;
   display: flex;
   flex-direction: column;
-  height: 100%;
 }
 
-.mobile-drawer-close {
-  align-self: flex-end;
+.pcb-mobile-drawer.open { right: 0; }
+
+.pcb-mobile-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.pcb-mobile-drawer-header button {
   background: none;
   border: none;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
+  color: #64748b;
   cursor: pointer;
-  color: #374151;
-  margin-bottom: 1rem;
 }
 
-.mobile-nav {
+.pcb-mobile-nav {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  padding: 1rem;
+  gap: 0.25rem;
+  flex: 1;
+  overflow-y: auto;
 }
 
-.mobile-nav-link {
-  padding: 0.75rem 0.5rem;
-  font-size: 1rem;
-  color: #111827;
-  text-decoration: none;
-  border-bottom: 1px solid #f3f4f6;
+.pcb-mobile-nav hr {
+  border-color: #f1f5f9;
+  margin: 0.5rem 0;
 }
-.mobile-nav-link:hover { color: #2563eb; }
+
+.pcb-mobile-nav-link {
+  display: block;
+  padding: 0.75rem 0.75rem;
+  font-size: 0.9375rem;
+  color: #1e293b;
+  text-decoration: none;
+  border-radius: 0.5rem;
+  transition: background 0.15s;
+}
+.pcb-mobile-nav-link:hover          { background: #f8fafc; }
+.pcb-mobile-nav-link--accent        { color: #2563eb; font-weight: 600; }
 
 /* Overlay */
-.mobile-overlay {
+.pcb-overlay {
   display: none;
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,.4);
-  z-index: 199;
+  z-index: 1040;
 }
-.mobile-overlay.open { display: block; }
+.pcb-overlay.open { display: block; }
 
-/* ─── Responsive ─────────────────────────────────── */
-@media (max-width: 1023px) {        /* < lg */
-  .navbar-hamburger { display: flex; }
-  .navbar-middle    { display: none; }
-}
-
-@media (max-width: 639px) {         /* < sm */
-  .navbar-link { display: none; }   /* لینک‌های متنی پنهان می‌شن */
-}
-
-/* ─── User Dropdown ──────────────────────────────── */
-.user-menu { position: relative; }
-
-.user-dropdown {
-  position: absolute;
-  top: calc(100% + 0.5rem);
-  left: 0;
-  min-width: 160px;
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,.12);
-  z-index: 150;
-  overflow: hidden;
+/* ─── Search Overlay ─────────────────────────────── */
+#search-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15,23,42,.6);
+  backdrop-filter: blur(4px);
+  z-index: 1060;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 80px;
 }
 
-.user-dropdown-item {
+.pcb-search-box {
+  width: 100%;
+  max-width: 640px;
+  padding: 0 1rem;
+}
+
+.pcb-search-input-wrapper {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  width: 100%;
-  padding: 0.625rem 1rem;
-  font-size: 0.875rem;
-  color: #374151;
-  text-decoration: none;
+  gap: 0.75rem;
+  background: #ffffff;
+  border-radius: 9999px;
+  padding: 0.625rem 1.25rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,.2);
+}
+
+.pcb-search-icon {
+  color: #3f3f3f;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.pcb-search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  color: #1e293b;
+  background: transparent;
+}
+.pcb-search-input::placeholder { color: #94a3b8; }
+
+.pcb-search-close {
   background: none;
   border: none;
+  font-size: 1.1rem;
+  color: #94a3b8;
   cursor: pointer;
-  text-align: right;
-  transition: background 0.15s;
+  flex-shrink: 0;
+  transition: color 0.15s;
 }
-.user-dropdown-item:hover { background: #f9fafb; }
+.pcb-search-close:hover { color: #374151; }
 
-.user-dropdown-logout { color: #dc2626; }
-.user-dropdown-logout:hover { background: #fef2f2; }
-
-.user-dropdown-divider {
-  border: none;
-  border-top: 1px solid #e5e7eb;
-  margin: 0;
+/* نتایج جستجو */
+.pcb-search-results {
+  background: #ffffff;
+  border-radius: 1rem;
+  margin-top: 0.5rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,.12);
+  overflow: hidden;
+  max-height: 400px;
+  overflow-y: auto;
 }
 
-/* دکمه ورود در navbar */
-.navbar-signin-btn {
+.pcb-search-result-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.875rem 1.25rem;
+  text-decoration: none;
+  color: #1e293b;
+  border-bottom: 1px solid #f1f5f9;
+  transition: background 0.12s;
+}
+.pcb-search-result-item:last-child { border-bottom: none; }
+.pcb-search-result-item:hover      { background: #f8fafc; }
+
+.pcb-search-result-icon {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.375rem;
+  background: #eff6ff;
   display: flex;
   align-items: center;
-  gap: 0.375rem;
-  padding: 0.375rem 0.75rem;
+  justify-content: center;
+  color: #2563eb;
   font-size: 0.875rem;
-  font-weight: 500;
-  color: #4f46e5;
-  border: 1px solid #4f46e5;
-  border-radius: 0.375rem;
-  text-decoration: none;
-  transition: background 0.2s, color 0.2s;
+  flex-shrink: 0;
 }
-.navbar-signin-btn:hover {
-  background: #4f46e5;
-  color: #ffffff;
+
+.pcb-search-result-title {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  margin-bottom: 0.125rem;
+}
+
+.pcb-search-result-subtitle {
+  font-size: 0.8125rem;
+  color: #64748b;
+}
+
+.pcb-search-empty,
+.pcb-search-loading {
+  padding: 1.5rem;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 0.9375rem;
 }

@@ -9,6 +9,6 @@
 
   if (!getCookie("access")) {
     const next = encodeURIComponent(window.location.pathname);
-    window.location.href = "/auth/login?next=" + next;
+    window.location.href = "/api/v1/auth/login?next=" + next;
   }
 })();

@@ -5,7 +5,7 @@ from django.db.models import Q
 from django.urls import path
 from django.utils.safestring import mark_safe
 
-from .models import AttributeGroup, Attribute, AttributeOption, ConditionalRule, Order, OrderSelection, Attribute, \
+from .models.models import AttributeGroup, Attribute, AttributeOption, ConditionalRule, Order, OrderSelection, Attribute, \
     AttributeOption, OrderReadOnly
 from django.contrib.contenttypes.admin import GenericTabularInline
 

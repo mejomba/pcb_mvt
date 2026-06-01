@@ -39,9 +39,7 @@ $(document).ready(function() {
   var $errorBox = $('#otp-error-box');
   var $btn = $('#send-otp-btn');
   var csrfToken = $form.find('input[name=csrfmiddlewaretoken]').val();
-    debugger
   $form.on('submit', function(e) {
-      debugger
     e.preventDefault();
 
     var phoneNumber = $('#phone').val().trim();
@@ -61,7 +59,6 @@ $(document).ready(function() {
       data: { phone: phoneNumber , method: method},
       headers: { 'X-CSRFToken': csrfToken },
       success: function(response) {
-          debugger
         // حالا باید کد واقعی ارسال شود
         sendOtpCode(phoneNumber, method);
       },
@@ -73,7 +70,6 @@ $(document).ready(function() {
   });
 
   function sendOtpCode(phone, method) {
-      debugger
     // به‌روزرسانی دکمه به حالت ارسال کد
     $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm ml-1" role="status" aria-hidden="true"></span> در حال ارسال کد...');
 
@@ -83,7 +79,6 @@ $(document).ready(function() {
       data: { phone: phone },
       headers: { 'X-CSRFToken': csrfToken },
       success: function(response) {
-          debugger
         // کد با موفقیت ارسال شد - هدایت به صفحه تأیید
         var verifyUrl = "{% url 'auth:template_auth_otp_verify' %}?phone=" + encodeURIComponent(phone)+"&method=" + encodeURIComponent(method);
         // اگر response شامل next_step هم هست می‌توانی اضافه کنی

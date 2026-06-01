@@ -20,6 +20,7 @@ class AuthOtpVerifyView(View):
         if self.request.user.is_authenticated:
             redirect('auth:profile')
         context = {'method': method, 'phone': phone}
+        return render(request, 'auth/login.html')
         return render(request, 'components/auth/otp_verify.html', context)
 
 

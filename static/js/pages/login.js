@@ -96,7 +96,7 @@
         phone: phoneVal,
         step: result.next_step,
       });
-      window.location.href = '/auth/login?' + params.toString();
+      window.location.href = '/api/v1/auth/template/otp/verify/?' + params.toString();
     });
   }
 
@@ -136,7 +136,7 @@
       resendBtn.addEventListener('click', async function () {
         const currentPhone = document.getElementById('otp-phone-hidden')?.value || phone;
         try {
-          await api.post('/auth/resend-otp/', { phone: currentPhone });
+          await api.post('/api/v1/auth/resend-otp/', { phone: currentPhone });
           startTimer();
         } catch (err) {
           showError('otp-form', 'خطا در ارسال مجدد کد. لطفاً دوباره تلاش کنید.');
