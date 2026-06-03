@@ -31,7 +31,7 @@
 
 
 # ====== Dockerfile ======
-FROM python:3.14-alpine
+FROM python:3.10-slim
 
 # Environment
 ENV PYTHONDONTWRITEBYTECODE=1
