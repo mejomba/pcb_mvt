@@ -48,7 +48,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 ## pip mirror (ابرها)
 RUN mkdir -p /root/.pip && \
     echo "[global]" > /root/.pip/pip.conf && \
-    echo "index-url = https://package-mirror.liara.ir/repository/pypi/" >> /root/.pip/pip.conf && \
+    echo "index-url = https://package-mirror.liara.ir/repository/pypi/simple" >> /root/.pip/pip.conf && \
     echo "trusted-host = package-mirror.liara.ir" >> /root/.pip/pip.conf
 
 # نصب وابستگی‌ها (لایه جداگانه برای کش بهتر)
