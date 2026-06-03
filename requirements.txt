@@ -12,3 +12,4 @@ pandas
 django-filter
 gunicorn==21.2.0
 psycopg2-binary
+requests
