@@ -3,7 +3,7 @@ djangorestframework
 drf_spectacular
 djangorestframework-simplejwt
 pillow
-django-nested-admin=4.1.14
+django-nested-admin==4.1.14
 django-autocomplete-light
 django-cors-headers
 django-mptt
