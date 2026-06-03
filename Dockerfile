@@ -31,7 +31,7 @@
 
 
 # ====== Dockerfile ======
-FROM python:3.10-slim
+FROM python:3.14-slim
 
 # Environment
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -46,10 +46,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 ## pip mirror (ابرها)
-#RUN mkdir -p /root/.pip && \
-#    echo "[global]" > /root/.pip/pip.conf && \
-#    echo "index-url = https://mirror.abrha.net/repository/pypi/simple" >> /root/.pip/pip.conf && \
-#    echo "trusted-host = mirror.abrha.net" >> /root/.pip/pip.conf
+RUN mkdir -p /root/.pip && \
+    echo "[global]" > /root/.pip/pip.conf && \
+    echo "index-url = https://mirror.abrha.net/repository/pypi/simple" >> /root/.pip/pip.conf && \
+    echo "trusted-host = mirror.abrha.net" >> /root/.pip/pip.conf
 
 # نصب وابستگی‌ها (لایه جداگانه برای کش بهتر)
 COPY requirements.txt /app/
