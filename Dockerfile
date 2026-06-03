@@ -59,10 +59,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . /app/
 
 # ساخت کاربر non-root و انتقال مالکیت
-RUN useradd -m -u 1000 appuser && \
-    mkdir -p /app/static /app/media && \
-    chown -R appuser:appuser /app
-USER appuser
+#RUN useradd -m -u 1000 appuser && \
+#    mkdir -p /app/static /app/media && \
+#    chown -R appuser:appuser /app
+#USER appuser
 
 EXPOSE 8000
 
