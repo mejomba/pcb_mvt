@@ -34,17 +34,17 @@
   // ════════════════════════════════════════════════════
   function AdvancedOrderTable(options) {
     this.containerId  = options.containerId;
-    this.apiBase      = options.apiBase || '/pcb/orders/';
+    this.apiBase      = options.apiBase || '/api/v1/pcb/orders/';
     this.onUpload     = options.onUpload || null;
 
     // Column definitions — ordered array, user can reorder
     this._cols = [
       { key:'expander', label:'',          width:48,  resizable:false, searchable:false, fixed:true  },
-      { key:'id',       label:'شماره',     width:90,  resizable:true,  searchable:true,  type:'text'   },
-      { key:'date',     label:'تاریخ',     width:150, resizable:true,  searchable:true,  type:'date'   },
-      { key:'quantity', label:'تعداد',     width:80,  resizable:true,  searchable:true,  type:'text'   },
-      { key:'status',   label:'وضعیت',     width:200, resizable:true,  searchable:true,  type:'select' },
-      { key:'files',    label:'فایل‌ها',   width:160, resizable:true,  searchable:false, fixed:false   },
+      { key:'id',       label:'شماره',     width:50,  resizable:true,  searchable:true,  type:'text'   },
+      { key:'date',     label:'تاریخ',     width:100, resizable:true,  searchable:true,  type:'date'   },
+      // { key:'quantity', label:'تعداد',     width:80,  resizable:true,  searchable:true,  type:'text'   },
+      { key:'status',   label:'وضعیت',     width:180, resizable:true,  searchable:true,  type:'select' },
+      { key:'files',    label:'فایل‌ها',   width:200, resizable:true,  searchable:false, fixed:false   },
     ];
 
     this._filters   = { id:'', dateFrom:'', dateTo:'', quantity:'', status:'' };
@@ -297,6 +297,7 @@
 
   // ─── Load data from API ──────────────────────────────
   AdvancedOrderTable.prototype._loadData = function () {
+    debugger
     var self = this;
     var f = this._filters;
 
@@ -349,7 +350,7 @@
               '</button></td>';
 
           case 'id':
-            return '<td class="adt-td"><span class="adt-order-id">#' + order.id + '</span></td>';
+            return '<td class="adt-td"><span class="adt-order-id">' + order.id + '</span></td>';
 
           case 'date':
             return '<td class="adt-td adt-td-date">' + formatPersianDate(order.created_at) + '</td>';
@@ -467,7 +468,7 @@
     formData.append('file', file);
     formData.append('order', orderId);
 
-    api.upload('/pcb/order_payment_receipt/upload/', formData).then(function () {
+    api.upload('/api/v1/pcb/order_payment_receipt/upload/', formData).then(function () {
       if (label) label.innerHTML = '<i class="bi bi-check-lg"></i> ذخیره شد';
     }).catch(function () {
       if (label) label.innerHTML = '<i class="bi bi-x-lg"></i> خطا — دوباره';

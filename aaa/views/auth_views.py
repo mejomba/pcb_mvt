@@ -5,7 +5,7 @@ from django.views import View
 class AuthOtpView(View):
     def get(self, request):
         if request.COOKIES.get('access'):
-            return redirect('/profile/')
+            return redirect('/api/v1/auth/template/profile/')
         return render(request, 'auth/login.html')
     # def get(self, request, *args, **kwargs):
     #     if self.request.user.is_authenticated:
@@ -27,7 +27,7 @@ class AuthOtpVerifyView(View):
 class AuthPasswordView(View):
     def get(self, request):
         if request.COOKIES.get('access'):
-            return redirect('/profile/')
+            return redirect('/api/v1/auth/template/profile/')
         return render(request, 'auth/login.html')
     # def get(self, request, *args, **kwargs):
     #     if self.request.user.is_authenticated:

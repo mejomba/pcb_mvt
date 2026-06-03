@@ -7,12 +7,12 @@
   var SEARCH_API = '/search/';   // مثال: '/blog/posts/?search='
 
   var MENU_ITEMS = [
-    { href: '/profile/',  icon: 'bi-clipboard-check', label: 'Order History' },
-    { href: '/projects/', icon: 'bi-folder',           label: 'My Projects'   },
-    { href: '/parts/',    icon: 'bi-gear',             label: 'Parts Manager' },
-    { href: '/messages/', icon: 'bi-envelope',         label: 'My Messages'   },
-    { href: '/coupons/',  icon: 'bi-ticket',           label: 'My Coupons'    },
-    { href: '/account/',  icon: 'bi-person',           label: 'My Account'    },
+    { href: '/api/v1/auth/template/profile/',  icon: 'bi-clipboard-check',  label: 'Order History' , css: ''},
+    { href: '/projects/',                      icon: 'bi-folder',           label: 'My Projects'   , css: 'disable-front'},
+    { href: '/parts/',                         icon: 'bi-gear',             label: 'Parts Manager' , css: 'disable-front'},
+    { href: '/messages/',                      icon: 'bi-envelope',         label: 'My Messages'   , css: 'disable-front'},
+    { href: '/coupons/',                       icon: 'bi-ticket',           label: 'My Coupons'    , css: 'disable-front'},
+    { href: '/api/v1/auth/template/profile/',  icon: 'bi-person',           label: 'My Account'    , css: ''},
   ];
 
   // ─── Debounce ─────────────────────────────────────
@@ -162,7 +162,7 @@
     return MENU_ITEMS.map(function (item) {
       if (loggedIn) {
         return `
-          <a href="${item.href}" class="pcb-signin-item">
+          <a href="${item.href}" class="pcb-signin-item ${item.css}">
             <i class="bi ${item.icon}"></i>
             <span>${item.label}</span>
           </a>`;

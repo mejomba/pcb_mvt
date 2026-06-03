@@ -169,9 +169,9 @@
       <!-- Info -->
       <div class="pf-hero-info">
         <h1 class="pf-hero-name" id="pf-hero-name">—</h1>
-        <p class="pf-hero-role">کاربر حرفه‌ای — سفارش‌دهنده PCB</p>
+{#        <p class="pf-hero-role">کاربر حرفه‌ای — سفارش‌دهنده PCB</p>#}
         <div class="pf-hero-actions">
-          <a href="/new-order/" class="pf-btn pf-btn-primary">
+          <a href="{% url 'pcb:new_order' %}" class="pf-btn pf-btn-primary">
             <i class="bi bi-plus-circle me-1"></i>سفارش جدید
           </a>
         </div>
@@ -331,10 +331,10 @@
               <label class="pf-form-label">ایمیل</label>
               <input type="email" name="email" id="settings-email" class="pf-input" />
             </div>
-            <div class="pf-field">
-              <label class="pf-form-label">آدرس</label>
-              <input type="text" name="address" id="settings-address" class="pf-input" />
-            </div>
+{#            <div class="pf-field">#}
+{#              <label class="pf-form-label">آدرس</label>#}
+{#              <input type="text" name="address" id="settings-address" class="pf-input" />#}
+{#            </div>#}
             <div class="pf-field-row mt-3">
               <button type="submit" class="pf-btn pf-btn-primary">ذخیره</button>
               <button type="button" id="settings-cancel" class="pf-btn pf-btn-ghost">لغو</button>
@@ -350,6 +350,7 @@
 
 {% block extra_js %}
 <script src="{% static 'js/components/jalali-datepicker.js' %}"></script>
-<script src="{% static 'js/components/advanced-table.js' %}"></script>
+<script src="{% static 'js/components/orders/advanced-table.js' %}"></script>
+{#<script src="{% static 'js/components/advanced-table.js' %}"></script>#}
 <script src="{% static 'js/pages/profile.js' %}"></script>
 {% endblock %}

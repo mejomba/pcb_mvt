@@ -141,7 +141,7 @@
             </button>
           </td>
           <td class="orders-td orders-id">
-            <span class="font-mono">#${order.id}</span>
+            <span class="font-mono">${order.id}</span>
           </td>
           <td class="orders-td">${formatPersianDate(order.created_at)}</td>
           <td class="orders-td">${order.quantity}</td>
@@ -167,7 +167,7 @@
               <th class="orders-th"></th>
               <th class="orders-th">شماره سفارش</th>
               <th class="orders-th">تاریخ ثبت</th>
-              <th class="orders-th">تعداد</th>
+<!--              <th class="orders-th">تعداد</th>-->
               <th class="orders-th">وضعیت</th>
               <th class="orders-th" style="text-align:center;">فایل</th>
             </tr>

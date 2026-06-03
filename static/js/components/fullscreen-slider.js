@@ -67,7 +67,7 @@
 
         <!-- Next -->
         <button class="slider-nav-btn slider-next" id="slider-next" aria-label="بعدی">
-          <i class="bi bi-chevron-left"></i>
+          <i class="bi bi-chevron-right"></i>
         </button>
 
         <!-- Pagination Dots -->

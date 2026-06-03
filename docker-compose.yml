@@ -1,0 +1,117 @@
+#version: '3.8'
+#
+#services:
+#  # سرویس دیتابیس پستگرس
+#  db:
+#    image: postgres:18-alpine
+#    container_name: postgres_db
+#    restart: unless-stopped  # خودکار restart شدن
+#    volumes:
+#      - postgres_data:/var/lib/postgresql/data/
+#    environment:
+#      - POSTGRES_DB=your_db_name
+#      - POSTGRES_USER=your_db_user
+#      - POSTGRES_PASSWORD=your_db_password
+#    ports:
+#      - "5432:5432"  # فقط برای دسترسی مستقیم از هاست
+#    healthcheck:  # بررسی سلامت دیتابیس
+#      test: ["CMD-SHELL", "pg_isready -U your_db_user -d your_db_name"]
+#      interval: 10s
+#      timeout: 5s
+#      retries: 5
+#
+#  # سرویس بک‌اند (جنگو)
+#  backend:
+#    build: .
+#    container_name: django_backend
+#    restart: unless-stopped
+#    volumes:
+#      - .:/app  # برای توسعه (در production حذف کنید)
+#      - static_volume:/app/static  # فایل‌های استاتیک جنگو
+#      - media_volume:/app/media   # فایل‌های مدیا
+#    ports:
+#      - "8000:8000"
+#    environment:
+#      - DB_NAME=your_db_name
+#      - DB_USER=your_db_user
+#      - DB_PASSWORD=your_db_password
+#      - DB_HOST=db
+#      - DB_PORT=5432
+#      - DEBUG=False  # در production حتماً False کنید
+#      - ALLOWED_HOSTS=localhost,127.0.0.1
+#    depends_on:
+#      db:
+#        condition: service_healthy  # منتظر سالم شدن دیتابیس می‌ماند
+#    command: >
+#      sh -c "python manage.py migrate &&
+#             python manage.py collectstatic --noinput &&
+#             gunicorn config.wsgi:application --bind 0.0.0.0:8000"
+#
+#
+#volumes:
+#  postgres_data:
+#  static_volume:
+#  media_volume:
+
+
+# ====== docker-compose.yml ======
+services:
+
+  # ─── PostgreSQL ───────────────────────────────
+  db:
+    image: postgres:18-alpine
+    container_name: postgres_db
+    restart: unless-stopped
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    # در production پورت رو expose نکن (فقط شبکه داخلی)
+    # ports:
+    #   - "5432:5432"
+
+  # ─── Django (Gunicorn) ────────────────────────
+  backend:
+    build: .
+    container_name: django_backend
+    restart: unless-stopped
+    volumes:
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+      # volume کد رو در production حذف کن (فقط برای development)
+      # - .:/app
+    env_file:
+      - .env
+    expose:
+      - "8000"          # فقط برای nginx — به هاست expose نمی‌شه
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # ─── Nginx (سرو static/media + reverse proxy) ─
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: nginx_proxy
+    restart: unless-stopped
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - static_volume:/app/staticfiles:ro
+      - media_volume:/app/media:ro
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:

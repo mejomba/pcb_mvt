@@ -212,7 +212,7 @@ $(document).ready(function() {
 
       var content = attr.guid.guid_content || '';
       if (attr.guid.slug) {
-        content += '<br><a href="/help/post/' + attr.guid.slug + '/" target="_blank" class="btn btn-sm btn-primary mt-1">show more</a>';
+        content += '<br><a href="/api/v1/pcb/help/post/' + attr.guid.slug + '/" target="_blank" class="btn btn-sm btn-primary mt-1">show more</a>';
       }
 
       $icon.popover({

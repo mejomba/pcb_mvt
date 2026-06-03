@@ -57,7 +57,7 @@
     var articlesHTML = content.map(function (article) {
       return `
         <div class="help-article-item">
-          <a href="/help/post/${article.slug}/" class="help-article-link">
+          <a href="/api/v1/pcb/help/post/${article.slug}/" class="help-article-link">
             ${article.title}
           </a>
         </div>`;
@@ -84,7 +84,7 @@
     mainEl.innerHTML = `
       ${breadcrumbHTML(breadcrumbs)}
       <h1 class="help-page-title">${content.title || ''}</h1>
-      <div class="help-article-body">${content.guid_content || content.content || ''}</div>
+      <div class="help-article-body">${content.content || content.guid_content || ''}</div>
     `;
   }
 
@@ -96,10 +96,10 @@
 
     try {
       // هر دو درخواست را موازی ارسال می‌کنیم
-      var menuPromise    = api.get('/blog/category/list/');
+      var menuPromise    = api.get('/api/v1/blog/category/list/');
       var contentPromise = pageType === 'post'
-        ? api.get('/blog/guid/' + slug + '/')
-        : api.get('/blog/category/list/slug/' + slug + '/');
+        ? api.get('/api/v1/blog/guid/' + slug + '/')
+        : api.get('/api/v1/blog/category/list/slug/' + slug + '/');
 
       var results = await Promise.all([menuPromise, contentPromise]);
       var menuData    = results[0] && results[0].results ? results[0].results : [];

@@ -86,78 +86,100 @@
   // ─── FormField ────────────────────────────────────────
   // جایگزین FormField.tsx — شامل label + tooltip + control
   function createFormField(attr) {
-    var row = document.createElement('div');
-    row.className = 'form-field-row';
+  var row = document.createElement('div');
+  row.className = 'form-field-row';
 
-    // Label + optional GUID tooltip
-    var labelCol = document.createElement('div');
-    labelCol.className = 'form-field-label-col';
+  // ─── Label + GUID tooltip ──────────────────────────
+  var labelCol = document.createElement('div');
+  labelCol.className = 'form-field-label-col';
 
-    var labelEl = document.createElement('label');
-    labelEl.className   = 'form-field-label';
-    labelEl.textContent = attr.display_name;
-    labelCol.appendChild(labelEl);
+  var labelEl = document.createElement('label');
+  labelEl.className   = 'form-field-label';
+  labelEl.textContent = attr.display_name;
+  labelCol.appendChild(labelEl);
 
-    // GUID tooltip (guid.guid_content)
-    if (attr.guid && attr.guid.guid_content) {
-      var tooltipWrapper = document.createElement('div');
-      tooltipWrapper.className = 'guid-tooltip-wrapper';
+  if (attr.guid && attr.guid.guid_content) {
+    var tooltipWrapper = document.createElement('div');
+    tooltipWrapper.className = 'guid-tooltip-wrapper';
 
-      var tooltipBtn = document.createElement('button');
-      tooltipBtn.type      = 'button';
-      tooltipBtn.className = 'guid-tooltip-btn';
-      tooltipBtn.innerHTML = '<i class="bi bi-question-circle"></i>';
-      tooltipBtn.title     = attr.guid.guid_content;
+    var tooltipBtn = document.createElement('button');
+    tooltipBtn.type      = 'button';
+    tooltipBtn.className  = 'guid-tooltip-btn';
+    tooltipBtn.innerHTML  = '<i class="bi bi-question-circle"></i>';
 
-      var tooltipBox = document.createElement('div');
-      tooltipBox.className   = 'guid-tooltip-box';
-      tooltipBox.textContent = attr.guid.guid_content;
+    var tooltipBox = document.createElement('div');
+    tooltipBox.className   = 'guid-tooltip-box';
+    tooltipBox.style.display = 'none';
+
+    // ✅ محتوای HTML — parse می‌شه به‌جای نمایش خام
+    // ⚠️ مطمئن شو بک‌اند guid_content رو sanitize کرده (مثلاً با bleach در جنگو)
+    var tooltipContent = document.createElement('div');
+    tooltipContent.className = 'guid-tooltip-content';
+    tooltipContent.innerHTML = attr.guid.guid_content;
+    tooltipBox.appendChild(tooltipContent);
+
+    // ✅ دکمه «نمایش بیشتر» → صفحه جزئیات مقاله
+    if (attr.guid.slug) {
+      var showMore = document.createElement('a');
+      showMore.className = 'guid-tooltip-more';
+      showMore.href      = '/api/v1/pcb/help/post/' + attr.guid.slug + '/';
+      showMore.target     = '_blank';
+      showMore.rel        = 'noopener';
+      showMore.innerHTML  = 'نمایش بیشتر <i class="bi bi-box-arrow-up-left"></i>';
+      tooltipBox.appendChild(showMore);
+    }
+
+    // toggle — جلوگیری از بسته شدن وقتی داخل tooltip کلیک می‌شه
+    tooltipBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var isVisible = tooltipBox.style.display !== 'none';
+      // بقیه tooltip ها رو ببند
+      document.querySelectorAll('.guid-tooltip-box').forEach(function (b) {
+        b.style.display = 'none';
+      });
+      tooltipBox.style.display = isVisible ? 'none' : 'block';
+    });
+
+    // کلیک داخل خود tooltip باعث بسته شدن نشه (مثلاً انتخاب متن)
+    tooltipBox.addEventListener('click', function (e) {
+      e.stopPropagation();
+    });
+
+    // کلیک بیرون → بستن
+    document.addEventListener('click', function () {
       tooltipBox.style.display = 'none';
+    });
 
-      tooltipBtn.addEventListener('click', function (e) {
-        e.stopPropagation();
-        var isVisible = tooltipBox.style.display !== 'none';
-        tooltipBox.style.display = isVisible ? 'none' : 'block';
-      });
-
-      document.addEventListener('click', function () {
-        tooltipBox.style.display = 'none';
-      });
-
-      tooltipWrapper.appendChild(tooltipBtn);
-      tooltipWrapper.appendChild(tooltipBox);
-      labelCol.appendChild(tooltipWrapper);
-    }
-
-    // Control column
-    var controlCol = document.createElement('div');
-    controlCol.className = 'form-field-control-col';
-
-    var radioGroup = createRadioGroup(attr);
-    controlCol.appendChild(radioGroup);
-
-    // text_input: علاوه بر radio، یک input متنی هم داره
-    if (attr.control_type === 'text_input') {
-      var textInput = document.createElement('input');
-      textInput.type      = 'text';
-      textInput.className = 'form-text-input';
-      textInput.value     = formData[attr.name] || '';
-
-      textInput.addEventListener('input', function () {
-        formData[attr.name] = this.value;
-        // radio selection رو پاک کن
-        radioGroup.querySelectorAll('.radio-btn').forEach(function (b) {
-          b.classList.remove('selected');
-        });
-      });
-
-      controlCol.appendChild(textInput);
-    }
-
-    row.appendChild(labelCol);
-    row.appendChild(controlCol);
-    return row;
+    tooltipWrapper.appendChild(tooltipBtn);
+    tooltipWrapper.appendChild(tooltipBox);
+    labelCol.appendChild(tooltipWrapper);
   }
+
+  // ─── Control column ─────────────────────────────────
+  var controlCol = document.createElement('div');
+  controlCol.className = 'form-field-control-col';
+
+  var radioGroup = createRadioGroup(attr);
+  controlCol.appendChild(radioGroup);
+
+  if (attr.control_type === 'text_input') {
+    var textInput = document.createElement('input');
+    textInput.type      = 'text';
+    textInput.className  = 'form-text-input';
+    textInput.value      = formData[attr.name] || '';
+    textInput.addEventListener('input', function () {
+      formData[attr.name] = this.value;
+      radioGroup.querySelectorAll('.radio-btn').forEach(function (b) {
+        b.classList.remove('selected');
+      });
+    });
+    controlCol.appendChild(textInput);
+  }
+
+  row.appendChild(labelCol);
+  row.appendChild(controlCol);
+  return row;
+}
 
   // ─── Accordion ───────────────────────────────────────
   // جایگزین Accordion.tsx — collapsible section
@@ -287,7 +309,7 @@
         var result = await api.upload('/api/v1/pcb/orders/', formDataObj);
         showSubmitMessage(true, '✅ سفارش با موفقیت ثبت شد!');
         setTimeout(function () {
-          window.location.href = '/profile/';
+          window.location.href = '/api/v1/auth/template/profile/';
         }, 1500);
 
       } catch (err) {

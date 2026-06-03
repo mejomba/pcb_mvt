@@ -73,5 +73,5 @@ class OTPAction:
     def perform_otp(cls, destination, backend: str):
         otp = cls._generate_otp(destination)
         sender = cls._get_backend(backend)  # email or sms
-        sender(otp, [destination])
+        sender(otp.code, [destination])
         return otp

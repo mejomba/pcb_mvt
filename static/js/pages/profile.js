@@ -30,7 +30,7 @@
     if (name === 'orders' && !advTable) {
       advTable = new AdvancedOrderTable({
         containerId: 'orders-advanced-table',
-        apiBase:     '/pcb/orders/',
+        apiBase:     '/api/v1/pcb/orders/',
         onUpload:    function (orderId, file) { console.log('Upload from table:', orderId); },
       });
     }
@@ -48,8 +48,8 @@
   async function loadPageData() {
     try {
       var results = await Promise.all([
-        api.get('/auth/profile/'),
-        api.get('/pcb/orders/'),
+        api.get('/api/v1/auth/profile/'),
+        api.get('/api/v1/pcb/orders/'),
       ]);
       currentUser = results[0] || {};
       allOrders   = (results[1] && results[1].results) ? results[1].results : [];
@@ -177,7 +177,7 @@
         '</div>' +
         '<div class="pf-order-card-meta">' +
           '<span><i class="bi bi-calendar3 me-1"></i>' + date + '</span>' +
-          '<span><i class="bi bi-layers me-1"></i>تعداد: ' + order.quantity + '</span>' +
+          // '<span><i class="bi bi-layers me-1"></i>تعداد: ' + order.quantity + '</span>' +
         '</div>' +
       '</div>' +
 
@@ -227,7 +227,7 @@
         fd.append('order', id);
 
         try {
-          await api.upload('/pcb/order_payment_receipt/upload/', fd);
+          await api.upload('/api/v1/pcb/order_payment_receipt/upload/', fd);
           btn.style.display = 'none';
           if (msgEl) { msgEl.textContent = '✓ ذخیره شد'; msgEl.className = 'pf-card-upload-msg pf-msg-ok'; msgEl.style.display = 'inline'; }
         } catch (e) {
@@ -296,7 +296,7 @@
         fd.append('order', orderId);
 
         try {
-          await api.upload('/pcb/order_payment_receipt/upload/', fd);
+          await api.upload('/api/v1/pcb/order_payment_receipt/upload/', fd);
           btn.disabled  = false;
           btn.innerHTML = '<i class="bi bi-send me-1"></i>ارسال رسید';
           if (msg) { msg.textContent = '✓ رسید با موفقیت ذخیره شد'; msg.className = 'pf-upload-msg pf-msg-ok'; msg.style.display = 'block'; }
@@ -335,11 +335,12 @@
 
   // ─── Settings ────────────────────────────────────────
   function populateSettings() {
+    debugger
     var u = currentUser;
     var set = function (id, val) { var el = document.getElementById(id); if (el && val) el.value = val; };
     set('settings-full-name', u.full_name);
     set('settings-email',     u.email);
-    set('settings-address',   u.address);
+    // set('settings-address',   u.address);
   }
 
   (function initSettingsForm() {
@@ -354,10 +355,11 @@
       btn.disabled = true; btn.textContent = 'در حال ذخیره...';
 
       try {
-        await api.patch('/auth/profile/', {
-          full_name: form.querySelector('[name="full_name"]').value,
+        debugger
+        await api.patch('/api/v1/auth/profile/', {
+          first_name: form.querySelector('[name="full_name"]').value,
           email:     form.querySelector('[name="email"]').value,
-          address:   form.querySelector('[name="address"]').value,
+          // address:   form.querySelector('[name="address"]').value,
         });
         btn.textContent = '✓ ذخیره شد';
         setTimeout(function () { btn.disabled = false; btn.textContent = 'ذخیره'; }, 2000);

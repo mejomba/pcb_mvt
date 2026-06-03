@@ -12,5 +12,5 @@ class ProfileView(View):
     """
     def get(self, request):
         if not request.COOKIES.get('access'):
-            return redirect(f'/api/v1/auth/login/?next=/profile/')
+            return redirect(f'/api/v1/auth/template/otp/?next=/api/v1/auth/template/profile/')
         return render(request, 'profile/profile.html')

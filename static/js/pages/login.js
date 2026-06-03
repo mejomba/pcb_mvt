@@ -169,7 +169,7 @@
       }
 
       // موفق → پروفایل
-      const nextUrl = getParam('next') || '/profile/';
+      const nextUrl = getParam('next') || '/api/v1/auth/template/profile/';
       window.location.href = nextUrl;
     });
   }
@@ -203,7 +203,7 @@
       }
 
       // موفق → next param یا پروفایل
-      const nextUrl = getParam('next') || '/profile/';
+      const nextUrl = getParam('next') || '/api/v1/auth/template/profile/';
       window.location.href = nextUrl;
     });
   }

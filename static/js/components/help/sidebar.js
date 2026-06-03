@@ -38,10 +38,10 @@
       var hasChildren = item.child && item.child.length > 0;
 
       var itemClass = 'menu-item' + (isActive ? ' menu-item-active' : '');
-      var href      = hasChildren ? 'javascript:void(0)' : '/help/' + item.slug + '/';
+      var href      = hasChildren ? 'javascript:void(0)' : '/api/v1/pcb/help/' + item.slug + '/';
       var chevron   = hasChildren
         ? `<span class="menu-chevron${isOpen ? ' open' : ''}" aria-hidden="true">
-             <i class="bi bi-chevron-left"></i>
+             <i class="bi bi-chevron-right"></i>
            </span>`
         : '';
 
@@ -136,8 +136,8 @@
       content.style.opacity        = collapsed ? '0' : '1';
       content.style.pointerEvents  = collapsed ? 'none' : '';
       toggleIcon.className = collapsed
-        ? 'bi bi-chevron-left'
-        : 'bi bi-chevron-right';
+        ? 'bi bi-chevron-right'
+        : 'bi bi-chevron-left';
     });
 
     // Toggle tree items با event delegation

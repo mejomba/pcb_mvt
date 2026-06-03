@@ -107,6 +107,23 @@ class OrderViewSet(viewsets.ModelViewSet):
         # در زمان ایجاد سفارش، کاربر جاری را ثبت می‌کنیم
         serializer.save(user=self.request.user)
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        order_id = self.request.query_params.get('id')
+        gte = self.request.query_params.get('created_at__gte')
+        lte = self.request.query_params.get('created_at__lte')
+        status = self.request.query_params.get('status')
+        if order_id:
+            queryset = queryset.filter(id=order_id)
+        if gte and lte:
+            queryset = queryset.filter(created_at__gte=gte, created_at__lte=lte)
+        if gte and not lte:
+            queryset = queryset.filter(created_at__eq=gte)
+        if status:
+            queryset = queryset.filter(status=status)
+
+        return queryset
+
 
 class OrderSelectionViewSet(viewsets.ModelViewSet):
     queryset = OrderSelection.objects.all().select_related('order', 'attribute', 'selected_option')

@@ -9,6 +9,7 @@
   display: flex;
   align-items: stretch;   /* هر دو بخش هم‌ارتفاع */
   height: 56px;
+  background-color: white;
 }
 
 /* ─── Left Section (روشن) ───────────────────────── */
@@ -488,4 +489,9 @@
   text-align: center;
   color: #94a3b8;
   font-size: 0.9375rem;
+}
+
+.disable-front {
+  opacity: 0.6 !important;
+  cursor: not-allowed !important;
 }
