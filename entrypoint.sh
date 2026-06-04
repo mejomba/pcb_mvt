@@ -9,7 +9,7 @@ echo "🔄 اجرای migration ها..."
 python manage.py migrate --noinput
 
 echo "📦 جمع‌آوری فایل‌های static..."
-python manage.py collectstatic --noinput
+python manage.py collectstatic --noinput --clear
 
 echo "🚀 اجرای Gunicorn..."
 exec gunicorn config.wsgi:application \
