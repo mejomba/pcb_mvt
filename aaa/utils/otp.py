@@ -35,7 +35,8 @@ class OTPAction:
                                       }
                                     ]
                                 })
-            headers = {"X-API-KEY": "YfBVq1GRodeKKzWnMH7S7odrZ8ENxSjsop7dgfxgJXa7G9ay"}
+            # headers = {"X-API-KEY": "YfBVq1GRodeKKzWnMH7S7odrZ8ENxSjsop7dgfxgJXa7G9ay"}
+            headers = {"X-API-KEY": "8hNXrAanJnZ9ZBF48EQwuUCmaR1C4GVhjU58b4Oq5eTfvfRc"}
             res = requests.post('https://api.sms.ir/v1/send/verify', json=json_data, headers=headers)
             print(phones, message)
 
