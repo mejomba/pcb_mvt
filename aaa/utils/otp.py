@@ -27,11 +27,11 @@ class OTPAction:
         for phone in phones:
             import json
             json_data = json.dumps({
-                                    "mobile": phone,
+                                    "mobile": phone[1:],
                                     "templateId": 485441,
                                     "parameters": [
                                       {
-                                        "name": "CODE",
+                                        "name": "Code",
                                         "value": message
                                       }
                                     ]
