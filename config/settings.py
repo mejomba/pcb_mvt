@@ -41,10 +41,10 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'sssss')
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # حالا این بی‌خطر کار می‌کنه (اگه می‌خوای HTTP→HTTPS ریدایرکت بشه)
-SECURE_SSL_REDIRECT = True
+# SECURE_SSL_REDIRECT = True
 
 # دامنه‌ها
-ALLOWED_HOSTS = ['globalpcb.ir', 'www.globalpcb.ir', '95.38.164.113']
+ALLOWED_HOSTS = ['globalpcb.ir', 'www.globalpcb.ir', '95.38.164.113', 'localhost']
 CSRF_TRUSTED_ORIGINS = ['https://globalpcb.ir', 'https://www.globalpcb.ir']
 
 # کوکی‌ها فقط روی HTTPS
