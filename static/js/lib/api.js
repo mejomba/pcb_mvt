@@ -27,6 +27,7 @@ function processQueue(error) {
 
 // ─── Core Request ─────────────────────────────────────────────
 async function apiRequest(url, options = {}) {
+  debugger
   const accessToken = typeof getAccessToken === 'function'
     ? getAccessToken()
     : getCookie('access');
