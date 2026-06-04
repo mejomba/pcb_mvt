@@ -29,5 +29,7 @@ class CustomUser(AbstractUser):
     objects = CustomUserManager()
 
     def save(self, *args, **kwargs):
-        self.full_name = f"{self.first_name.strip()} {self.last_name.strip()}".strip()
+        first = (self.first_name or '').strip()
+        last = (self.last_name or '').strip()
+        self.full_name = f"{first} {last}".strip()
         super().save(*args, **kwargs)
