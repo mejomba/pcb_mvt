@@ -40,10 +40,10 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /app
 
 # System dependencies برای psycopg2 و سایر بسته‌ها
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    libpq-dev \
-    gcc \
-    && rm -rf /var/lib/apt/lists/*
+RUN #apt-get update && apt-get install -y --no-install-recommends \
+#    libpq-dev \
+#    gcc \
+#    && rm -rf /var/lib/apt/lists/*
 
 ## pip mirror (ابرها)
 RUN mkdir -p /root/.pip && \
