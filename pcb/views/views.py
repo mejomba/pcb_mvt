@@ -109,7 +109,7 @@ class OrderViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        if not self.request.user.is_supperuser:
+        if not self.request.user.is_superuser:
             queryset = queryset.filter(user=self.request.user)
         order_id = self.request.query_params.get('id')
         gte = self.request.query_params.get('created_at__gte')
