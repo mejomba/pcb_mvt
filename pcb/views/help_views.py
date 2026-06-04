@@ -19,7 +19,7 @@ class NewOrderView(View):
     """جایگزین: app/new-order/page.tsx"""
     def get(self, request):
         if not request.COOKIES.get('access'):
-            return redirect('/api/v1/auth/login/?next=/new-order/')
+            return redirect('/api/v1/auth/template/otp/?next=/api/v1/pcb/template/order/')
         return render(request, 'new-order/new-order.html')
 
 
