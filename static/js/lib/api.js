@@ -1,5 +1,5 @@
 // === js/lib/api.js — نسخه نهایی ===
-const API_BASE = 'http://globalpcb.ir'; // آدرس بک‌اند جنگو
+const API_BASE = 'http://localhost:8000'; // آدرس بک‌اند جنگو
 
 // ─── Cookie Helpers ───────────────────────────────────────────
 function getCookie(name) {

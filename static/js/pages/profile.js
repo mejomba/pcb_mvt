@@ -109,7 +109,7 @@
         '<div class="pf-empty-state">' +
           '<i class="bi bi-inbox pf-empty-icon"></i>' +
           '<p>هنوز سفارشی ثبت نشده است.</p>' +
-          '<a href="/new-order/" class="pf-btn pf-btn-primary pf-btn-sm mt-2">ثبت اولین سفارش</a>' +
+          '<a href="/api/v1/pcb/new-order/" class="pf-btn pf-btn-primary pf-btn-sm mt-2">ثبت اولین سفارش</a>' +
         '</div>';
       return;
     }

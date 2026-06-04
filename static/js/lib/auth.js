@@ -48,7 +48,7 @@ async function sendOtpAction(phone) {
 // جایگزین: verifyOtpAction در actions/auth.ts
 async function verifyOtpAction(phone, code, next_step) {
   const endpoint =
-    next_step === 'register' ? '/api/v1/auth/otp/verify' : '/api/v1/auth/otp/verify/';
+    next_step === 'register' ? '/api/v1/auth/otp/verify/' : '/api/v1/auth/otp/verify/';
 
   try {
     const data = await api.post(endpoint, { phone, code });
