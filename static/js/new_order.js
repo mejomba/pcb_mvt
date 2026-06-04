@@ -273,7 +273,7 @@ $(document).ready(function() {
         }
         $msg.text('❌ ' + err).removeClass('text-success').addClass('text-danger');
         if (jqXHR.status === 401) {
-          window.location.href = '/api/v1/auth/login/';
+          window.location.href = '/api/v1/auth/template/otp/';
         }
       },
       complete: function() {
