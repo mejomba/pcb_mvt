@@ -31,7 +31,7 @@ class OTPAction:
                                     "templateId": 485441,
                                     "parameters": [
                                       {
-                                        "name": "Code",
+                                        "name": "CODE",
                                         "value": message
                                       }
                                     ]
