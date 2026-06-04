@@ -27,7 +27,7 @@ class OTPAction:
             import json
             json_data = json.dumps({
                                     "mobile": phone,
-                                    "templateId": 123456,
+                                    "templateId": 412785,
                                     "parameters": [
                                       {
                                         "name": "Code",
