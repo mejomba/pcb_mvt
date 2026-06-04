@@ -1,3 +1,4 @@
+import http
 import random
 from typing import List
 
@@ -30,13 +31,14 @@ class OTPAction:
                                     "templateId": 485441,
                                     "parameters": [
                                       {
-                                        "name": "Code",
+                                        "name": "CODE",
                                         "value": message
                                       }
                                     ]
                                 })
             # headers = {"X-API-KEY": "YfBVq1GRodeKKzWnMH7S7odrZ8ENxSjsop7dgfxgJXa7G9ay"}
-            headers = {"X-API-KEY": "8hNXrAanJnZ9ZBF48EQwuUCmaR1C4GVhjU58b4Oq5eTfvfRc"}
+            headers = {"X-API-KEY": "8hNXrAanJnZ9ZBF48EQwuUCmaR1C4GVhjU58b4Oq5eTfvfRc", 'Content-Type': 'application/json',
+                'Accept': 'text/plain'}
             res = requests.post('https://api.sms.ir/v1/send/verify', json=json_data, headers=headers)
             print(phones, message)
 
