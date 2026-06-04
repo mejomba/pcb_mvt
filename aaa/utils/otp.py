@@ -40,7 +40,7 @@ class OTPAction:
             headers = {"X-API-KEY": "8hNXrAanJnZ9ZBF48EQwuUCmaR1C4GVhjU58b4Oq5eTfvfRc", 'Content-Type': 'application/json',
                 'Accept': '*/*'}
             # res = requests.post('https://api.sms.ir/v1/send/verify', json=json_data, headers=headers)
-            res = requests.post('https://api.sms.ir/v1/send/verify', data={
+            res = requests.post('https://api.sms.ir/v1/send/verify', json={
                                     "mobile": phone[1:],
                                     "templateId": 485441,
                                     "parameters": [
