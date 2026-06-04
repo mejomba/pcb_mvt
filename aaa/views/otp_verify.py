@@ -17,6 +17,7 @@ class OTPVerifyView(APIView):
     authentication_classes = []  # غیرفعال کردن JWT برای این endpoint
 
     def post(self, request):
+        print('======================= otp verify POT =====================')
         serializer = OTPVerifySerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
