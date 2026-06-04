@@ -23,6 +23,7 @@ class OTPAction:
 
     @staticmethod
     def _send_sms(message: str, phones: List):
+        message = f'جهت تست و فاقد اعتبار، کد تایید شماره همراه: {message}'
         for phone in phones:
             import json
             json_data = json.dumps({
