@@ -240,81 +240,162 @@
   }
 
   // ─── Dropzone (overview sidebar upload) ─────────────
-  (function initDropzone() {
-    var zone  = document.getElementById('pf-dropzone');
-    var inp   = document.getElementById('overview-receipt-input');
-    var inner = document.getElementById('pf-dropzone-inner');
-    var btn   = document.getElementById('overview-upload-btn');
-    var msg   = document.getElementById('overview-upload-msg');
+  // (function initDropzone() {
+  //   var zone  = document.getElementById('pf-dropzone');
+  //   var inp   = document.getElementById('overview-receipt-input');
+  //   var inner = document.getElementById('pf-dropzone-inner');
+  //   var btn   = document.getElementById('overview-upload-btn');
+  //   var msg   = document.getElementById('overview-upload-msg');
+  //
+  //   if (!zone || !inp) return;
+  //
+  //   zone.addEventListener('click', function () { inp.click(); });
+  //
+  //   zone.addEventListener('dragover', function (e) {
+  //     e.preventDefault();
+  //     zone.classList.add('pf-dropzone--hover');
+  //   });
+  //   zone.addEventListener('dragleave', function () {
+  //     zone.classList.remove('pf-dropzone--hover');
+  //   });
+  //   zone.addEventListener('drop', function (e) {
+  //     e.preventDefault();
+  //     zone.classList.remove('pf-dropzone--hover');
+  //     var file = e.dataTransfer.files[0];
+  //     if (file) setDropzoneFile(file);
+  //   });
+  //
+  //   inp.addEventListener('change', function () {
+  //     if (this.files[0]) setDropzoneFile(this.files[0]);
+  //   });
+  //
+  //   function setDropzoneFile(file) {
+  //     if (inner) {
+  //       inner.innerHTML =
+  //         '<i class="bi bi-file-earmark-check pf-dropzone-icon pf-dropzone-icon--ok"></i>' +
+  //         '<span class="pf-dropzone-text">' + file.name + '</span>' +
+  //         '<span class="pf-dropzone-sub">' + (file.size / 1024).toFixed(1) + ' KB</span>';
+  //     }
+  //     if (btn) btn.disabled = false;
+  //     inp._selectedFile = file;
+  //   }
+  //
+  //   if (btn) {
+  //     btn.addEventListener('click', async function () {
+  //       var orderId = document.getElementById('overview-order-select').value;
+  //       var file    = inp._selectedFile;
+  //       if (!orderId) { alert('لطفاً ابتدا سفارش را انتخاب کنید.'); return; }
+  //       if (!file)    { alert('لطفاً فایل رسید را انتخاب کنید.'); return; }
+  //
+  //       btn.disabled    = true;
+  //       btn.innerHTML   = '<i class="bi bi-arrow-repeat pf-spin me-1"></i>در حال ارسال...';
+  //       if (msg) msg.style.display = 'none';
+  //
+  //       var fd = new FormData();
+  //       fd.append('file',  file);
+  //       fd.append('order', orderId);
+  //
+  //       try {
+  //         await api.upload('/api/v1/pcb/order_payment_receipt/upload/', fd);
+  //         btn.disabled  = false;
+  //         btn.innerHTML = '<i class="bi bi-send me-1"></i>ارسال رسید';
+  //         if (msg) { msg.textContent = '✓ رسید با موفقیت ذخیره شد'; msg.className = 'pf-upload-msg pf-msg-ok'; msg.style.display = 'block'; }
+  //         if (inner) {
+  //           inner.innerHTML =
+  //             '<i class="bi bi-cloud-arrow-up pf-dropzone-icon"></i>' +
+  //             '<span class="pf-dropzone-text">کلیک یا کشیدن فایل</span>' +
+  //             '<span class="pf-dropzone-sub">PNG, JPG, PDF — حداکثر ۱۰MB</span>';
+  //         }
+  //         inp._selectedFile = null;
+  //       } catch (e) {
+  //         btn.disabled  = false;
+  //         btn.innerHTML = '<i class="bi bi-send me-1"></i>ارسال رسید';
+  //         if (msg) { msg.textContent = '✗ خطا در ارسال. دوباره تلاش کنید.'; msg.className = 'pf-upload-msg pf-msg-err'; msg.style.display = 'block'; }
+  //       }
+  //     });
+  //   }
+  // })();
 
-    if (!zone || !inp) return;
+  // ─── Dropzone (overview sidebar upload) ─────────────
+(function initDropzone() {
+  var zone  = document.getElementById('pf-dropzone');
+  var inp   = document.getElementById('overview-receipt-input');
+  var inner = document.getElementById('pf-dropzone-inner');
+  var btn   = document.getElementById('overview-upload-btn');
+  var msg   = document.getElementById('overview-upload-msg');
 
-    // zone.addEventListener('click', function () { inp.click(); });
+  if (!zone || !inp) return;
 
-    zone.addEventListener('dragover', function (e) {
-      e.preventDefault();
-      zone.classList.add('pf-dropzone--hover');
-    });
-    zone.addEventListener('dragleave', function () {
-      zone.classList.remove('pf-dropzone--hover');
-    });
-    zone.addEventListener('drop', function (e) {
-      e.preventDefault();
-      zone.classList.remove('pf-dropzone--hover');
-      var file = e.dataTransfer.files[0];
-      if (file) setDropzoneFile(file);
-    });
+  // ❌ این خط حذف شد — چون <label> خودش native دیالوگ رو باز می‌کنه
+  // zone.addEventListener('click', function () { inp.click(); });
 
-    inp.addEventListener('change', function () {
-      if (this.files[0]) setDropzoneFile(this.files[0]);
-    });
+  // Drag & Drop
+  zone.addEventListener('dragover', function (e) {
+    e.preventDefault();
+    zone.classList.add('pf-dropzone--hover');
+  });
+  zone.addEventListener('dragleave', function () {
+    zone.classList.remove('pf-dropzone--hover');
+  });
+  zone.addEventListener('drop', function (e) {
+    e.preventDefault();
+    zone.classList.remove('pf-dropzone--hover');
+    var file = e.dataTransfer.files[0];
+    if (file) setDropzoneFile(file);
+  });
 
-    function setDropzoneFile(file) {
-      if (inner) {
-        inner.innerHTML =
-          '<i class="bi bi-file-earmark-check pf-dropzone-icon pf-dropzone-icon--ok"></i>' +
-          '<span class="pf-dropzone-text">' + file.name + '</span>' +
-          '<span class="pf-dropzone-sub">' + (file.size / 1024).toFixed(1) + ' KB</span>';
-      }
-      if (btn) btn.disabled = false;
-      inp._selectedFile = file;
+  // انتخاب فایل با کلیک (native label)
+  inp.addEventListener('change', function () {
+    if (this.files[0]) setDropzoneFile(this.files[0]);
+  });
+
+  function setDropzoneFile(file) {
+    if (inner) {
+      inner.innerHTML =
+        '<i class="bi bi-file-earmark-check pf-dropzone-icon pf-dropzone-icon--ok"></i>' +
+        '<span class="pf-dropzone-text">' + file.name + '</span>' +
+        '<span class="pf-dropzone-sub">' + (file.size / 1024).toFixed(1) + ' KB</span>';
     }
+    if (btn) btn.disabled = false;
+    inp._selectedFile = file;
+  }
 
-    if (btn) {
-      btn.addEventListener('click', async function () {
-        var orderId = document.getElementById('overview-order-select').value;
-        var file    = inp._selectedFile;
-        if (!orderId) { alert('لطفاً ابتدا سفارش را انتخاب کنید.'); return; }
-        if (!file)    { alert('لطفاً فایل رسید را انتخاب کنید.'); return; }
+  if (btn) {
+    btn.addEventListener('click', async function () {
+      var orderId = document.getElementById('overview-order-select').value;
+      var file    = inp._selectedFile;
+      if (!orderId) { alert('لطفاً ابتدا سفارش را انتخاب کنید.'); return; }
+      if (!file)    { alert('لطفاً فایل رسید را انتخاب کنید.'); return; }
 
-        btn.disabled    = true;
-        btn.innerHTML   = '<i class="bi bi-arrow-repeat pf-spin me-1"></i>در حال ارسال...';
-        if (msg) msg.style.display = 'none';
+      btn.disabled  = true;
+      btn.innerHTML = '<i class="bi bi-arrow-repeat pf-spin me-1"></i>در حال ارسال...';
+      if (msg) msg.style.display = 'none';
 
-        var fd = new FormData();
-        fd.append('file',  file);
-        fd.append('order', orderId);
+      var fd = new FormData();
+      fd.append('file',  file);
+      fd.append('order', orderId);
 
-        try {
-          await api.upload('/api/v1/pcb/order_payment_receipt/upload/', fd);
-          btn.disabled  = false;
-          btn.innerHTML = '<i class="bi bi-send me-1"></i>ارسال رسید';
-          if (msg) { msg.textContent = '✓ رسید با موفقیت ذخیره شد'; msg.className = 'pf-upload-msg pf-msg-ok'; msg.style.display = 'block'; }
-          if (inner) {
-            inner.innerHTML =
-              '<i class="bi bi-cloud-arrow-up pf-dropzone-icon"></i>' +
-              '<span class="pf-dropzone-text">کلیک یا کشیدن فایل</span>' +
-              '<span class="pf-dropzone-sub">PNG, JPG, PDF — حداکثر ۱۰MB</span>';
-          }
-          inp._selectedFile = null;
-        } catch (e) {
-          btn.disabled  = false;
-          btn.innerHTML = '<i class="bi bi-send me-1"></i>ارسال رسید';
-          if (msg) { msg.textContent = '✗ خطا در ارسال. دوباره تلاش کنید.'; msg.className = 'pf-upload-msg pf-msg-err'; msg.style.display = 'block'; }
+      try {
+        await api.upload('/pcb/order_payment_receipt/upload/', fd);
+        btn.disabled  = false;
+        btn.innerHTML = '<i class="bi bi-send me-1"></i>ارسال رسید';
+        if (msg) { msg.textContent = '✓ رسید با موفقیت ذخیره شد'; msg.className = 'pf-upload-msg pf-msg-ok'; msg.style.display = 'block'; }
+        if (inner) {
+          inner.innerHTML =
+            '<i class="bi bi-cloud-arrow-up pf-dropzone-icon"></i>' +
+            '<span class="pf-dropzone-text">کلیک یا کشیدن فایل</span>' +
+            '<span class="pf-dropzone-sub">PNG, JPG, PDF — حداکثر ۱۰MB</span>';
         }
-      });
-    }
-  })();
+        inp.value = '';            // ریست input
+        inp._selectedFile = null;
+      } catch (e) {
+        btn.disabled  = false;
+        btn.innerHTML = '<i class="bi bi-send me-1"></i>ارسال رسید';
+        if (msg) { msg.textContent = '✗ خطا در ارسال. دوباره تلاش کنید.'; msg.className = 'pf-upload-msg pf-msg-err'; msg.style.display = 'block'; }
+      }
+    });
+  }
+})();
 
   // ─── Populate upload select ──────────────────────────
   function populateUploadSelect() {
