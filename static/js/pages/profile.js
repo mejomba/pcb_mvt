@@ -249,7 +249,7 @@
 
     if (!zone || !inp) return;
 
-    zone.addEventListener('click', function () { inp.click(); });
+    // zone.addEventListener('click', function () { inp.click(); });
 
     zone.addEventListener('dragover', function (e) {
       e.preventDefault();
