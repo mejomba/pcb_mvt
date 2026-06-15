@@ -35,7 +35,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # خواندن از environment
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 SECRET_KEY = os.environ.get('SECRET_KEY', 'sssss')
-# ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
 
 # settings.py
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -43,9 +43,9 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # حالا این بی‌خطر کار می‌کنه (اگه می‌خوای HTTP→HTTPS ریدایرکت بشه)
 # SECURE_SSL_REDIRECT = True
 
-DEBUG = True
+# DEBUG = True
 # دامنه‌ها
-ALLOWED_HOSTS = ['globalpcb.ir', 'www.globalpcb.ir', '95.38.164.113', 'localhost', "*"]
+ALLOWED_HOSTS += ['globalpcb.ir', 'www.globalpcb.ir', '95.38.164.113', 'localhost']
 CSRF_TRUSTED_ORIGINS = ['https://globalpcb.ir', 'https://www.globalpcb.ir']
 
 # کوکی‌ها فقط روی HTTPS
