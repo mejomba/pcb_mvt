@@ -1,14 +1,18 @@
 from django.conf import settings
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
+from drf_spectacular.utils import extend_schema, inline_serializer
 from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
+
+from aaa.serializers.auth_login import LoginSerializer
 from aaa.serializers.otp_verify import OTPVerifySerializer
 from aaa.serializers.auth_signup import SignupSerializer
 from aaa.utils.jwt_tokens import generate_jwt_response
+from rest_framework import serializers
 
 
 @method_decorator(csrf_exempt, name="dispatch")
@@ -16,6 +20,17 @@ class OTPVerifyView(APIView):
     permission_classes = [AllowAny]
     authentication_classes = []  # غیرفعال کردن JWT برای این endpoint
 
+    @extend_schema(request=OTPVerifySerializer, responses={
+            200: inline_serializer(
+                name='OTPVerifyResponse',
+                fields={
+                    "has_password": serializers.BooleanField(),
+                    'access': serializers.CharField(),
+                    'refresh': serializers.CharField()  # manage in cookie
+                }
+            ),
+            400: {'description': 'ورودی نامعتبر'},
+        })
     def post(self, request):
         print('======================= otp verify POT =====================')
         serializer = OTPVerifySerializer(data=request.data)

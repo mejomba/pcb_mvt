@@ -6,9 +6,12 @@ from aaa.serializers.auth_login import LoginSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from aaa.utils.jwt_tokens import generate_jwt_response
 from aaa.serializers.auth_signup import SignupSerializer
+from drf_spectacular.utils import extend_schema
 
 
 class LoginView(APIView):
+    # @extend_schema(request=LoginSerializer, responses=LoginSerializer)
+    @extend_schema(exclude=True)
     def post(self, request):
         serializer = LoginSerializer(data=request.data)
         if serializer.is_valid():

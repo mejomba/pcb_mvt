@@ -1,5 +1,6 @@
 # aaa/views/otp_login.py
 from django.conf import settings
+from drf_spectacular.utils import extend_schema
 from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -17,6 +18,7 @@ class OtpLoginAPIView(APIView):
     permission_classes = [AllowAny]
     authentication_classes = []  # غیرفعال کردن JWT برای این endpoint
 
+    @extend_schema(exclude=True)
     def post(self, request):
         phone = request.data.get('phone')
         code = request.data.get('code')

@@ -2,9 +2,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from aaa.serializers.otp_send import OTPSendSerializer
+from drf_spectacular.utils import extend_schema
 
 
 class OTPSendView(APIView):
+    @extend_schema(request=OTPSendSerializer, responses=OTPSendSerializer)
     def post(self, request):
         serializer = OTPSendSerializer(data=request.data)
         if serializer.is_valid():

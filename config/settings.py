@@ -43,8 +43,9 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # حالا این بی‌خطر کار می‌کنه (اگه می‌خوای HTTP→HTTPS ریدایرکت بشه)
 # SECURE_SSL_REDIRECT = True
 
+DEBUG = True
 # دامنه‌ها
-ALLOWED_HOSTS = ['globalpcb.ir', 'www.globalpcb.ir', '95.38.164.113', 'localhost']
+ALLOWED_HOSTS = ['globalpcb.ir', 'www.globalpcb.ir', '95.38.164.113', 'localhost', "*"]
 CSRF_TRUSTED_ORIGINS = ['https://globalpcb.ir', 'https://www.globalpcb.ir']
 
 # کوکی‌ها فقط روی HTTPS
@@ -230,10 +231,11 @@ CACHES = {
 }
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'pyproject2025 API',
-    'DESCRIPTION': 'API documentation for pyproject2025 e-learning platform',
+    'TITLE': 'globalpcb API',
+    'DESCRIPTION': 'API documentation for globalpcb platform',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
+    "POSTPROCESSING_HOOKS": ["core.hook.tag_by_app"],
 
     # # ترتیب و توضیح گروه‌ها (Tags) در Swagger UI
     # "TAGS": [
@@ -267,3 +269,11 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_ORIGINS = True
+
+# CORS_ALLOWED_ORIGINS = [
+#     "https://example.com",
+#     "https://www.example.com",
+#     "http://localhost:3000",
+#     "http://127.0.0.1:3000",
+# ]

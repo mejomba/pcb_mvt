@@ -10,6 +10,7 @@ from aaa.serializers.auth_signup import SignupSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from aaa.utils.jwt_tokens import generate_jwt_response
 import re
+from drf_spectacular.utils import extend_schema, inline_serializer
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -36,14 +37,35 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         return token
 
 
-class CustomTokenObtainPairView(TokenObtainPairView):
-    serializer_class = CustomTokenObtainPairSerializer
+# class CustomTokenObtainPairView(TokenObtainPairView):
+#     serializer_class = CustomTokenObtainPairSerializer
 
 
 class PhoneCheckAPIView(APIView):
     phone_pattern = r'^09\d{9}$'
 
+    @extend_schema(
+        request=inline_serializer(
+            name='PhoneCheckRequest',
+            fields={
+                'phone': serializers.CharField(max_length=11, help_text='شماره موبایل با 09 شروع شود'),
+                'method': serializers.ChoiceField(choices=['otp', 'password'], default='otp')
+            }
+        ),
+        responses={
+            200: inline_serializer(
+                name='PhoneCheckResponse',
+                fields={
+                    'exists': serializers.BooleanField(),
+                    'method': serializers.CharField(),
+                    'next_step': serializers.CharField()
+                }
+            ),
+            400: {'description': 'ورودی نامعتبر'},
+        }
+    )
     def post(self, request):
+        pass
         phone = request.data.get('phone')
         method = request.data.get('method')  # values: "password" or "otp"
 
@@ -51,7 +73,7 @@ class PhoneCheckAPIView(APIView):
             return Response({'detail': 'phone and method are required.'}, status=400)
 
         if not re.match(self.phone_pattern, phone):
-            raise ValueError("phone number is not valid format")
+            return Response({'detail': 'phone number is not valid format'}, status=400)
 
         try:
             user = CustomUser.objects.get(phone=phone)
@@ -75,6 +97,7 @@ class PhoneCheckAPIView(APIView):
 
 
 class SignupView(APIView):
+    @extend_schema(exclude=True)
     def post(self, request):
         serializer = SignupSerializer(data=request.data)
         if serializer.is_valid():

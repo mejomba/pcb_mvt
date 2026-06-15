@@ -1,3 +1,4 @@
+from drf_spectacular.utils import extend_schema
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -8,10 +9,18 @@ from aaa.serializers.user_profile import UserProfileSerializer
 class UserProfileView(APIView):
     permission_classes = [IsAuthenticated]
 
+    @extend_schema(
+        request=UserProfileSerializer,
+        responses=UserProfileSerializer
+    )
     def get(self, request):
         serializer = UserProfileSerializer(request.user)
         return Response(serializer.data)
 
+    @extend_schema(
+        request=UserProfileSerializer,
+        responses=UserProfileSerializer
+    )
     def patch(self, request):
         serializer = UserProfileSerializer(request.user, data=request.data, partial=True)
         if serializer.is_valid():

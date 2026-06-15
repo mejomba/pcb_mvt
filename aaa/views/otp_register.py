@@ -1,5 +1,6 @@
 # aaa/views/auth/otp_register.py
 from django.conf import settings
+from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -13,6 +14,7 @@ from aaa.utils.jwt_tokens import generate_jwt_response
 
 
 class OtpRegisterAPIView(APIView):
+    @extend_schema(exclude=True)
     def post(self, request):
         phone = request.data.get('phone')
         code = request.data.get('code')
