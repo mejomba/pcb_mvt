@@ -10,8 +10,7 @@ from drf_spectacular.utils import extend_schema
 
 
 class LoginView(APIView):
-    # @extend_schema(request=LoginSerializer, responses=LoginSerializer)
-    @extend_schema(exclude=True)
+    @extend_schema(request=LoginSerializer, responses=LoginSerializer)
     def post(self, request):
         serializer = LoginSerializer(data=request.data)
         if serializer.is_valid():

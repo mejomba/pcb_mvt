@@ -26,13 +26,14 @@ urlpatterns = [
     path('otp/verify/', OTPVerifyView.as_view(), name='auth_otp_verify'),  # use
     path('set-password/', SetPasswordView.as_view(), name='set-password'),  # use
 
+    path('login/', LoginView.as_view(), name='login'),  # use
     path("password-login-or-signup/", PasswordLoginOrSignupView.as_view(), name='password-login-or-signup'),  # use
 
     path('profile/', UserProfileView.as_view(), name='auth_profile'),  # use
 
 
     path('template/profile/', ProfileView.as_view(),  name='profile'),
-    path('login/', LoginView.as_view(), name='login'),  # use
+
     path('loout/', LogoutView.as_view(), name='logout'),  # use
     path('template/otp/', AuthOtpView.as_view(), name='template_auth_otp'),  # use
     path('template/password/', AuthPasswordView.as_view(), name='template_auth_password'),  # use
