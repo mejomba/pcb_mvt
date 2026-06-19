@@ -4,7 +4,7 @@ from aaa.views.auth_token import CustomTokenRefreshView
 from aaa.views.auth_login import LoginView
 from aaa.views.auth_logout import LogoutView
 from aaa.views.auth_signup import PhoneCheckAPIView, SignupView
-from aaa.views.auth_views import AuthOtpView, AuthOtpVerifyView, AuthPasswordView, LogoutView
+from aaa.views.auth_views import AuthOtpView, AuthOtpVerifyView, AuthPasswordView
 from aaa.views.otp_login import OtpLoginAPIView
 from aaa.views.otp_register import OtpRegisterAPIView
 from aaa.views.otp_send import OTPSendView
@@ -14,9 +14,13 @@ from aaa.views.password_login_or_signup import PasswordLoginOrSignupView
 from aaa.views.resend_otp import ResendOtpAPIView
 from aaa.views.user_profile import UserProfileView
 from aaa.views.set_password import SetPasswordView
+from aaa.views.user_profile import (
+    AddressListCreateView, AddressDetailView,
+    LegalProfileListCreateView, LegalProfileDetailView,
+)
 
 
-app_name = 'auth'
+app_name = 'aaa'
 
 # 'api/v1/auth/'
 urlpatterns = [
@@ -30,6 +34,15 @@ urlpatterns = [
     path("password-login-or-signup/", PasswordLoginOrSignupView.as_view(), name='password-login-or-signup'),  # use
 
     path('profile/', UserProfileView.as_view(), name='auth_profile'),  # use
+
+
+    # address
+    path('addresses/', AddressListCreateView.as_view(), name='address-list-create'),
+    path('addresses/<int:pk>/', AddressDetailView.as_view(), name='address-detail'),
+
+    # profile sherkati
+    path('legal-profiles/', LegalProfileListCreateView.as_view(), name='legalprofile-list-create'),
+    path('legal-profiles/<int:pk>/', LegalProfileDetailView.as_view(), name='legalprofile-detail'),
 
 
     path('template/profile/', ProfileView.as_view(),  name='profile'),
