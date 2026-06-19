@@ -123,6 +123,7 @@ class Order(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="زمان ثبت")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="آخرین به‌روزرسانی")
+    part_number = models.CharField(max_length=255, null=True, blank=True)
 
     class Meta:
         verbose_name = "سفارش"
