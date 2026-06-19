@@ -11,9 +11,10 @@ urlpatterns = [
     path("ckeditor/", include("ckeditor_uploader.urls")),
 
     path('api/v1/', include([
-        path('auth/', include(('aaa.urls.auth_urls', 'auth'), namespace='auth')),
+        path('auth/', include(('aaa.urls.auth_urls', 'aaa'), namespace='aaa')),
         path('pcb/', include(('pcb.urls', 'pcb'), namespace='pcb')),
         path("blog/", include("blog.urls")),
+        path('support/', include(('support.urls', 'support'), namespace='support')),
     ])),
 
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
