@@ -7,7 +7,7 @@
 {% endif %}
 
 <form id="verify-otp-form" method="post" action="#" class="mt-4"
-      data-ajax-verify-url="{% url 'auth:auth_otp_verify' %}">
+      data-ajax-verify-url="{% url 'aaa:auth_otp_verify' %}">
   {% csrf_token %}
   <input type="hidden" name="phone" value="{{ phone }}">
 {#  <input type="hidden" name="next_step" value="{{ next_step }}">#}

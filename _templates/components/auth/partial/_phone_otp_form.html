@@ -7,8 +7,8 @@
 {% endif %}
 
 <form id="send-otp-form" method="post" action="#" class="mt-4"
-      data-ajax-check-url="{% url 'auth:phone_check' %}"
-      data-ajax-send-url="{% url 'auth:auth_otp_send' %}">
+      data-ajax-check-url="{% url 'aaa:phone_check' %}"
+      data-ajax-send-url="{% url 'aaa:auth_otp_send' %}">
   {% csrf_token %}
   <div class="form-group">
     <label for="phone" class="text-right d-block">شماره موبایل</label>
@@ -80,7 +80,7 @@ $(document).ready(function() {
       headers: { 'X-CSRFToken': csrfToken },
       success: function(response) {
         // کد با موفقیت ارسال شد - هدایت به صفحه تأیید
-        var verifyUrl = "{% url 'auth:template_auth_otp_verify' %}?phone=" + encodeURIComponent(phone)+"&method=" + encodeURIComponent(method);
+        var verifyUrl = "{% url 'aaa:template_auth_otp_verify' %}?phone=" + encodeURIComponent(phone)+"&method=" + encodeURIComponent(method);
         // اگر response شامل next_step هم هست می‌توانی اضافه کنی
         window.location.href = verifyUrl;
       },
