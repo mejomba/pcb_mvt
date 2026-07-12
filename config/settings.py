@@ -33,7 +33,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # ALLOWED_HOSTS = ["dev.backend.com", "127.0.0.1", "localhost"]
 
 # خواندن از environment
-DEBUG = os.environ.get('DEBUG', 'True') == 'True'
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 SECRET_KEY = os.environ.get('SECRET_KEY', 'sssss')
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
 
@@ -45,7 +45,7 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # DEBUG = True
 # دامنه‌ها
-ALLOWED_HOSTS += ['globalpcb.ir', 'www.globalpcb.ir', '95.38.164.113', 'localhost', '*']
+ALLOWED_HOSTS += ['globalpcb.ir', 'www.globalpcb.ir', '95.38.164.113', 'localhost']
 CSRF_TRUSTED_ORIGINS = ['https://globalpcb.ir', 'https://www.globalpcb.ir']
 
 # کوکی‌ها فقط روی HTTPS
@@ -76,6 +76,9 @@ INSTALLED_APPS = [
     'blog',
     'django_filters',
     'support',
+    'accounting',
+    'sls',
+    'wh',
 ]
 
 MIDDLEWARE = [

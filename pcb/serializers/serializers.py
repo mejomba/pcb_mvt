@@ -1,11 +1,11 @@
 import json
 
-from django.utils import safestring
+from django.utils import safestring, timezone
 from rest_framework import serializers
 
 from blog.serializers import GuidPostContentSerializer
 from ..models.models import (AttributeGroup, Attribute, AttributeOption,
-                     ConditionalRule, Order, OrderSelection)
+                             ConditionalRule, Order, OrderSelection, Wrapper)
 
 
 class AttributeOptionSerializer(serializers.ModelSerializer):
@@ -72,6 +72,25 @@ class AttributeGroupSerializer(serializers.ModelSerializer):
         return None
 
 
+class WrapperSerializer(serializers.ModelSerializer):
+    """
+    سریالایزر برای مدل گروه‌ها به همراه ویژگی‌های زیرمجموعه‌اش
+    """
+    # نمایش گروه های مربوط به هر رپر به صورت تودرتو
+    attribute_groups = AttributeGroupSerializer(many=True, read_only=True)
+    file_url = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Wrapper
+        fields = ['id', 'name', 'display_name', 'display_order', 'attribute_groups', 'file_url']
+
+    def get_file_url(self, obj):
+        request = self.context.get('request')
+        if obj.file and request:
+            return request.build_absolute_uri(obj.file.url)
+        return None
+
+
 class ConditionalRuleSerializer(serializers.ModelSerializer):
     """
     سریالایزر برای مدل قوانین شرطی، با فرمتی ساده برای فرانت‌اند.
@@ -113,6 +132,7 @@ class OrderSerializer(serializers.ModelSerializer):
     file_url = serializers.SerializerMethodField()
     quotation_url = serializers.SerializerMethodField(allow_null=True)
     payments_urls = serializers.SerializerMethodField(read_only=True)
+    # item_name = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Order
@@ -185,17 +205,47 @@ class OrderSerializer(serializers.ModelSerializer):
         if selections_to_create:
             OrderSelection.objects.bulk_create(selections_to_create)
 
+    def _get_order_part_number(self, selections_str, file_name):
+        try:
+            selections_data = json.loads(selections_str)
+            if not isinstance(selections_data, list):
+                raise serializers.ValidationError({'selections': 'Expected a list of items.'})
+        except json.JSONDecodeError:
+            raise serializers.ValidationError({'selections': 'Invalid JSON format.'})
+
+        try:
+            current_date_time = timezone.now()
+            y = current_date_time.year
+            m = current_date_time.month
+            d = current_date_time.day
+            h = current_date_time.hour
+            mm = current_date_time.minute
+            s = current_date_time.second
+
+            prefix = Attribute.objects.get(pk=selections_data[0]['attribute']).group.name
+            attribute_pk_in_part_number = [y.pk for y in Attribute.objects.filter(pk__in=[x['attribute'] for x in selections_data], in_part_number=True)]
+            attribute_names = '--'.join([x['value'] or 'empty' for x in selections_data if x['attribute'] in attribute_pk_in_part_number])
+            return f'{prefix}--{file_name}--{y}/{m}/{d}-{h}:{mm}:{s}--{attribute_names}'
+        except Exception as e:
+            return 'can_not_create_part_number'
+
     def create(self, validated_data):
         uploaded_file = self.context['request'].FILES.get('file')
+        file_name = 'no_file'
 
         # اگر فایلی وجود داشت، نام اصلی را در validated_data قرار بده
         if uploaded_file:
             validated_data['original_filename'] = uploaded_file.name  # 👈 این خط مهم است
+            file_name = uploaded_file.name
+            if len(file_name) > 50:
+                file_name = file_name[:50] + '...'
 
         selections_str = self.initial_data.get('selections')
 
+        part_number = self._get_order_part_number(selections_str, file_name)
+
         # ابتدا آبجکت اصلی Order را ایجاد می‌کنیم
-        order = Order.objects.create(**validated_data)
+        order = Order.objects.create(**validated_data, part_number=part_number)
 
         # سپس selections را با استفاده از متد کمکی پردازش می‌کنیم
         self._validate_and_process_selections(order, selections_str)

@@ -7,12 +7,26 @@ from blog.models import Post
 from core.models import AbstractCommWithUserModel
 
 
+class Wrapper(models.Model):
+    name = models.CharField(max_length=100, unique=True, help_text="نام سیستمی و انگلیسی (مثال: PCB)")
+    display_name = models.CharField(max_length=255, help_text="نام نمایشی برای کاربر (مثال: مشخصات PCB)")
+    display_order = models.PositiveIntegerField(default=0, help_text="ترتیب نمایش")
+    file = models.FileField(upload_to='uploads/wrapper/image/', blank=True, null=True)
+
+    class Meta:
+        ordering = ['display_order']
+
+    def __str__(self):
+        return f'{self.display_order} --- {self.display_name}'
+
+
 class AttributeGroup(models.Model):
     """
     گروهی برای دسته‌بندی ویژگی‌ها، مانند 'مشخصات PCB'.
     """
+    wrapper = models.ForeignKey(Wrapper, on_delete=models.DO_NOTHING, null=True, related_name="attribute_groups")
     file = models.FileField(upload_to='uploads/attribute_group/image/', blank=True, null=True)
-    name = models.CharField(max_length=100, unique=True, help_text="نام سیستمی و انگلیسی (مثال: pcb_specifications)")
+    name = models.CharField(max_length=100, unique=True, help_text="نام سیستمی و انگلیسی (مثال: pcb_specifications) به عنوان پیشوند سفارش ذخیره میشود")
     display_name = models.CharField(max_length=255, help_text="نام نمایشی برای کاربر (مثال: مشخصات PCB)")
     display_order = models.PositiveIntegerField(default=0, help_text="ترتیب نمایش گروه")
 
@@ -54,6 +68,7 @@ class Attribute(models.Model):
         verbose_name="نوع کنترل در فرم"
     )
     display_order = models.PositiveIntegerField(default=0, help_text="ترتیب نمایش ویژگی در گروه")
+    in_part_number = models.BooleanField(default=False, verbose_name='نمایش در پارت نامبر؟')
 
     class Meta:
         verbose_name = "ویژگی"

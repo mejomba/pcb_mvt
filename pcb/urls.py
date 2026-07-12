@@ -3,8 +3,8 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views.views import (AttributeGroupViewSet, AttributeViewSet, AttributeOptionViewSet,
-                    ConditionalRuleViewSet, content_type_autocomplete, object_autocomplete, OrderViewSet,
-                    OrderSelectionViewSet, upload_order_payment)
+                          ConditionalRuleViewSet, content_type_autocomplete, object_autocomplete, OrderViewSet,
+                          OrderSelectionViewSet, upload_order_payment, WrapperViewSet)
 
 from .template_view import views as template_views
 from .views.help_views import HelpCategoryView, HelpPostView, NewOrderView, HelpMainView
@@ -14,6 +14,7 @@ router = DefaultRouter()
 
 app_name = 'pcb'
 # ثبت ViewSet ها در روتر
+router.register(r'wrapper', WrapperViewSet, basename='wrapper')
 router.register(r'groups', AttributeGroupViewSet, basename='group')
 router.register(r'attributes', AttributeViewSet, basename='attribute')
 router.register(r'options', AttributeOptionViewSet, basename='option')

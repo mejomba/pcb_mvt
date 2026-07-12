@@ -10,9 +10,19 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from ..models.models import (AttributeGroup, Attribute, AttributeOption,
-                     ConditionalRule, Order, OrderSelection, OrderPayment)
+                             ConditionalRule, Order, OrderSelection, OrderPayment, Wrapper)
 from ..serializers.serializers import (AttributeGroupSerializer, AttributeSerializer, AttributeOptionSerializer,
-                          ConditionalRuleSerializer, OrderSerializer, OrderSelectionSerializer)
+                                       ConditionalRuleSerializer, OrderSerializer, OrderSelectionSerializer,
+                                       WrapperSerializer)
+
+
+class WrapperViewSet(viewsets.ModelViewSet):
+    """
+    ViewSet برای مشاهده و ویرایش wrapper.
+    """
+    # استفاده از prefetch_related برای بهینه‌سازی و جلوگیری از N+1 query
+    queryset = Wrapper.objects.prefetch_related('attribute_groups__attributes__options').all()
+    serializer_class = WrapperSerializer
 
 
 class AttributeGroupViewSet(viewsets.ModelViewSet):

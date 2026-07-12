@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 from django.utils.text import slugify
+from django.db import models
 
 CustomUser = get_user_model()
 
@@ -73,3 +74,27 @@ class HeaderImage(AbstractCommModel):
     image = models.ImageField(upload_to='images/')
     text = models.CharField(max_length=200, null=True, blank=True)
     alt = models.CharField(max_length=100, null=True, blank=True)
+
+
+from django.db import models
+from django.utils.translation import gettext_lazy as _
+
+
+class TimeStampedModel(models.Model):
+    """
+    Abstract base model that provides automatic creation and update timestamps.
+    """
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        db_index=True,
+        verbose_name=_("Created At"),
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True,
+        verbose_name=_("Updated At"),
+    )
+
+    class Meta:
+        abstract = True

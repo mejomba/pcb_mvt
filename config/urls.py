@@ -13,6 +13,9 @@ urlpatterns = [
     path('api/v1/', include([
         path('auth/', include(('aaa.urls.auth_urls', 'aaa'), namespace='aaa')),
         path('pcb/', include(('pcb.urls', 'pcb'), namespace='pcb')),
+        path('sls/', include(('sls.urls', 'sls'), namespace='sls')),
+        # path('accounting/', include(('accounting.urls', 'accounting'), namespace='accounting')),
+        # path('wh/', include(('wh.urls', 'wh'), namespace='wh')),
         path("blog/", include("blog.urls")),
         path('support/', include(('support.urls', 'support'), namespace='support')),
     ])),

@@ -5,8 +5,8 @@ from django.db.models import Q
 from django.urls import path
 from django.utils.safestring import mark_safe
 
-from .models.models import AttributeGroup, Attribute, AttributeOption, ConditionalRule, Order, OrderSelection, Attribute, \
-    AttributeOption, OrderReadOnly
+from .models.models import AttributeGroup, ConditionalRule, Order, OrderSelection, Attribute, \
+    AttributeOption, OrderReadOnly, Wrapper
 from django.contrib.contenttypes.admin import GenericTabularInline
 
 import nested_admin
@@ -18,7 +18,7 @@ from django.utils.html import format_html
 from django.urls import reverse
 
 
-
+admin.site.register([Wrapper])
 class ConditionalRuleForm(forms.ModelForm):
     class Meta:
         model = ConditionalRule
@@ -98,13 +98,6 @@ class ConditionalRuleInline(GenericTabularInline):
     # برای اینکه GenericForeignKey در ادمین نمایش داده شود، باید مدل‌ها را محدود کنیم
     ct_field = 'target_content_type'
     ct_fk_field = 'target_object_id'
-
-
-# @admin.register(AttributeOption)
-# class AttributeOptionAdmin(admin.ModelAdmin):
-#     list_display = ('display_name', 'attribute', 'value', 'is_default')
-#     search_fields = ('display_name', 'value')
-#     inlines = [ConditionalRuleInline] # اضافه کردن اینلاین قوانین
 
 
 # فراموش نکنید مدل ConditionalRule را هم ثبت کنید تا به صورت مستقل هم قابل ویرایش باشد

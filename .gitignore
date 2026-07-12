@@ -1,5 +1,5 @@
 # Created by https://www.gitignore.io
-
+nginx/default.conf
 ### OSX ###
 .DS_Store
 .AppleDouble
