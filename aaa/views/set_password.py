@@ -31,11 +31,11 @@ class SetPasswordView(APIView):
         user = request.user
 
         # اگر یوزر قبلاً رمز معتبر داشته باشد، این اندپوینت اجازه‌ی تغییر نمی‌دهد
-        if user.has_usable_password():
-            return Response(
-                {"detail": "شما قبلاً رمز عبور تنظیم کرده‌اید."},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+        # if user.has_usable_password():
+        #     return Response(
+        #         {"detail": "شما قبلاً رمز عبور تنظیم کرده‌اید."},
+        #         status=status.HTTP_400_BAD_REQUEST
+        #     )
 
         serializer = SetPasswordSerializer(
             data=request.data,

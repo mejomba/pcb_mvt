@@ -34,5 +34,5 @@ class OTPVerifySerializer(serializers.Serializer):
         otp.save()
 
         reset_attempts(otp.phone)
-        user, created = CustomUser.objects.get_or_create(phone=otp.phone)
+        user, created = CustomUser.objects.get_or_create_user(phone=otp.phone)
         return user

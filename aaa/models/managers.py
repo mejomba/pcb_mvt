@@ -7,6 +7,14 @@ class CustomUserManager(BaseUserManager):
     use_in_migrations = True
     phone_pattern = r'^09\d{9}$'
 
+    def get_or_create_user(self, phone, password=None, **extra_fields):
+        try:
+            user = self.get(phone=phone)
+            return user, False
+        except self.model.DoesNotExist:
+            user = self.create_user(phone, password, **extra_fields)
+            return user, True
+
     def create_user(self, phone, password=None, **extra_fields):
         if not phone:
             raise ValueError("Phone number is required")
