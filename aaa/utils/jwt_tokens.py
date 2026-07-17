@@ -6,5 +6,6 @@ def generate_jwt_response(user, serializer_class):
     return {
         "has_password": user.has_usable_password(),
         'access': str(refresh.access_token),
-        'refresh': str(refresh)  # manage in cookie
+        'refresh': str(refresh),  # manage in cookie
+        'full_name': user.full_name
     }

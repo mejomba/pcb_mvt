@@ -11,6 +11,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from aaa.serializers.auth_login import LoginSerializer
 from aaa.serializers.otp_verify import OTPVerifySerializer
 from aaa.serializers.auth_signup import SignupSerializer
+from aaa.serializers.user_profile import UserProfileSerializer
 from aaa.utils.jwt_tokens import generate_jwt_response
 from rest_framework import serializers
 
@@ -26,13 +27,13 @@ class OTPVerifyView(APIView):
                 fields={
                     "has_password": serializers.BooleanField(),
                     'access': serializers.CharField(),
-                    'refresh': serializers.CharField()  # manage in cookie
+                    'refresh': serializers.CharField(),  # manage in cookie
+                    'full_name': serializers.CharField(),
                 }
             ),
             400: {'description': 'ورودی نامعتبر'},
         })
     def post(self, request):
-        print('======================= otp verify POT =====================')
         serializer = OTPVerifySerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
