@@ -6,6 +6,12 @@ from django.contrib.contenttypes.models import ContentType
 from blog.models import Post
 from core.models import AbstractCommWithUserModel
 
+try:
+    from ckeditor_uploader.fields import RichTextUploadingField as RichTextField
+except Exception:
+    # fallback برای محیط‌هایی که CKEditor نصب نیست
+    RichTextField = models.TextField
+
 
 class Wrapper(models.Model):
     name = models.CharField(max_length=100, unique=True, help_text="نام سیستمی و انگلیسی (مثال: PCB)")
@@ -247,3 +253,20 @@ class ConditionalRule(models.Model):
 
     def __str__(self):
         return f"اگر '{self.trigger_option}' انتخاب شد، آنگاه هدف را '{self.get_action_type_display()}' کن"
+
+
+class FAQ(models.Model):
+    title = models.CharField(max_length=255)
+    text = RichTextField()
+    file = models.FileField(upload_to='uploads/faq/image/', blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = "FAQ"
+        verbose_name_plural = "FAQs"
+        ordering = ['-created_at']
+

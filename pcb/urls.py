@@ -8,6 +8,7 @@ from .views.views import (AttributeGroupViewSet, AttributeViewSet, AttributeOpti
 
 from .template_view import views as template_views
 from .views.help_views import HelpCategoryView, HelpPostView, NewOrderView, HelpMainView
+from .views.faq_views import FAQViewSet
 
 # ساخت یک روتر
 router = DefaultRouter()
@@ -21,7 +22,7 @@ router.register(r'options', AttributeOptionViewSet, basename='option')
 router.register(r'rules', ConditionalRuleViewSet, basename='rule')
 router.register(r'orders', OrderViewSet, basename='order')
 router.register(r'order-selections', OrderSelectionViewSet, basename='orderselection')
-
+router.register(r'faqs', FAQViewSet, basename='faq')
 
 # URLهای برنامه شما توسط روتر به صورت خودکار ساخته می‌شوند
 urlpatterns = [

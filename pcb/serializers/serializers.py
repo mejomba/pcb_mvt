@@ -5,7 +5,7 @@ from rest_framework import serializers
 
 from blog.serializers import GuidPostContentSerializer
 from ..models.models import (AttributeGroup, Attribute, AttributeOption,
-                             ConditionalRule, Order, OrderSelection, Wrapper)
+                             ConditionalRule, Order, OrderSelection, Wrapper, FAQ)
 
 
 class AttributeOptionSerializer(serializers.ModelSerializer):
@@ -264,3 +264,27 @@ class OrderSerializer(serializers.ModelSerializer):
         self._validate_and_process_selections(instance, selections_str)
 
         return instance
+
+
+class FAQSerializer(serializers.ModelSerializer):
+    # نمایش لینک کامل فایل
+    file_url = serializers.SerializerMethodField()
+
+    class Meta:
+        model = FAQ
+        fields = ['id', 'title', 'text', 'file', 'file_url', 'created_at', 'updated_at']
+        read_only_fields = ['id', 'created_at', 'updated_at']
+
+    def get_file_url(self, obj):
+        if obj.file:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.file.url)
+            return obj.file.url
+        return None
+
+    def validate_file(self, value):
+        # اعتبارسنجی حجم فایل (حداکثر 5 مگابایت)
+        if value.size > 5 * 1024 * 1024:
+            raise serializers.ValidationError("حجم فایل نباید بیشتر از 5 مگابایت باشد.")
+        return value
