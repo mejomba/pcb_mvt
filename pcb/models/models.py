@@ -13,6 +13,13 @@ except Exception:
     RichTextField = models.TextField
 
 
+class Unit(models.Model):
+    title = models.CharField(max_length=16, blank=True)
+
+    def __str__(self):
+        return f'{self.title}'
+
+
 class Wrapper(models.Model):
     name = models.CharField(max_length=100, unique=True, help_text="نام سیستمی و انگلیسی (مثال: PCB)")
     display_name = models.CharField(max_length=255, help_text="نام نمایشی برای کاربر (مثال: مشخصات PCB)")
@@ -54,6 +61,7 @@ class Attribute(models.Model):
         RADIO_BUTTON = 'radio_button', 'دکمه رادیویی'
         SELECT_BOX = 'select_box', 'لیست کشویی'
         COLOR_PICKER = 'color_picker', 'انتخابگر رنگ'
+        MULTI_TEXT_INPUT = 'multi_text_input', 'ورودی متن چندگانه'
 
     file = models.FileField(upload_to='uploads/attribute/image/', blank=True, null=True)
     guid = models.ForeignKey(Post, on_delete=models.DO_NOTHING, related_name='guids', null=True, blank=True)
@@ -75,6 +83,8 @@ class Attribute(models.Model):
     )
     display_order = models.PositiveIntegerField(default=0, help_text="ترتیب نمایش ویژگی در گروه")
     in_part_number = models.BooleanField(default=False, verbose_name='نمایش در پارت نامبر؟')
+    unit = models.ManyToManyField(Unit, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
 
     class Meta:
         verbose_name = "ویژگی"

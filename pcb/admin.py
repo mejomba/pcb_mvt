@@ -6,7 +6,7 @@ from django.urls import path
 from django.utils.safestring import mark_safe
 
 from .models.models import AttributeGroup, ConditionalRule, Order, OrderSelection, Attribute, \
-    AttributeOption, OrderReadOnly, Wrapper, FAQ
+    AttributeOption, OrderReadOnly, Wrapper, FAQ, Unit
 from django.contrib.contenttypes.admin import GenericTabularInline
 
 import nested_admin
@@ -18,7 +18,7 @@ from django.utils.html import format_html
 from django.urls import reverse
 
 
-admin.site.register([Wrapper, FAQ])
+admin.site.register([Wrapper, FAQ, Unit])
 
 class ConditionalRuleForm(forms.ModelForm):
     class Meta:

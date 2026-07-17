@@ -5,7 +5,13 @@ from rest_framework import serializers
 
 from blog.serializers import GuidPostContentSerializer
 from ..models.models import (AttributeGroup, Attribute, AttributeOption,
-                             ConditionalRule, Order, OrderSelection, Wrapper, FAQ)
+                             ConditionalRule, Order, OrderSelection, Wrapper, FAQ, Unit)
+
+
+class UnitSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Unit
+        fields = ['id', 'title']
 
 
 class AttributeOptionSerializer(serializers.ModelSerializer):
@@ -32,14 +38,14 @@ class AttributeSerializer(serializers.ModelSerializer):
     """
     # نمایش گزینه‌های مربوط به هر ویژگی به صورت تودرتو (Nested)
     options = AttributeOptionSerializer(many=True, read_only=True)
-    # guid = serializers.SerializerMethodField('get_guid_str')
+    unit = UnitSerializer(many=True)
     guid = GuidPostContentSerializer(read_only=True)
     file_url = serializers.SerializerMethodField()
 
     class Meta:
         model = Attribute
-        fields = ['id', 'group', 'name', 'display_name', 'control_type', 'display_order', 'options', 'file_url',
-                  'guid']
+        fields = ['id', 'group', 'name', 'display_name', 'unit', 'control_type', 'description',
+                  'display_order', 'options', 'file_url', 'guid']
 
     def get_file_url(self, obj):
         request = self.context.get('request')
