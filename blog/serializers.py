@@ -1,5 +1,15 @@
 from rest_framework import serializers
-from .models import Post, BlogCategory
+from .models import Post, BlogCategory, Notif
+
+
+class NotifSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Notif
+        fields = [
+            'id',
+            'title',
+            'text',
+        ]
 
 
 class GuidPostSerializer(serializers.ModelSerializer):

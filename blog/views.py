@@ -1,12 +1,36 @@
 from dal import autocomplete
+from django.utils import timezone
 from rest_framework.generics import RetrieveAPIView, get_object_or_404
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from core.pagination import XLargeResultsSetPagination
-from .models import BlogCategory, Post
-from .serializers import GuidPostSerializer, BlogCategorySerializer, GuidPostMiniSerializer, GuidPostContentSerializer
+from .models import BlogCategory, Post, Notif
+from .serializers import GuidPostSerializer, BlogCategorySerializer, GuidPostMiniSerializer, GuidPostContentSerializer, \
+    NotifSerializer
 from rest_framework import viewsets, permissions
+
+
+class NotifViewSet(viewsets.ModelViewSet):
+    """
+    A simple ViewSet for viewing and editing blog Notif.
+    """
+    serializer_class = NotifSerializer
+    # permission_classes = [permissions.AllowAny]
+    pagination_class = XLargeResultsSetPagination  # 250 item per page
+
+    def get_permissions(self):
+        """
+        بر اساس نوع متد، سطح دسترسی را تعیین می‌کند
+        """
+        if self.request.method in ['POST', 'PUT', 'PATCH', 'DELETE']:
+            # برای متدهای نوشتاری، احراز هویت اجباری است
+            return [permissions.IsAuthenticated()]
+        # برای متدهای GET، همه می‌توانند ببینند
+        return [permissions.AllowAny()]
+
+    def get_queryset(self):
+        return Notif.objects.filter(is_active=True, from_date__lte=timezone.now(), to_date__gte=timezone.now())
 
 
 class BlogCategoryAutocomplete(autocomplete.Select2QuerySetView):

@@ -50,7 +50,6 @@ class BlogCategory(AbstractCommWithUserModel, MPTTModel):
         return f"{'—' * self.level} {self.title}"
 
 
-
 class PublishedManager(models.Manager):
     def get_queryset(self):
         qs = super().get_queryset().filter(
@@ -141,3 +140,14 @@ class Post(AbstractCommWithUserModel):
 
     def __str__(self):
         return self.title
+
+
+class Notif(models.Model):
+    title = models.CharField(max_length=64)
+    text = models.TextField()
+    is_active = models.BooleanField(default=True, verbose_name='فعال')
+    from_date = models.DateTimeField(verbose_name='نمایش از تاریخ:')
+    to_date = models.DateTimeField(verbose_name='نمایش تا تاریخ')
+
+    def __str__(self):
+        return f'{self.title}: {self.text}'
