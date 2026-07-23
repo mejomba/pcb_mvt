@@ -51,7 +51,10 @@ class GuidPostSerializer(serializers.ModelSerializer):
         read_only_fields = ['created_at', 'updated_at']
 
     def get_breadcrumb(self, obj):
-        return [cat.title for cat in obj.category.get_ancestors(include_self=True)]
+        try:
+            return [cat.title for cat in obj.category.get_ancestors(include_self=True)]
+        except Exception as e:
+            return []
 
 
 class GuidPostMiniSerializer(GuidPostSerializer):

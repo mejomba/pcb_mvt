@@ -56,7 +56,10 @@ class BlogCategoryAutocomplete(autocomplete.Select2QuerySetView):
 
 
     def get_result_label(self, item):
-        return ' / '.join(ancestor.title for ancestor in item.get_ancestors(include_self=True))
+        try:
+            return ' / '.join(ancestor.title for ancestor in item.get_ancestors(include_self=True))
+        except Exception as e:
+            return ''
 
 
 class BlogCategoryViewSet(viewsets.ModelViewSet):
