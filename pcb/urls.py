@@ -2,6 +2,8 @@
 
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
+
+from .views.product_views import ProductViewSet
 from .views.views import (AttributeGroupViewSet, AttributeViewSet, AttributeOptionViewSet,
                           ConditionalRuleViewSet, content_type_autocomplete, object_autocomplete, OrderViewSet,
                           OrderSelectionViewSet, upload_order_payment, WrapperViewSet)
@@ -23,6 +25,7 @@ router.register(r'rules', ConditionalRuleViewSet, basename='rule')
 router.register(r'orders', OrderViewSet, basename='order')
 router.register(r'order-selections', OrderSelectionViewSet, basename='orderselection')
 router.register(r'faqs', FAQViewSet, basename='faq')
+router.register(r'products', ProductViewSet, basename='product')
 
 # URLهای برنامه شما توسط روتر به صورت خودکار ساخته می‌شوند
 urlpatterns = [

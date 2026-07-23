@@ -280,3 +280,20 @@ class FAQ(models.Model):
         verbose_name_plural = "FAQs"
         ordering = ['-created_at']
 
+
+class Product(models.Model):
+    title = models.CharField(max_length=255)
+    text = RichTextField()
+    file = models.FileField(upload_to='uploads/product/image/', blank=True, null=True)
+    min_price = models.DecimalField(max_digits=25, decimal_places=4)
+    min_quantity = models.DecimalField(max_digits=25, decimal_places=4)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = "Product"
+        verbose_name_plural = "Products"
+        ordering = ['-created_at']

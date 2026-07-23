@@ -5,7 +5,7 @@ from rest_framework import serializers
 
 from blog.serializers import GuidPostContentSerializer
 from ..models.models import (AttributeGroup, Attribute, AttributeOption,
-                             ConditionalRule, Order, OrderSelection, Wrapper, FAQ, Unit)
+                             ConditionalRule, Order, OrderSelection, Wrapper, FAQ, Unit, Product)
 
 
 class UnitSerializer(serializers.ModelSerializer):
@@ -290,7 +290,32 @@ class FAQSerializer(serializers.ModelSerializer):
         return None
 
     def validate_file(self, value):
-        # اعتبارسنجی حجم فایل (حداکثر 5 مگابایت)
-        if value.size > 5 * 1024 * 1024:
-            raise serializers.ValidationError("حجم فایل نباید بیشتر از 5 مگابایت باشد.")
+        # اعتبارسنجی حجم فایل (حداکثر 2 مگابایت)
+        if value.size > 2 * 1024 * 1024:
+            raise serializers.ValidationError("حجم فایل نباید بیشتر از 2 مگابایت باشد.")
+        return value
+
+
+class ProductSerializer(serializers.ModelSerializer):
+    # نمایش لینک کامل فایل
+    file_url = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Product
+        fields = ['id', 'title', 'text', 'file', 'file_url', 'min_price', 'min_quantity',
+                  'created_at', 'updated_at']
+        read_only_fields = ['id', 'created_at', 'updated_at']
+
+    def get_file_url(self, obj):
+        if obj.file:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.file.url)
+            return obj.file.url
+        return None
+
+    def validate_file(self, value):
+        # اعتبارسنجی حجم فایل (حداکثر 2 مگابایت)
+        if value.size > 2 * 1024 * 1024:
+            raise serializers.ValidationError("حجم فایل نباید بیشتر از 2 مگابایت باشد.")
         return value
