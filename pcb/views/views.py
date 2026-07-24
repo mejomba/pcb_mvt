@@ -1,5 +1,7 @@
 # products/views.py
 import json
+
+from django.db.models import Count, Q
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.contenttypes.models import ContentType
@@ -10,7 +12,6 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from core.permissions import IsAuthenticatedAndOwner
 from ..models.models import (AttributeGroup, Attribute, AttributeOption,
                              ConditionalRule, Order, OrderSelection, OrderPayment, Wrapper)
 from ..serializers.serializers import (AttributeGroupSerializer, AttributeSerializer, AttributeOptionSerializer,
@@ -184,3 +185,13 @@ def upload_order_payment(request):
         file=file
     )
     return Response({"id": payment.id})
+
+
+@api_view(['GET'])
+def order_statistic_view(request):
+    stats = Order.objects.aggregate(
+        all_order=Count('id'),
+        order_in_progress=Count('id', filter=Q(status='process')),
+        order_delivered=Count('id', filter=Q(status='deliver'))
+    )
+    return Response(stats)

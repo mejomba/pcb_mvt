@@ -6,7 +6,7 @@ from rest_framework.routers import DefaultRouter
 from .views.product_views import ProductViewSet
 from .views.views import (AttributeGroupViewSet, AttributeViewSet, AttributeOptionViewSet,
                           ConditionalRuleViewSet, content_type_autocomplete, object_autocomplete, OrderViewSet,
-                          OrderSelectionViewSet, upload_order_payment, WrapperViewSet)
+                          OrderSelectionViewSet, upload_order_payment, WrapperViewSet, order_statistic_view)
 
 from .template_view import views as template_views
 from .views.help_views import HelpCategoryView, HelpPostView, NewOrderView, HelpMainView
@@ -39,6 +39,7 @@ urlpatterns = [
     path('help/post/<slug:slug>/',  HelpPostView.as_view(),     name='help_post'),
     path('new-order/',              NewOrderView.as_view(),      name='new_order'),
     path('help/', HelpMainView.as_view(), name='help_main'),
+    path('statistic/', order_statistic_view, name='statistic'),
 ]
 
 
