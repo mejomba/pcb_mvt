@@ -69,6 +69,8 @@ class Tag(AbstractCommModel):
             self.slug = slugify(self.title)[:64]
         super().save(*args, **kwargs)
 
+    def __str__(self):
+        return f'{self.title}'
 
 class HeaderImage(AbstractCommModel):
     image = models.ImageField(upload_to='images/')
