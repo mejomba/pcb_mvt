@@ -4,11 +4,13 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.contenttypes.models import ContentType
 from django.http import JsonResponse
-from rest_framework import viewsets, permissions, parsers
+from drf_spectacular.utils import extend_schema, inline_serializer
+from rest_framework import viewsets, permissions, parsers, serializers
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from core.permissions import IsAuthenticatedAndOwner
 from ..models.models import (AttributeGroup, Attribute, AttributeOption,
                              ConditionalRule, Order, OrderSelection, OrderPayment, Wrapper)
 from ..serializers.serializers import (AttributeGroupSerializer, AttributeSerializer, AttributeOptionSerializer,
@@ -142,12 +144,38 @@ class OrderSelectionViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSelectionSerializer
     # permission_classes = [permissions.IsAuthenticated]
 
-
+@extend_schema(
+        request=inline_serializer(
+            name='upload_order_payment_request',
+            fields={
+                'order': serializers.IntegerField(help_text='شناسه سفارش'),
+                'file': serializers.CharField(help_text='فایل رسید پرداخت')
+            }
+        ),
+        responses={
+            200: inline_serializer(
+                name='upload_order_payment_response',
+                fields={
+                    'id': serializers.IntegerField(),
+                }
+            ),
+            400: {"description": "order_id and file required"},
+            404: {"description": "order not found"},
+        }
+    )
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def upload_order_payment(request):
     order_id = request.data.get('order')
     file = request.FILES.get('file')
+
+    if not file or not order_id:
+        return Response({"description": "order_id and file required"}, status=400)
+
+    try:
+        Order.objects.get(pk=order_id, user=request.user)
+    except Exception as e:
+        return Response({"description": "order not found"}, status=404)
 
     payment = OrderPayment.objects.create(
         creator_user=request.user,
