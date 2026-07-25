@@ -5,10 +5,33 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from core.pagination import XLargeResultsSetPagination
-from .models import BlogCategory, Post, Notif
+from core.permissions import IsSuperuserOrReadOnly
+from .models import BlogCategory, Post, Notif, WhyUs
 from .serializers import GuidPostSerializer, BlogCategorySerializer, GuidPostMiniSerializer, GuidPostContentSerializer, \
-    NotifSerializer
+    NotifSerializer, WhyUsSerializer
 from rest_framework import viewsets, permissions
+
+
+class WhyUsViewSet(viewsets.ModelViewSet):
+    """
+    A simple ViewSet for viewing and editing blog Hero.
+    """
+    serializer_class = WhyUsSerializer
+    # permission_classes = [permissions.AllowAny]
+    pagination_class = XLargeResultsSetPagination  # 250 item per page
+
+    def get_permissions(self):
+        """
+        بر اساس نوع متد، سطح دسترسی را تعیین می‌کند
+        """
+        if self.request.method in ['POST', 'PUT', 'PATCH', 'DELETE']:
+            # برای متدهای نوشتاری، احراز هویت اجباری است
+            return [IsSuperuserOrReadOnly()]
+        # برای متدهای GET، همه می‌توانند ببینند
+        return [permissions.AllowAny()]
+
+    def get_queryset(self):
+        return WhyUs.objects.filter(is_active=True)
 
 
 class NotifViewSet(viewsets.ModelViewSet):

@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import BlogCategoryAutocomplete, GuidPostDetailApiView, BlogCategoryViewSet, NotifViewSet
+from .views import BlogCategoryAutocomplete, GuidPostDetailApiView, BlogCategoryViewSet, NotifViewSet, WhyUsViewSet
 from rest_framework.routers import DefaultRouter
 
 app_name = 'blog'
@@ -16,5 +16,6 @@ urlpatterns = [
 router = DefaultRouter()
 router.register(r'category/list', BlogCategoryViewSet, basename='blogcategory')
 router.register(r'notif', NotifViewSet, basename='notif')
+router.register(r'whyus', WhyUsViewSet, basename='whyus')
 
 urlpatterns += router.urls

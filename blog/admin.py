@@ -4,11 +4,11 @@ from django.utils.html import format_html
 from django.utils import timezone
 from django.utils.text import slugify
 from mptt.admin import MPTTModelAdmin
-from .models import Post, Tag, BlogCategory, Notif
+from .models import Post, Tag, BlogCategory, Notif, WhyUs
 from mptt.forms import TreeNodeChoiceField
 
 
-admin.site.register([Notif])
+admin.site.register([Notif, WhyUs])
 
 
 @admin.register(Post)

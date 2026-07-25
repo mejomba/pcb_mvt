@@ -151,3 +151,12 @@ class Notif(models.Model):
 
     def __str__(self):
         return f'{self.title}: {self.text}'
+
+
+class WhyUs(models.Model):
+    title = models.CharField(max_length=64)
+    text = models.TextField()
+    is_active = models.BooleanField(default=True, verbose_name='فعال')
+
+    def __str__(self):
+        return f'{self.title}: {self.text}'
