@@ -360,8 +360,12 @@ class ReadOnlyOrderAdmin(admin.ModelAdmin):
 
     # 🔹 تابع تولید فایل اکسل
     def download_excel(self, request, order_id):
+        print('in download excel')
         order = Order.objects.get(pk=order_id)
         selections = OrderSelection.objects.filter(order=order)
+        for s in selections:
+            print("sssss", s)
+        print('in download excel')
 
         data = [
             {
