@@ -374,11 +374,15 @@ class ReadOnlyOrderAdmin(admin.ModelAdmin):
             }
             for s in selections
         ]
+        print('make data:', data)
 
         df = pd.DataFrame(data)
+        print('df', df)
         buffer = BytesIO()
         df.to_excel(buffer, index=False)
         buffer.seek(0)
+
+        print('df to excel ...')
 
         filename = f"order_{order.id}_selections.xlsx"
         response = HttpResponse(
