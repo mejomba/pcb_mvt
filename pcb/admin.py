@@ -360,12 +360,8 @@ class ReadOnlyOrderAdmin(admin.ModelAdmin):
 
     # 🔹 تابع تولید فایل اکسل
     def download_excel(self, request, order_id):
-        print('in download excel')
         order = Order.objects.get(pk=order_id)
         selections = OrderSelection.objects.filter(order=order)
-        for s in selections:
-            print("sssss", s)
-        print('in download excel')
 
         data = [
             {
@@ -374,18 +370,11 @@ class ReadOnlyOrderAdmin(admin.ModelAdmin):
             }
             for s in selections
         ]
-        print('make data:', data)
 
         df = pd.DataFrame(data)
-        print('df', df)
         buffer = BytesIO()
-        print('buffer = BytesIO()')
         df.to_excel(buffer, index=False)
-        print("df.to_excel(buffer, index=False)")
         buffer.seek(0)
-        print("buffer.seek(0)")
-
-        print('df to excel ...')
 
         filename = f"order_{order.id}_selections.xlsx"
         response = HttpResponse(
