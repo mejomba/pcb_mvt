@@ -379,8 +379,11 @@ class ReadOnlyOrderAdmin(admin.ModelAdmin):
         df = pd.DataFrame(data)
         print('df', df)
         buffer = BytesIO()
+        print('buffer = BytesIO()')
         df.to_excel(buffer, index=False)
+        print("df.to_excel(buffer, index=False)")
         buffer.seek(0)
+        print("buffer.seek(0)")
 
         print('df to excel ...')
 
