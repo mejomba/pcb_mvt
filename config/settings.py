@@ -35,6 +35,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # خواندن از environment
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 SECRET_KEY = os.environ.get('SECRET_KEY', 'sssss')
+# ALLOWED_HOSTS += ['globalpcb.ir', 'www.globalpcb.ir', '95.38.164.113', 'localhost', '127.0.0.1']
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
 
 # settings.py
@@ -44,12 +45,6 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # SECURE_SSL_REDIRECT = True
 
 # DEBUG = True
-# دامنه‌ها
-ALLOWED_HOSTS = [
-    "globalpcb.ir",
-    "www.globalpcb.ir",
-    "api.globalpcb.ir",
-]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://globalpcb.ir",
@@ -65,8 +60,6 @@ CORS_ALLOWED_ORIGINS = [
 # اگه کوکی سشن بین دامنه اصلی و api لازمه:
 SESSION_COOKIE_DOMAIN = ".globalpcb.ir"
 CSRF_COOKIE_DOMAIN    = ".globalpcb.ir"
-# ALLOWED_HOSTS += ['globalpcb.ir', 'www.globalpcb.ir', '95.38.164.113', 'localhost', '127.0.0.1']
-# CSRF_TRUSTED_ORIGINS = ['https://globalpcb.ir', 'https://www.globalpcb.ir']
 
 # کوکی‌ها فقط روی HTTPS
 SESSION_COOKIE_SECURE = True
