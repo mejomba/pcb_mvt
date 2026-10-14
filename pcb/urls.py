@@ -13,8 +13,7 @@ from .views.help_views import HelpCategoryView, HelpPostView, NewOrderView, Help
 from .views.faq_views import FAQViewSet
 
 # ساخت یک روتر
-router = DefaultRouter()
-
+router = DefaultRouter(trailing_slash=False)
 app_name = 'pcb'
 # ثبت ViewSet ها در روتر
 router.register(r'wrapper', WrapperViewSet, basename='wrapper')
