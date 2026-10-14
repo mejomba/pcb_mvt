@@ -13,7 +13,7 @@ urlpatterns = [
     path('guid/<slug:slug>/', GuidPostDetailApiView.as_view(), name='guid-detail'),
 ]
 
-router = DefaultRouter()
+router = DefaultRouter(trailing_slash=False)
 router.register(r'category/list', BlogCategoryViewSet, basename='blogcategory')
 router.register(r'notif', NotifViewSet, basename='notif')
 router.register(r'whyus', WhyUsViewSet, basename='whyus')

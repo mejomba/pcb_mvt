@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 from .views import PreInvoiceViewSet, PreInvoiceItemViewSet, SupplierViewSet, OrderSupplierViewSet
 
 # ساخت یک روتر
-router = DefaultRouter()
+router = DefaultRouter(trailing_slash=False)
 
 app_name = 'sls'
 # ثبت ViewSet ها در روتر
