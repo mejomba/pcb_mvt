@@ -26,38 +26,56 @@ app_name = 'aaa'
 urlpatterns = [
     path('phone-check', PhoneCheckAPIView.as_view(), name='phone_check'),  #buse
     path('phone-check/', PhoneCheckAPIView.as_view(), name='phone_check'),  #buse
+    path('otp/send', OTPSendView.as_view(), name='auth_otp_send'),  # use
     path('otp/send/', OTPSendView.as_view(), name='auth_otp_send'),  # use
+    path('resend-otp', ResendOtpAPIView.as_view(), name='resend-otp'),  # use
     path('resend-otp/', ResendOtpAPIView.as_view(), name='resend-otp'),  # use
+    path('otp/verify', OTPVerifyView.as_view(), name='auth_otp_verify'),  # use
     path('otp/verify/', OTPVerifyView.as_view(), name='auth_otp_verify'),  # use
+    path('set-password', SetPasswordView.as_view(), name='set-password'),  # use
     path('set-password/', SetPasswordView.as_view(), name='set-password'),  # use
 
+    path('login', LoginView.as_view(), name='login'),  # use
     path('login/', LoginView.as_view(), name='login'),  # use
+    path("password-login-or-signup", PasswordLoginOrSignupView.as_view(), name='password-login-or-signup'),  # use
     path("password-login-or-signup/", PasswordLoginOrSignupView.as_view(), name='password-login-or-signup'),  # use
 
+    path('profile', UserProfileView.as_view(), name='auth_profile'),  # use
     path('profile/', UserProfileView.as_view(), name='auth_profile'),  # use
 
 
     # address
     path('addresses/', AddressListCreateView.as_view(), name='address-list-create'),
+    path('addresses', AddressListCreateView.as_view(), name='address-list-create'),
     path('addresses/<int:pk>/', AddressDetailView.as_view(), name='address-detail'),
+    path('addresses/<int:pk>', AddressDetailView.as_view(), name='address-detail'),
 
     # profile sherkati
     path('legal-profiles/', LegalProfileListCreateView.as_view(), name='legalprofile-list-create'),
+    path('legal-profiles', LegalProfileListCreateView.as_view(), name='legalprofile-list-create'),
     path('legal-profiles/<int:pk>/', LegalProfileDetailView.as_view(), name='legalprofile-detail'),
+    path('legal-profiles/<int:pk>', LegalProfileDetailView.as_view(), name='legalprofile-detail'),
 
 
     path('template/profile/', ProfileView.as_view(),  name='profile'),
+    path('template/profile', ProfileView.as_view(),  name='profile'),
 
     path('loout/', LogoutView.as_view(), name='logout'),  # use
+    path('loout', LogoutView.as_view(), name='logout'),  # use
     path('template/otp/', AuthOtpView.as_view(), name='template_auth_otp'),  # use
+    path('template/otp', AuthOtpView.as_view(), name='template_auth_otp'),  # use
     path('template/password/', AuthPasswordView.as_view(), name='template_auth_password'),  # use
+    path('template/password', AuthPasswordView.as_view(), name='template_auth_password'),  # use
     path('template/otp/verify/', AuthOtpVerifyView.as_view(), name='template_auth_otp_verify'),  # use
 
     # path('token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
     # path('token/refresh/', CustomTokenRefreshView.as_view(), name='token_refresh'),
     path('signup/', SignupView.as_view(), name='auth_signup'),
+    path('signup', SignupView.as_view(), name='auth_signup'),
     path('otp/register/', OtpRegisterAPIView.as_view(), name='otp-register'),  # use
+    path('otp/register', OtpRegisterAPIView.as_view(), name='otp-register'),  # use
     path('otp/login/', OtpLoginAPIView.as_view(), name='otp-login'),  # use
+    path('otp/login', OtpLoginAPIView.as_view(), name='otp-login'),  # use
 
     # path('login/', LoginView.as_view(), name='auth_login'),
     # path('logout/', LogoutView.as_view(), name='auth_logout'),
