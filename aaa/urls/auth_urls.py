@@ -24,7 +24,7 @@ app_name = 'aaa'
 
 # 'api/v1/auth/'
 urlpatterns = [
-    path('phone-check/', PhoneCheckAPIView.as_view(), name='phone_check'),  #buse
+    path('phone-check', PhoneCheckAPIView.as_view(), name='phone_check'),  #buse
     path('otp/send/', OTPSendView.as_view(), name='auth_otp_send'),  # use
     path('resend-otp/', ResendOtpAPIView.as_view(), name='resend-otp'),  # use
     path('otp/verify/', OTPVerifyView.as_view(), name='auth_otp_verify'),  # use
