@@ -28,10 +28,12 @@ class OTPAction:
             import json
             json_data = json.dumps({
                                     "mobile": phone[1:],
-                                    "templateId": 485441,
+                                    # "templateId": 485441,
+                                    "templateId": 412785,
                                     "parameters": [
                                       {
-                                        "name": "Code",
+                                        # "name": "Code",
+                                        "name": "Otp",
                                         "value": message
                                       }
                                     ]
@@ -42,10 +44,11 @@ class OTPAction:
             # res = requests.post('https://api.sms.ir/v1/send/verify', json=json_data, headers=headers)
             res = requests.post('https://api.sms.ir/v1/send/verify', json={
                                     "mobile": phone[1:],
-                                    "templateId": 485441,
+                                    # "templateId": 485441,
+                                    "templateId": 412785,
                                     "parameters": [
                                       {
-                                        "name": "Code",
+                                        "name": "Otp",
                                         "value": message
                                       }
                                     ]
