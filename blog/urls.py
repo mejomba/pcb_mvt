@@ -11,6 +11,7 @@ urlpatterns = [
     ),
     # path('guid/list/<int:caterory>/', GuidPostDetailApiView.as_view(), name='guide.list'),
     path('guid/<slug:slug>/', GuidPostDetailApiView.as_view(), name='guid-detail'),
+    path('guid/<slug:slug>', GuidPostDetailApiView.as_view(), name='guid-detail'),
 ]
 
 router = DefaultRouter(trailing_slash=False)
